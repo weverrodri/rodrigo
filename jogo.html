@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interestelar: A Trilha de 100 Casas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: radial-gradient(circle at center, #0d1b2a 0%, #010811 100%);
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Fundo Animado de Espaço (Estrelas Piscantes) */
+        .espaco-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            animation: estrelasMover 60s linear infinite;
+        }
+        @keyframes estrelasMover {
+            from { background-position: 0 0, 40px 60px, 130px 270px; }
+            to { background-position: 550px 550px, 390px 410px, 380px 820px; }
+        }
+
+        /* Nave de Decoração no Fundo */
+        .nave-decoracao {
+            position: absolute;
+            width: 80px;
+            height: 50px;
+            background: linear-gradient(90deg, #5c677d, #979dac);
+            clip-path: polygon(0% 50%, 30% 20%, 80% 20%, 100% 50%, 80% 80%, 30% 80%);
+            bottom: 10%;
+            left: -100px;
+            z-index: 2;
+            opacity: 0.6;
+            filter: drop-shadow(0 0 10px rgba(0, 150, 255, 0.5));
+            animation: vooNave 25s linear infinite;
+        }
+        .nave-decoracao::after {
+            content: '';
+            position: absolute;
+            left: -15px; top: 35%; width: 15px; height: 30%;
+            background: orange;
+            box-shadow: 0 0 10px red;
+            border-radius: 50% 0 0 50%;
+        }
+        @keyframes vooNave {
+            0% { left: -100px; transform: translateY(0) rotate(5deg); }
+            50% { transform: translateY(-50px) rotate(-5deg); }
+            100% { left: calc(100% + 100px); transform: translateY(0) rotate(5deg); }
+        }
+
+        /* Painel Principal de Interface */
+        #gameInterface {
+            display: none;
+            gap: 20px;
+            background: rgba(15, 23, 42, 0.85);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 0 40px rgba(0, 191, 255, 0.2);
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            border: 1px solid rgba(0, 191, 255, 0.2);
+            max-width: 95vw;
+        }
+
+        /* Menu Iniciar */
+        #menuInicial {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(10, 15, 30, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid #00bfff;
+            box-shadow: 0 0 50px rgba(0, 191, 255, 0.4);
+            z-index: 20;
+            text-align: center;
+            animation: painelSurgir 0.5s ease-out;
+        }
+        #menuInicial h1 {
+            font-size: 38px;
+            background: linear-gradient(45deg, #00ffff, #00bfff, #7000ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+        .btn-start {
+            background: linear-gradient(90deg, #0077b6, #00bfff);
+            color: #fff;
+            border: none;
+            padding: 15px 40px;
+            font-size: 22px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 191, 255, 0.5);
+            transition: 0.3s;
+        }
+        .btn-start:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 35px rgba(0, 255, 255, 0.8);
+        }
+
+        /* Grid do Tabuleiro 10x10 */
+        #tabuleiroContainer {
+            position: relative;
+        }
+        #tabuleiro {
+            display: grid;
+            grid-template-columns: repeat(10, 52px);
+            grid-template-rows: repeat(10, 52px);
+            gap: 3px;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 5px;
+            border-radius: 8px;
+        }
+        .casa {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 3px;
+            font-weight: bold;
+            font-size: 11px;
+            border-radius: 3px;
+            position: relative;
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Cores Espaciais da Trilha */
+        .cor-nebula { background: #1e1b4b; }
+        .cor-cosmos { background: #0f172a; }
+        .cor-pulsar { background: #2e1065; }
+
+        .casa-desafio {
+            background: #450a0a !important;
+            border: 1px solid #ef4444;
+            color: #f87171;
+            font-size: 8px;
+            text-align: center;
+        }
+        .msg-desafio {
+            font-size: 7px;
+            text-transform: uppercase;
+            line-height: 1;
+            font-weight: 900;
+        }
+
+        /* Peões / Jogadores */
+        .container-peoes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2px;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            position: absolute;
+            bottom: 4px;
+            z-index: 5;
+        }
+        .peao {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.6);
+            transition: all 0.2s ease;
+        }
+        .p-principal { background-color: #00ffcc; } /* Você (Ciano) */
+        .p-vermelho { background-color: #ef4444; }
+        .p-amarelo { background-color: #eab308; }
+        .p-verde { background-color: #22c55e; }
+
+        /* Painel Lateral e de Regras */
+        #paineisLaterais {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 250px;
+        }
+        .painel-box {
+            background: rgba(30, 41, 59, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .painel-box h3 {
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #00bfff;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(0,191,255,0.2);
+            padding-bottom: 4px;
+        }
+
+        /* Regras Estilizadas */
+        .lista-regras {
+            font-size: 11px;
+            list-style: none;
+            line-height: 1.5;
+            color: #cbd5e1;
+        }
+        .lista-regras li {
+            margin-bottom: 6px;
+        }
+
+        /* Sistema do Dado */
+        #painelDado {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        #dado {
+            width: 60px; height: 60px;
+            background: #ffffff;
+            color: #0f172a;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(255,255,255,0.3);
+            border: 3px solid #cbd5e1;
+        }
+        .girando { animation: rodar 0.3s linear infinite; }
+        @keyframes rodar {
+            0% { transform: rotate(0deg) scale(0.9); }
+            100% { transform: rotate(360deg) scale(0.9); }
+        }
+
+        /* Feedback do Turno */
+        #indicadorTurno {
+            font-weight: bold;
+            text-align: center;
+            font-size: 14px;
+            padding: 5px;
+            border-radius: 4px;
+        }
+
+        button.acao-btn {
+            background: #0284c7;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.2s;
+        }
+        button.acao-btn:hover:not(:disabled) { background: #0ea5e9; }
+        button.acao-btn:disabled { background: #334155; color: #64748b; cursor: not-allowed; }
+
+        /* Janela de Vitória/Modal */
+        #modalVitoria {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.85);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        .conteudo-vitoria {
+            background: #0f172a;
+            border: 3px solid #eab308;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 0 50px #eab308;
+            max-width: 500px;
+            animation: painelSurgir 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes painelSurgir {
+            from { transform: scale(0.7); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .conteudo-vitoria h2 {
+            font-size: 28px;
+            color: #eab308;
+            margin-bottom: 15px;
+        }
+        .conteudo-vitoria p {
+            font-size: 18px;
+            margin-bottom: 25px;
+            color: #f8fafc;
+        }
+
+        /* Canvas de Confetes da Vitória */
+        #canvasConfetes {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 99;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="espaco-bg"></div>
+    <div class="nave-decoracao"></div>
+
+    <!-- Tela do Menu Inicial -->
+    <div id="menuInicial">
+        <h1>INTERESTELAR</h1>
+        <p style="color: #94a3b8; margin-bottom: 25px; font-size: 14px;">Trilha Espacial de 100 Casas em Zigue-zague com Bots</p>
+        <button class="btn-start" onclick="iniciarJogo()">START GAME</button>
+    </div>
+
+    <!-- Tela do Jogo Principal -->
+    <div id="gameInterface">
+        
+        <!-- O Tabuleiro Grid -->
+        <div id="tabuleiroContainer">
+            <div id="tabuleiro"></div>
+        </div>
+
+        <!-- Painel de Controles e Regras -->
+        <div id="paineisLaterais">
+            
+            <!-- Painel do Turno Atual e Dado -->
+            <div class="painel-box" id="painelDado">
+                <div id="indicadorTurno">Sua vez!</div>
+                <div id="dado">?</div>
+                <button id="btnDado" class="acao-btn" onclick="rodarTurnoJogador()">Girar Dado</button>
+            </div>
+
+            <!-- Painel de Regras Estilizado no Canto -->
+            <div class="painel-box">
+                <h3>Regras do Percurso</h3>
+                <ul class="lista-regras">
+                    <li>🛸 <strong>Ordem:</strong> Você ➔ Vermelho ➔ Amarelo ➔ Verde.</li>
+                    <li>💥 <strong>Volte 2 Casas:</strong> Penalidade de propulsão.</li>
+                    <li>🌀 <strong>Volte ao Início:</strong> Buraco negro joga você para a casa 1.</li>
+                    <li>🛑 <strong>Perdeu a Vez:</strong> Campo de asteroides te paralisa por 1 rodada.</li>
+                    <li>🔄 <strong>Trocar de Lugar:</strong> Dobra espacial! Troca sua posição com outro competidor aleatório.</li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Tela Flutuante de Vitória -->
+    <div id="modalVitoria">
+        <canvas id="canvasConfetes"></canvas>
+        <div class="conteudo-vitoria">
+            <h2 id="tituloGanhador">[ VOCÊ É O MELHOR JOGADOR, PARABÉNS! ]</h2>
+            <p id="subtxtGanhador">Você conquistou a galáxia primeiro.</p>
+            <button class="btn-start" style="font-size: 16px; padding: 10px 30px;" onclick="reiniciarJogoCompleto()">Jogar de Novo?</button>
+        </div>
+    </div>
+
+<script>
+// Configurações Globais
+const colunas = 10;
+const linhas = 10;
+const totalCasas = 100;
+
+// Jogadores e Ordem das Peças
+const ordemJogadores = ['jogador', 'botVermelho', 'botAmarelo', 'botVerde'];
+let indiceTurnoAtual = 0;
+
+let dadosJogadores = {
+    jogador: { nome: "Você", classePeao: "p-principal", posicao: 1, perdeuVez: false },
+    botVermelho: { nome: "Bot Vermelho", classePeao: "p-vermelho", posicao: 1, perdeuVez: false },
+    botAmarelo: { nome: "Bot Amarelo", classePeao: "p-amarelo", posicao: 1, perdeuVez: false },
+    botVerde: { nome: "Bot Verde", classePeao: "p-verde", posicao: 1, perdeuVez: false }
+};
+
+// Mapeamento das Casas Especiais (3 repetidas espalhadas de cada tipo)
+const desafios = {
+    15: 'volte2', 44: 'volte2', 78: 'volte2',
+    28: 'inicio', 57: 'inicio', 85: 'inicio',
+    12: 'perdeuVez', 50: 'perdeuVez', 73: 'perdeuVez',
+    22: 'trocar', 63: 'trocar', 91: 'trocar'
+};
+
+// Determinar coordenadas no sistema Zigue-zague 10x10 de baixo para cima
+function calcularCoordenadasGrid(num) {
+    let zeroBase = num - 1;
+    let camadaDeBaixo = Math.floor(zeroBase / colunas); 
+    let linhaGrid = (linhas - 1) - camadaDeBaixo; 
+    
+    let colunaGrid;
+    if (camadaDeBaixo % 2 === 0) {
+        colunaGrid = zeroBase % colunas; // Esquerda para a Direita
+    } else {
+        colunaGrid = (colunas - 1) - (zeroBase % colunas); // Direita para a Esquerda
+    }
+    return { r: linhaGrid + 1, c: colunaGrid + 1 };
+}
+
+// Construção e Renderização Dinâmica da Trilha Espacial
+function gerarTabuleiro() {
+    const tabuleiro = document.getElementById("tabuleiro");
+    tabuleiro.innerHTML = "";
+    
+    let matriz = Array(linhas).fill().map(() => Array(colunas).fill(0));
+    for (let i = 1; i <= totalCasas; i++) {
+        let coords = calcularCoordenadasGrid(i);
+        matriz[coords.r - 1][coords.c - 1] = i;
+    }
+
+    for (let r = 0; r < linhas; r++) {
+        for (let c = 0; c < colunas; c++) {
+            let num = matriz[r][c];
+            const divCasa = document.createElement("div");
+            divCasa.id = `casa-${num}`;
+            divCasa.classList.add("casa");
+
+            if (num % 3 === 0) divCasa.classList.add("cor-nebula");
+            else if (num % 2 === 0) divCasa.classList.add("cor-cosmos");
+            else divCasa.classList.add("cor-pulsar");
+
+            if (desafios[num] === 'volte2') {
+                divCasa.classList.add("casa-desafio");
+                divCasa.innerHTML = `<span>${num}</span><span class="msg-desafio">Volte 2</span>`;
+            } else if (desafios[num] === 'inicio') {
+                divCasa.classList.add("casa-desafio");
+                divCasa.innerHTML = `<span>${num}</span><span class="msg-desafio">B. Negro</span>`;
+            } else if (desafios[num] === 'perdeuVez') {
+                divCasa.classList.add("casa-desafio");
+                divCasa.innerHTML = `<span>${num}</span><span class="msg-desafio">Paralisado</span>`;
+            } else if (desafios[num] === 'trocar') {
+                divCasa.classList.add("casa-desafio");
+                divCasa.innerHTML = `<span>${num}</span><span class="msg-desafio">Troca Pos</span>`;
+            } else if (num === 1) {
+                divCasa.innerHTML = `<span>1</span><span style="font-size:7px; color:#00ffcc">BASE</span>`;
+            } else if (num === 100) {
+                divCasa.style.background = "linear-gradient(45deg, #eab308, #fff)";
+                divCasa.style.color = "#000";
+                divCasa.innerHTML = `<span>100</span><span style="font-size:7px;">FIM</span>`;
+            } else {
+                divCasa.innerHTML = `<span>${num}</span>`;
+            }
+
+            const containerPeoes = document.createElement("div");
+            containerPeoes.className = "container-peoes";
+            containerPeoes.id = `peoes-casa-${num}`;
+            divCasa.appendChild(containerPeoes);
+
+            divCasa.style.gridRow = r + 1;
+            divCasa.style.gridColumn = c + 1;
+            tabuleiro.appendChild(divCasa);
+        }
+    }
+}
+
+// Atualizar posições visuais
+function atualizarPosicaoPecas() {
+    for (let i = 1; i <= totalCasas; i++) {
+        document.getElementById(`peoes-casa-${i}`).innerHTML = "";
+    }
+    Object.keys(dadosJogadores).forEach(idKey => {
+        let dados = dadosJogadores[idKey];
+        let peaoElemento = document.getElementById(`peao-id-${idKey}`);
+        if (!peaoElemento) {
+            peaoElemento = document.createElement("div");
+            peaoElemento.id = `peao-id-${idKey}`;
+            peaoElemento.className = `peao ${dados.classePeao}`;
+        }
+        document.getElementById(`peoes-casa-${dados.posicao}`).appendChild(peaoElemento);
+    });
+}
+
+function iniciarJogo() {
+    document.getElementById("menuInicial").style.display = "none";
+    document.getElementById("gameInterface").style.display = "flex";
+    gerarTabuleiro();
+    atualizarPosicaoPecas();
+}
+
+function alternarProximoTurno() {
+    indiceTurnoAtual = (indiceTurnoAtual + 1) % ordemJogadores.length;
+    let proximoId = ordemJogadores[indiceTurnoAtual];
+    let dadosProximo = dadosJogadores[proximoId];
+
+    const indicador = document.getElementById("indicadorTurno");
+    const btn = document.getElementById("btnDado");
+
+    if (dadosProximo.perdeuVez) {
+        indicador.innerText = `${dadosProximo.nome} perdeu a vez!`;
+        dadosProximo.perdeuVez = false;
+        setTimeout(alternarProximoTurno, 1500);
+        return;
+    }
+
+    if (proximoId === 'jogador') {
+        indicador.innerText = "Sua Vez!";
+        indicador.style.color = "#00ffcc";
+        btn.disabled = false;
+    } else {
+        indicador.innerText = `Turno: ${dadosProximo.nome}`;
+        if (proximoId === 'botVermelho') indicador.style.color = "#ef4444";
+        if (proximoId === 'botAmarelo') indicador.style.color = "#eab308";
+        if (proximoId === 'botVerde') indicador.style.color = "#22c55e";
+        btn.disabled = true;
+        setTimeout(executarTurnoBot, 1500); 
+    }
+}
+
+function rodarTurnoJogador() {
+    document.getElementById("btnDado").disabled = true;
+    processarLancamentoDado('jogador');
+}
+
+function executarTurnoBot() {
+    let botId = ordemJogadores[indiceTurnoAtual];
+    processarLancamentoDado(botId);
+}
+
+function processarLancamentoDado(idJogador) {
+    const divDado = document.getElementById("dado");
+    divDado.classList.add("girando");
+
+    let valorDado = Math.floor(Math.random() * 6) + 1;
+
+    setTimeout(() => {
+        divDado.classList.remove("girando");
+        divDado.innerText = valorDado;
+
+        let jogadorAtivo = dadosJogadores[idJogador];
+        let novaPosicao = jogadorAtivo.posicao + valorDado;
+
+        if (novaPosicao > totalCasas) novaPosicao = totalCasas;
+        
+        // Aplica o movimento imediatamente na tela
+        jogadorAtivo.posicao = novaPosicao;
+        atualizarPosicaoPecas();
+
+        // Aguarda o peão mover visualmente antes de aplicar desafios ou alertas
+        setTimeout(() => {
+            let posFinal = jogadorAtivo.posicao;
+
+            if (desafios[posFinal]) {
+                let tipoDesafio = desafios[posFinal];
+
+                if (tipoDesafio === 'volte2') {
+                    jogadorAtivo.posicao = Math.max(1, posFinal - 2);
+                    alert(`💥 ${jogadorAtivo.nome} caiu na propulsão instável! Voltou 2 casas.`);
+                } 
+                else if (tipoDesafio === 'inicio') {
+                    jogadorAtivo.posicao = 1;
+                    alert(`🌀 BURACO NEGRO! ${jogadorAtivo.nome} foi sugado de volta para o Início (Casa 1)!`);
+                } 
+                else if (tipoDesafio === 'perdeuVez') {
+                    jogadorAtivo.perdeuVez = true;
+                    alert(`🛑 Campo de Asteroides! ${jogadorAtivo.nome} ficou paralisado e perderá o próximo turno.`);
+                } 
+                else if (tipoDesafio === 'trocar') {
+                    let chavesFiltro = Object.keys(dadosJogadores).filter(k => k !== idJogador);
+                    let chaveSorteada = chavesFiltro[Math.floor(Math.random() * chavesFiltro.length)];
+                    let alvoSorteado = dadosJogadores[chaveSorteada];
+
+                    let tempPos = jogadorAtivo.posicao;
+                    jogadorAtivo.posicao = alvoSorteado.posicao;
+                    alvoSorteado.posicao = tempPos;
+
+                    alert(`🔄 DOBRA ESPACIAL! ${jogadorAtivo.nome} trocou aleatoriamente de lugar com o ${alvoSorteado.nome}!`);
+                }
+                // Redesenha caso a posição tenha mudado devido a armadilhas
+                atualizarPosicaoPecas();
+            }
+
+            // Validação de Ganhador
+            if (jogadorAtivo.posicao >= totalCasas) {
+                exibirVitoria(idJogador);
+            } else {
+                alternarProximoTurno();
+            }
+
+        }, 600); // Pequeno delay pós-movimento para suavidade
+
+    }, 800);
+}
+
+// Configuração de Telas Finais e Animação de Confetes
+let loopConfete;
+function exibirVitoria(idGanhador) {
+    const modal = document.getElementById("modalVitoria");
+    const titulo = document.getElementById("tituloGanhador");
+    const subtitulo = document.getElementById("subtxtGanhador");
+
+    if (idGanhador === 'jogador') {
+        titulo.innerText = "[ VOCÊ É O MELHOR JOGADOR, PARABÉNS! ]";
+        subtitulo.innerText = "Você derrotou os algoritmos e conquistou o topo do universo.";
+    } else {
+        titulo.innerText = `[ FIM DE JOGO! O ${dadosJogadores[idGanhador].nome} VENCEU! ]`;
+        subtitulo.innerText = "Mais sorte em sua próxima decolagem interestelar.";
+    }
+
+    modal.style.display = "flex";
+    iniciarConfetes();
+}
+
+let particulas = [];
+function iniciarConfetes() {
+    const canvas = document.getElementById("canvasConfetes");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    particulas = [];
+    for (let i = 0; i < 120; i++) {
+        particulas.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height - canvas.height,
+            r: Math.random() * 6 + 4,
+            d: Math.random() * canvas.height,
+            cor: `hsl(${Math.random() * 360}, 100%, 60%)`,
+            vel: Math.random() * 3 + 2
+        });
+    }
+
+    function desenharFrame() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particulas.forEach(p => {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = p.cor;
+            ctx.fill();
+
+            p.y += p.vel;
+            if (p.y > canvas.height) {
+                p.y = -10;
+                p.x = Math.random() * canvas.width;
+            }
+        });
+        loopConfete = requestAnimationFrame(desenharFrame);
+    }
+    desenharFrame();
+}
+
+function reiniciarJogoCompleto() {
+    cancelAnimationFrame(loopConfete);
+    document.getElementById("modalVitoria").style.display = "none";
+    
+    indiceTurnoAtual = 0;
+    Object.keys(dadosJogadores).forEach(k => {
+        dadosJogadores[k].posicao = 1;
+        dadosJogadores[k].perdeuVez = false;
+    });
+
+    document.getElementById("dado").innerText = "?";
+    document.getElementById("indicadorTurno").innerText = "Sua Vez!";
+    document.getElementById("indicadorTurno").style.color = "#00ffcc";
+    document.getElementById("btnDado").disabled = false;
+
+    atualizarPosicaoPecas();
+}
+
+window.addEventListener('resize', () => {
+    const canvas = document.getElementById("canvasConfetes");
+    if(canvas) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+});
+</script>
+
+</body>
+</html>
+</body>
+</html>
