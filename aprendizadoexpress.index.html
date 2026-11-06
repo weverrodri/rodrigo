@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aprendizado express — Plataforma de Estudos</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* VARIÁVEIS DE DESIGN */
+    :root {
+      --bg-midnight: #0F172A;
+      --bg-slate: #1E293B;
+      --bg-card-hover: #334155;
+      --border-color: #334155;
+
+      --green-lime: #22C55E;
+      --green-lime-dark: #15803D;
+      --purple-electric: #8B5CF6;
+      --yellow-gold: #FACC15;
+      --orange-brand: #F97316;
+      --blue-brand: #38BDF8;
+      --red-alert: #EF4444;
+
+      --text-white: #FFFFFF;
+      --text-muted: #CBD5E1;
+
+      --font-main: 'Plus Jakarta Sans', sans-serif;
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-pill: 999px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: var(--font-main);
+    }
+
+    body {
+      background-color: var(--bg-midnight);
+      color: var(--text-white);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hidden { display: none !important; }
+
+    /* NAVBAR */
+    .navbar {
+      background-color: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 2px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 16px 32px;
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    /* ÍCONE COM FUNDO PRETO, COROA E ROSA AZUL NA FRENTE */
+    .logo-icon-box {
+      background: #000000;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      border: 2px solid var(--border-color);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .custom-badge-icon {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .crown-bg {
+      position: absolute;
+      font-size: 1.5rem;
+      top: 2px;
+      z-index: 1;
+      filter: drop-shadow(0 0 2px rgba(250, 204, 21, 0.5));
+    }
+
+    .rose-fg {
+      position: absolute;
+      font-size: 1.3rem;
+      bottom: 2px;
+      z-index: 2;
+      filter: hue-rotate(180deg) saturate(3) brightness(1.2) drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+    }
+
+    .logo-text {
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+    .logo-text span { color: var(--blue-brand); }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--text-white); }
+
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
+
+    /* BOTÕES PUSH-BUTTON 3D */
+    .btn-push {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 14px 28px;
+      border-radius: var(--radius-md);
+      border: none;
+      cursor: pointer;
+      transition: all 0.1s ease;
+      text-decoration: none;
+    }
+    .btn-push-green {
+      background-color: var(--green-lime);
+      color: #052E16;
+      box-shadow: 0 6px 0 var(--green-lime-dark);
+    }
+    .btn-push-green:active { transform: translateY(6px); box-shadow: 0 0 0 var(--green-lime-dark); }
+
+    .btn-push-orange {
+      background-color: var(--orange-brand);
+      color: #FFFFFF;
+      box-shadow: 0 6px 0 #C2410C;
+    }
+    .btn-push-orange:active { transform: translateY(6px); box-shadow: 0 0 0 #C2410C; }
+
+    .btn-push-dark {
+      background-color: var(--bg-slate);
+      color: var(--text-white);
+      border: 2px solid var(--border-color);
+      box-shadow: 0 6px 0 var(--border-color);
+    }
+    .btn-push-dark:active { transform: translateY(6px); box-shadow: 0 0 0 var(--border-color); }
+
+    /* HERO LANDING */
+    .hero-section {
+      max-width: 1100px;
+      margin: 60px auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .hero-content h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
+    .hero-content h1 span { color: var(--blue-brand); }
+    .hero-content p { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 36px; }
+
+    .game-card-preview {
+      background: linear-gradient(145deg, var(--bg-slate), #0F172A);
+      border: 2px solid var(--blue-brand);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(56, 189, 248, 0.2);
+    }
+
+    /* LAYOUT DAS MATÉRIAS */
+    .app-layout {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 32px;
+      width: 100%;
+    }
+
+    .subjects-list { display: flex; flex-direction: column; gap: 16px; }
+    .subject-card {
+      background: var(--bg-slate);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .subject-card:hover { border-color: var(--blue-brand); transform: translateX(4px); }
+    .subject-icon {
+      width: 60px; height: 60px;
+      border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+    }
+    .subject-info { flex: 1; }
+    .subject-info h3 { font-size: 1.25rem; margin-bottom: 4px; }
+    .subject-info p { color: var(--text-muted); font-size: 0.9rem; }
+
+    .dashboard-sidebar { display: flex; flex-direction: column; gap: 20px; }
+    .ui-card { background-color: var(--bg-slate); border: 2px solid var(--border-color); border-radius: var(--radius-lg); padding: 24px; }
+
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .stat-box { background: var(--bg-midnight); border: 2px solid var(--border-color); border-radius: var(--radius-md); padding: 12px 16px; display: flex; align-items: center; gap: 12px; }
+
+    /* BADGES DE CLASSIFICAÇÃO / PATAMAR */
+    .rank-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .rank-novato { background: rgba(203, 213, 225, 0.2); color: #CBD5E1; border: 1px solid #CBD5E1; }
+    .rank-jogador { background: rgba(34, 197, 94, 0.2); color: var(--green-lime); border: 1px solid var(--green-lime); }
+    .rank-selecao { background: rgba(56, 189, 248, 0.2); color: #38BDF8; border: 1px solid #38BDF8; }
+    .rank-newgen { background: rgba(139, 92, 246, 0.2); color: var(--purple-electric); border: 1px solid var(--purple-electric); }
+    .rank-imperador { background: rgba(250, 204, 21, 0.2); color: var(--yellow-gold); border: 1px solid var(--yellow-gold); }
+
+    /* QUIZ & ATIVIDADES */
+    .task-card { background: var(--bg-midnight); border: 2px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; margin-bottom: 20px; }
+    .task-title { font-size: 1.1rem; font-weight: 700; color: var(--green-lime); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+    .task-question { font-size: 1rem; margin-bottom: 14px; }
+    .options-group { display: flex; flex-direction: column; gap: 10px; }
+    .option-btn { background: var(--bg-slate); border: 2px solid var(--border-color); color: var(--text-white); padding: 12px 16px; border-radius: var(--radius-md); text-align: left; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .option-btn:hover:not(:disabled) { border-color: var(--purple-electric); background: var(--bg-card-hover); }
+
+    /* RANKING & COMUNIDADE */
+    .ranking-container { max-width: 800px; margin: 40px auto; padding: 0 24px; width: 100%; }
+    .ranking-list { display: flex; flex-direction: column; gap: 16px; margin-top: 24px; }
+    .ranking-card { background: var(--bg-slate); border: 2px solid var(--border-color); border-radius: var(--radius-md); padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; }
+    .ranking-card.current-user { border-color: var(--green-lime); background: linear-gradient(90deg, var(--bg-slate), rgba(34, 197, 94, 0.05)); }
+    .ranking-user-info { display: flex; align-items: center; gap: 16px; }
+
+    .community-wrapper { max-width: 1000px; margin: 40px auto; padding: 0 24px; width: 100%; }
+    .community-container { display: flex; height: 550px; background-color: var(--bg-slate); border: 2px solid var(--border-color); border-radius: var(--radius-lg); overflow: hidden; }
+    .chat-sidebar { width: 280px; background-color: rgba(15, 23, 42, 0.6); border-right: 2px solid var(--border-color); display: flex; flex-direction: column; }
+    .chat-channel-btn { padding: 14px 16px; font-weight: 600; color: var(--text-muted); cursor: pointer; border-left: 4px solid transparent; transition: all 0.2s; display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
+    .chat-channel-btn:hover { background-color: rgba(255, 255, 255, 0.05); color: var(--text-white); }
+    .chat-channel-btn.active { background-color: var(--bg-midnight); color: var(--blue-brand); border-left-color: var(--blue-brand); font-weight: 800; }
+    .chat-main { flex: 1; display: flex; flex-direction: column; }
+    .messages-container { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+    .message-card { max-width: 70%; background-color: var(--bg-midnight); border: 1px solid var(--border-color); padding: 12px 16px; border-radius: var(--radius-md); }
+    .message-card.my-message { align-self: flex-end; background-color: #1E1B4B; border-color: var(--purple-electric); }
+    .chat-input-area { padding: 16px; border-top: 2px solid var(--border-color); display: flex; gap: 10px; }
+    .chat-input-area input { flex: 1; background-color: var(--bg-midnight); border: 2px solid var(--border-color); border-radius: var(--radius-md); padding: 12px 16px; color: var(--text-white); outline: none; }
+
+    /* MODAIS */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); z-index: 1000; display: flex; justify-content: center; align-items: center; }
+    .modal-card { background: var(--bg-midnight); border: 2px solid var(--border-color); border-radius: var(--radius-lg); width: 100%; max-width: 650px; padding: 36px; max-height: 90vh; overflow-y: auto; }
+    .auth-card { background-color: var(--bg-slate); border: 2px solid var(--border-color); border-radius: var(--radius-lg); padding: 36px; width: 100%; max-width: 440px; }
+    .form-group { margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); }
+    .input-wrapper { position: relative; display: flex; align-items: center; }
+    .input-wrapper i { position: absolute; left: 16px; color: var(--text-muted); }
+    .input-wrapper input { width: 100%; background-color: var(--bg-midnight); border: 2px solid var(--border-color); border-radius: var(--radius-md); padding: 14px 16px 14px 48px; color: var(--text-white); outline: none; font-weight: 600; }
+    .auth-toggle { text-align: center; margin-top: 20px; font-size: 0.9rem; color: var(--text-muted); }
+    .auth-toggle a { color: var(--orange-brand); font-weight: 700; cursor: pointer; }
+
+    .toast-container { position: fixed; bottom: 30px; right: 30px; z-index: 2000; }
+    .toast { background: var(--green-lime); color: #052E16; padding: 16px 24px; border-radius: var(--radius-md); font-weight: 800; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+
+    .credentials-box {
+      background: var(--bg-midnight);
+      border: 2px solid var(--blue-brand);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-top: 16px;
+      font-size: 0.85rem;
+    }
+    .credentials-box strong { color: var(--blue-brand); }
+
+    @media (max-width: 900px) {
+      .hero-section { grid-template-columns: 1fr; text-align: center; }
+      .app-layout { grid-template-columns: 1fr; }
+      .community-container { flex-direction: column; height: 750px; }
+      .chat-sidebar { width: 100%; height: 220px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="logo-group" onclick="showScreen('screen-landing')">
+        <div class="logo-icon-box">
+          <div class="custom-badge-icon">
+            <span class="crown-bg">👑</span>
+            <span class="rose-fg">🌹</span>
+          </div>
+        </div>
+        <div class="logo-text">Aprendizado <span>express</span></div>
+      </div>
+
+      <ul class="nav-links">
+        <li><a class="nav-item active" onclick="requireAuth('screen-landing', this)">Início</a></li>
+        <li><a class="nav-item" onclick="requireAuth('screen-subjects', this)">Matérias</a></li>
+        <li><a class="nav-item" onclick="requireAuth('screen-ranking', this)">Ranking</a></li>
+        <li><a class="nav-item" onclick="requireAuth('screen-community', this)">Comunidade</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <div id="nav-logged-out-actions" class="nav-actions">
+          <button class="btn-push btn-push-dark" style="padding: 8px 16px; font-size: 0.85rem;" onclick="openAuthModal('login')">Entrar</button>
+          <button class="btn-push btn-push-orange" style="padding: 8px 16px; font-size: 0.85rem;" onclick="openAuthModal('register')">Cadastrar</button>
+        </div>
+
+        <div id="nav-logged-in-actions" class="nav-actions hidden">
+          <span id="nav-user-badge" style="font-weight: 700; color: var(--blue-brand); font-size: 0.9rem;"></span>
+          <button class="btn-push btn-push-dark" style="padding: 8px 14px; font-size: 0.8rem; color: var(--red-alert); border-color: var(--red-alert);" onclick="handleLogout()">
+            <i class="fa-solid fa-right-from-bracket"></i> Sair
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section id="screen-landing">
+    <div class="hero-section">
+      <div class="hero-content">
+        <h1>Aprenda de forma rápida no <span>Aprendizado express.</span></h1>
+        <p>Acesse exercícios práticos, acumule pontos de experiência e alcance o topo no patamar de Imperador!</p>
+        
+        <div class="hero-cta-buttons">
+          <button class="btn-push btn-push-green" style="font-size: 1.1rem; padding: 18px 36px;" onclick="requireAuth('screen-subjects')">
+            🚀 COMEÇAR A APRENDER
+          </button>
+        </div>
+      </div>
+
+      <div class="hero-illustration">
+        <div class="game-card-preview">
+          <div class="logo-icon-box" style="width: 80px; height: 80px; margin: 0 auto 16px;">
+            <div class="custom-badge-icon">
+              <span class="crown-bg" style="font-size: 2.6rem; top: 2px;">👑</span>
+              <span class="rose-fg" style="font-size: 2.2rem; bottom: 2px;">🌹</span>
+            </div>
+          </div>
+          <h2>Aprendizado express</h2>
+          <p style="color: var(--text-muted); margin: 12px 0 24px;">Faça login para desbloquear o sistema de ensino completo!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-subjects" class="hidden">
+    <div class="app-layout">
+      
+      <main class="subjects-grid-main">
+        <h2 style="font-size: 2rem; margin-bottom: 10px;">Matérias Escolares</h2>
+        <p style="color: var(--text-muted); margin-bottom: 30px;">Escolha uma disciplina para realizar as atividades e evoluir sua classificação.</p>
+
+        <div class="subjects-list">
+          <div class="subject-card" onclick="openSubjectModal('Matemática')">
+            <div class="subject-icon" style="background: rgba(34, 197, 94, 0.15); color: var(--green-lime);">
+              <i class="fa-solid fa-calculator"></i>
+            </div>
+            <div class="subject-info">
+              <h3>Matemática</h3>
+              <p>Equações e Porcentagem (+500 XP cada)</p>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="color: var(--text-muted);"></i>
+          </div>
+
+          <div class="subject-card" onclick="openSubjectModal('Português')">
+            <div class="subject-icon" style="background: rgba(139, 92, 246, 0.15); color: var(--purple-electric);">
+              <i class="fa-solid fa-spell-check"></i>
+            </div>
+            <div class="subject-info">
+              <h3>Português</h3>
+              <p>Gramática e Ortografia (+500 XP cada)</p>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="color: var(--text-muted);"></i>
+          </div>
+
+          <div class="subject-card" onclick="openSubjectModal('Inglês')">
+            <div class="subject-icon" style="background: rgba(250, 204, 21, 0.15); color: var(--yellow-gold);">
+              <i class="fa-solid fa-language"></i>
+            </div>
+            <div class="subject-info">
+              <h3>Inglês</h3>
+              <p>Vocabulário e Verb to Be (+500 XP cada)</p>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="color: var(--text-muted);"></i>
+          </div>
+        </div>
+      </main>
+
+      <aside class="dashboard-sidebar">
+        <div class="ui-card">
+          <h3 id="dash-username" style="font-size: 1.3rem; margin-bottom: 4px;">Aluno</h3>
+          <p id="dash-room" style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;">Turma Geral</p>
+          
+          <div style="margin-bottom: 16px;">
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px;">Classificação Atual:</p>
+            <div id="dash-rank-badge" class="rank-badge rank-novato">Novato</div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-box">
+              <i class="fa-solid fa-star" style="color: var(--yellow-gold);"></i>
+              <div>
+                <strong id="dash-xp">0 XP</strong>
+                <p style="font-size: 0.75rem; color: var(--text-muted);">Pontuação</p>
+              </div>
+            </div>
+            <div class="stat-box">
+              <i class="fa-solid fa-fire" style="color: var(--orange-brand);"></i>
+              <div>
+                <strong id="dash-streak">1 Dia</strong>
+                <p style="font-size: 0.75rem; color: var(--text-muted);">Sequência</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </section>
+
+  <section id="screen-ranking" class="hidden">
+    <div class="ranking-container">
+      <h2 style="font-size: 2.2rem; margin-bottom: 6px;">🏆 Classificação dos Jogadores</h2>
+      <p style="color: var(--text-muted);">Aumente seus pontos para subir de patamar!</p>
+
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; margin-bottom: 24px;">
+        <span class="rank-badge rank-novato">0-1000: Novato</span>
+        <span class="rank-badge rank-jogador">1000-2000: Jogador</span>
+        <span class="rank-badge rank-selecao">2000-4000: Seleção</span>
+        <span class="rank-badge rank-newgen">4000-8000: New Gen</span>
+        <span class="rank-badge rank-imperador">8000+: Imperador</span>
+      </div>
+
+      <div class="ranking-list" id="ranking-list-container"></div>
+    </div>
+  </section>
+
+  <section id="screen-community" class="hidden">
+    <div class="community-wrapper">
+      <div class="community-container">
+        <div class="chat-sidebar">
+          <div style="padding:16px; font-weight:800; border-bottom:2px solid var(--border-color); font-size:1rem;">Comunidade</div>
+          <div style="padding:12px 16px 6px; font-weight:700; color:var(--text-muted); font-size:0.75rem; text-transform:uppercase;">Canais de Discussão</div>
+          
+          <div class="chat-channel-btn active" onclick="switchChannel('geral', this)">
+            <span>💬</span> Chat Geral
+          </div>
+          <div class="chat-channel-btn" onclick="switchChannel('professores', this)">
+            <span>👨‍🏫</span> Professores & Alunos
+          </div>
+          <div class="chat-channel-btn" onclick="switchChannel('duvidas', this)">
+            <span>🙋‍♂️</span> Dúvidas entre Alunos
+          </div>
+        </div>
+
+        <div class="chat-main">
+          <div style="padding:16px; border-bottom:2px solid var(--border-color); font-weight:700; display:flex; align-items:center; gap:8px;" id="current-channel-title">
+            <span>💬</span> Chat Geral
+          </div>
+          <div class="messages-container" id="messages-container"></div>
+          <form class="chat-input-area" onsubmit="sendMessage(event)">
+            <input type="text" id="message-input" placeholder="Digite sua mensagem no canal..." required>
+            <button type="submit" class="btn-push btn-push-orange" style="padding: 12px 20px;">Enviar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="modal-overlay hidden" id="modal-auth">
+    <div class="auth-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div class="logo-group">
+          <div class="logo-icon-box" style="width: 38px; height: 38px;">
+            <div class="custom-badge-icon">
+              <span class="crown-bg" style="font-size: 1.1rem; top: 1px;">👑</span>
+              <span class="rose-fg" style="font-size: 1rem; bottom: 1px;">🌹</span>
+            </div>
+          </div>
+          <div class="logo-text" style="font-size:1.2rem;">Aprendizado <span>express</span></div>
+        </div>
+        <button class="btn-push btn-push-dark" style="padding: 4px 10px;" onclick="closeModal('modal-auth')">✕</button>
+      </div>
+
+      <form id="login-form" onsubmit="handleLogin(event)">
+        <h3 style="margin-bottom: 16px;">Entrar na Conta</h3>
+        <div class="form-group">
+          <label>E-mail</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" id="login-email" placeholder="seu@email.com" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Senha</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="login-password" placeholder="••••••••" required>
+          </div>
+        </div>
+        <button type="submit" class="btn-push btn-push-green" style="width: 100%;">Acessar Conta</button>
+      </form>
+
+      <form id="register-form" class="hidden" onsubmit="handleRegister(event)">
+        <h3 style="margin-bottom: 16px;">Criar Conta</h3>
+        <div class="form-group">
+          <label>Nome Completo</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" id="reg-name" placeholder="Ex: Lucas Silva" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>E-mail</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" id="reg-email" placeholder="seu@email.com" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Senha</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="reg-password" placeholder="••••••••" required>
+          </div>
+        </div>
+        <button type="submit" class="btn-push btn-push-orange" style="width: 100%;">Finalizar Cadastro</button>
+      </form>
+
+      <div class="credentials-box">
+        <strong>🔑 Contas para Teste Rápido:</strong><br>
+        1. <code>weverso@admin.com</code> | Senha: <code>123</code> (9000 XP)<br>
+        2. <code>carlos@admin.com</code> | Senha: <code>123</code> (4500 XP)<br>
+        3. <code>gabriel@admin.com</code> | Senha: <code>123</code> (2500 XP)
+      </div>
+
+      <div class="auth-toggle">
+        <span id="toggle-text">Não tem uma conta?</span>
+        <a id="toggle-btn" onclick="toggleAuthMode()">Cadastre-se</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay hidden" id="modal-subject">
+    <div class="modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 id="modal-subject-title">Atividades</h3>
+        <button class="btn-push btn-push-dark" style="padding: 6px 12px;" onclick="closeModal('modal-subject')">✕</button>
+      </div>
+      <div id="tasks-container"></div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script>
+    const defaultAccounts = [
+      { name: "Weversotestadmin1", email: "weverso@admin.com", password: "123", xp: 9000 },
+      { name: "Carlostestadmin2", email: "carlos@admin.com", password: "123", xp: 4500 },
+      { name: "Gabrieltestadmin3", email: "gabriel@admin.com", password: "123", xp: 2500 }
+    ];
+
+    defaultAccounts.forEach(acc => {
+      if (!localStorage.getItem('user_' + acc.email)) {
+        localStorage.setItem('user_' + acc.email, JSON.stringify(acc));
+        localStorage.setItem('progress_' + acc.email, JSON.stringify({ xp: acc.xp, streak: 5, completedTasks: [] }));
+      }
+    });
+
+    let currentUser = JSON.parse(localStorage.getItem('session_user')) || null;
+    let userProgress = { xp: 0, streak: 1, completedTasks: [] };
+    let activeChannel = 'geral';
+
+    const subjectActivities = {
+      "Matemática": [
+        { id: "m1", title: "Equação de 1º Grau", question: "Qual o valor de x na equação: 2x + 4 = 10?", options: ["x = 2", "x = 3", "x = 5"], correct: 1 },
+        { id: "m2", title: "Porcentagem", question: "Quanto é 20% de R$ 150,00?", options: ["R$ 20,00", "R$ 30,00", "R$ 40,00"], correct: 1 }
+      ],
+      "Português": [
+        { id: "p1", title: "Ortografia", question: "Qual a forma correta?", options: ["A gente vai", "Agente vai", "A gente vamos"], correct: 0 }
+      ],
+      "Inglês": [
+        { id: "i1", title: "Verb To Be", question: "Complete: 'They ___ my friends.'", options: ["is", "are", "am"], correct: 1 }
+      ]
+    };
+
+    let channelMessages = JSON.parse(localStorage.getItem('chat_channels_messages')) || {
+      geral: [
+        { sender: "Prof. Roberto", text: "Bem-vindos à comunidade de estudos do Aprendizado express!" }
+      ],
+      professores: [
+        { sender: "Prof. Roberto", text: "Olá alunos! Podem enviar suas dúvidas sobre trabalhos ou provas aqui." }
+      ],
+      duvidas: [
+        { sender: "Gabriel", text: "Alguém conseguiu resolver a questão de porcentagem?" }
+      ]
+    };
+
+    window.onload = function() {
+      loadUserData();
+      updateUserSessionUI();
+      updateDashboard();
+    };
+
+    function requireAuth(screenId, navElement) {
+      if (!currentUser) {
+        showToast("⚠️ Acesso bloqueado! Faça cadastro ou entre para navegar no site.");
+        openAuthModal('login');
+      } else {
+        showScreen(screenId, navElement);
+      }
+    }
+
+    function showScreen(screenId, navElement) {
+      document.querySelectorAll('section').forEach(sec => sec.classList.add('hidden'));
+      const target = document.getElementById(screenId);
+      if (target) target.classList.remove('hidden');
+
+      if (navElement) {
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        navElement.classList.add('active');
+      }
+
+      if (screenId === 'screen-ranking') renderRanking();
+      if (screenId === 'screen-community') renderMessages();
+    }
+
+    function getRank(xp) {
+      if (xp >= 8000) return { title: "Imperador", class: "rank-imperador" };
+      if (xp >= 4000) return { title: "New Gen", class: "rank-newgen" };
+      if (xp >= 2000) return { title: "Seleção", class: "rank-selecao" };
+      if (xp >= 1000) return { title: "Jogador", class: "rank-jogador" };
+      return { title: "Novato", class: "rank-novato" };
+    }
+
+    function loadUserData() {
+      if (currentUser && currentUser.email) {
+        const saved = localStorage.getItem('progress_' + currentUser.email);
+        if (saved) userProgress = JSON.parse(saved);
+      }
+    }
+
+    function saveUserData() {
+      if (currentUser && currentUser.email) {
+        localStorage.setItem('progress_' + currentUser.email, JSON.stringify(userProgress));
+      }
+    }
+
+    function openAuthModal(mode) {
+      document.getElementById('login-form').classList.toggle('hidden', mode !== 'login');
+      document.getElementById('register-form').classList.toggle('hidden', mode === 'login');
+      document.getElementById('modal-auth').classList.remove('hidden');
+    }
+
+    function toggleAuthMode() {
+      const isLogin = document.getElementById('login-form').classList.contains('hidden');
+      openAuthModal(isLogin ? 'login' : 'register');
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim().toLowerCase();
+      const password = document.getElementById('login-password').value;
+
+      const stored = localStorage.getItem('user_' + email);
+      if (!stored) return showToast("❌ Usuário não encontrado!");
+
+      const user = JSON.parse(stored);
+      if (user.password !== password) return showToast("❌ Senha incorreta!");
+
+      currentUser = user;
+      localStorage.setItem('session_user', JSON.stringify(user));
+      loadUserData();
+      closeModal('modal-auth');
+      updateUserSessionUI();
+      updateDashboard();
+      showToast(`Bem-vindo, ${user.name}!`);
+      showScreen('screen-subjects');
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+      const name = document.getElementById('reg-name').value.trim();
+      const email = document.getElementById('reg-email').value.trim().toLowerCase();
+      const password = document.getElementById('reg-password').value;
+
+      if (localStorage.getItem('user_' + email)) return showToast("❌ Email já cadastrado!");
+
+      const newUser = { name, email, password, room: "Turma Geral" };
+      localStorage.setItem('user_' + email, JSON.stringify(newUser));
+      localStorage.setItem('progress_' + email, JSON.stringify({ xp: 0, streak: 1, completedTasks: [] }));
+
+      currentUser = newUser;
+      localStorage.setItem('session_user', JSON.stringify(newUser));
+      loadUserData();
+      closeModal('modal-auth');
+      updateUserSessionUI();
+      updateDashboard();
+      showToast("Cadastro realizado com sucesso!");
+      showScreen('screen-subjects');
+    }
+
+    function handleLogout() {
+      saveUserData();
+      currentUser = null;
+      localStorage.removeItem('session_user');
+      updateUserSessionUI();
+      showToast("Você saiu da conta.");
+      showScreen('screen-landing');
+    }
+
+    function updateUserSessionUI() {
+      const loggedOutBox = document.getElementById('nav-logged-out-actions');
+      const loggedInBox = document.getElementById('nav-logged-in-actions');
+
+      if (currentUser) {
+        loggedOutBox.classList.add('hidden');
+        loggedInBox.classList.remove('hidden');
+        document.getElementById('nav-user-badge').innerText = `👤 ${currentUser.name}`;
+        document.getElementById('dash-username').innerText = currentUser.name;
+      } else {
+        loggedOutBox.classList.remove('hidden');
+        loggedInBox.classList.add('hidden');
+        document.getElementById('dash-username').innerText = "Visitante";
+      }
+    }
+
+    function updateDashboard() {
+      const xp = userProgress.xp || 0;
+      const rank = getRank(xp);
+
+      document.getElementById('dash-xp').innerText = `${xp} XP`;
+      document.getElementById('dash-streak').innerText = `${userProgress.streak || 1} Dia`;
+
+      const badge = document.getElementById('dash-rank-badge');
+      badge.innerText = rank.title;
+      badge.className = `rank-badge ${rank.class}`;
+    }
+
+    function openSubjectModal(subject) {
+      if (!currentUser) return requireAuth('screen-subjects');
+      document.getElementById('modal-subject-title').innerText = subject;
+      const container = document.getElementById('tasks-container');
+      container.innerHTML = '';
+
+      subjectActivities[subject].forEach(task => {
+        const isDone = userProgress.completedTasks.includes(task.id);
+        const card = document.createElement('div');
+        card.className = 'task-card';
+        card.innerHTML = `
+          <div class="task-title">${task.title} ${isDone ? '✔️' : ''}</div>
+          <div class="task-question">${task.question}</div>
+          <div class="options-group">
+            ${task.options.map((opt, idx) => `
+              <button class="option-btn" ${isDone ? 'disabled' : ''} onclick="checkAnswer('${task.id}', ${idx}, ${task.correct})">${opt}</button>
+            `).join('')}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+      document.getElementById('modal-subject').classList.remove('hidden');
+    }
+
+    function checkAnswer(taskId, selected, correct) {
+      if (selected === correct) {
+        if (!userProgress.completedTasks.includes(taskId)) {
+          userProgress.completedTasks.push(taskId);
+          userProgress.xp += 500;
+          saveUserData();
+          updateDashboard();
+          showToast("🎉 Resposta Correta! +500 XP!");
+        }
+      } else {
+        showToast("❌ Resposta Incorreta! Tente novamente.");
+      }
+    }
+
+    function renderRanking() {
+      const container = document.getElementById('ranking-list-container');
+      container.innerHTML = '';
+
+      let users = [
+        { name: "Weversotestadmin1", xp: 9000 },
+        { name: "Carlostestadmin2", xp: 4500 },
+        { name: "Gabrieltestadmin3", xp: 2500 }
+      ];
+
+      if (currentUser) {
+        users = users.filter(u => u.name !== currentUser.name);
+        users.push({ name: currentUser.name + " (Você)", xp: userProgress.xp, isUser: true });
+      }
+
+      users.sort((a,b) => b.xp - a.xp).forEach((u, i) => {
+        const rank = getRank(u.xp);
+        container.innerHTML += `
+          <div class="ranking-card ${u.isUser ? 'current-user' : ''}">
+            <div class="ranking-user-info">
+              <strong style="width:30px; font-size:1.2rem;">#${i+1}</strong>
+              <div>
+                <strong>${u.name}</strong><br>
+                <span class="rank-badge ${rank.class}" style="margin-top:4px;">${rank.title}</span>
+              </div>
+            </div>
+            <strong style="color:var(--yellow-gold); font-size:1.1rem;">${u.xp} XP</strong>
+          </div>
+        `;
+      });
+    }
+
+    /* FUNÇÕES DA COMUNIDADE & CHAT */
+    function switchChannel(channelKey, element) {
+      activeChannel = channelKey;
+      document.querySelectorAll('.chat-channel-btn').forEach(btn => btn.classList.remove('active'));
+      element.classList.add('active');
+
+      const titles = {
+        geral: '💬 Chat Geral',
+        professores: '👨‍🏫 Professores & Alunos',
+        duvidas: '🙋‍♂️ Dúvidas entre Alunos'
+      };
+      document.getElementById('current-channel-title').innerHTML = titles[channelKey];
+      renderMessages();
+    }
+
+    function sendMessage(e) {
+      e.preventDefault();
+      if (!currentUser) return requireAuth('screen-community');
+      const input = document.getElementById('message-input');
+      
+      if (!channelMessages[activeChannel]) {
+        channelMessages[activeChannel] = [];
+      }
+
+      channelMessages[activeChannel].push({ sender: currentUser.name, text: input.value });
+      localStorage.setItem('chat_channels_messages', JSON.stringify(channelMessages));
+      input.value = '';
+      renderMessages();
+    }
+
+    function renderMessages() {
+      const container = document.getElementById('messages-container');
+      const messages = channelMessages[activeChannel] || [];
+      
+      container.innerHTML = messages.map(m => `
+        <div class="message-card ${currentUser && m.sender === currentUser.name ? 'my-message' : ''}">
+          <strong style="font-size:0.75rem; color:var(--orange-brand);">${m.sender}</strong>
+          <div>${m.text}</div>
+        </div>
+      `).join('');
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+    function showToast(msg) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerText = msg;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+  </script>
+</body>
+</html>
