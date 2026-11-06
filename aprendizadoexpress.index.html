@@ -253,13 +253,79 @@
     .rank-newgen { background: rgba(139, 92, 246, 0.2); color: var(--purple-electric); border: 1px solid var(--purple-electric); }
     .rank-imperador { background: rgba(250, 204, 21, 0.2); color: var(--yellow-gold); border: 1px solid var(--yellow-gold); }
 
-    /* QUIZ & ATIVIDADES */
+    /* QUIZ & ATIVIDADES TRADICIONAIS */
     .task-card { background: var(--bg-midnight); border: 2px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; margin-bottom: 20px; }
     .task-title { font-size: 1.1rem; font-weight: 700; color: var(--green-lime); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
     .task-question { font-size: 1rem; margin-bottom: 14px; }
     .options-group { display: flex; flex-direction: column; gap: 10px; }
     .option-btn { background: var(--bg-slate); border: 2px solid var(--border-color); color: var(--text-white); padding: 12px 16px; border-radius: var(--radius-md); text-align: left; font-weight: 600; cursor: pointer; transition: all 0.2s; }
     .option-btn:hover:not(:disabled) { border-color: var(--purple-electric); background: var(--bg-card-hover); }
+
+    /* MINIGAME DE MATEMÁTICA ESTILO UNDERTALE */
+    .game-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      font-family: 'Courier New', Courier, monospace;
+    }
+    canvas#gameCanvas {
+      background-color: #000;
+      border: 4px solid #fff;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      max-width: 100%;
+    }
+    .quiz-panel-game {
+      width: 100%;
+      max-width: 550px;
+      background-color: #000;
+      border: 4px solid #fff;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .game-question-box {
+      font-size: 16px;
+      color: #fff;
+      text-align: center;
+      min-height: 40px;
+      font-weight: bold;
+    }
+    .game-options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .game-opt-btn {
+      background-color: #000;
+      color: #fff;
+      border: 2px solid #fff;
+      padding: 10px;
+      font-size: 14px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-weight: bold;
+      text-align: center;
+    }
+    .game-opt-btn:hover {
+      background-color: #fff;
+      color: #000;
+    }
+
+    /* AVISO DE REPETIÇÃO DE TAREFA */
+    .task-notice-warning {
+      margin-top: 15px;
+      padding: 10px 14px;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px dashed var(--red-alert);
+      border-radius: var(--radius-md);
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      text-align: center;
+    }
 
     /* RANKING & COMUNIDADE */
     .ranking-container { max-width: 800px; margin: 40px auto; padding: 0 24px; width: 100%; }
@@ -389,11 +455,11 @@
         <div class="subjects-list">
           <div class="subject-card" onclick="openSubjectModal('Matemática')">
             <div class="subject-icon" style="background: rgba(34, 197, 94, 0.15); color: var(--green-lime);">
-              <i class="fa-solid fa-calculator"></i>
+              <i class="fa-solid fa-gamepad"></i>
             </div>
             <div class="subject-info">
-              <h3>Matemática</h3>
-              <p>Equações e Porcentagem (+500 XP cada)</p>
+              <h3>Matemática (Minigame 2D)</h3>
+              <p id="math-card-desc">Batalha contra o Zumbi estilo Undertale (+500 XP)</p>
             </div>
             <i class="fa-solid fa-chevron-right" style="color: var(--text-muted);"></i>
           </div>
@@ -503,6 +569,7 @@
     </div>
   </section>
 
+  <!-- MODAL DE AUTENTICAÇÃO -->
   <div class="modal-overlay hidden" id="modal-auth">
     <div class="auth-card">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -577,6 +644,7 @@
     </div>
   </div>
 
+  <!-- MODAL DE ATIVIDADES E MINIGAME -->
   <div class="modal-overlay hidden" id="modal-subject">
     <div class="modal-card">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -584,6 +652,11 @@
         <button class="btn-push btn-push-dark" style="padding: 6px 12px;" onclick="closeModal('modal-subject')">✕</button>
       </div>
       <div id="tasks-container"></div>
+      
+      <!-- AVISO OBRIGATÓRIO DE REPETIÇÃO DE TAREFAS -->
+      <div class="task-notice-warning">
+        ⚠️ <strong>Aviso:</strong> Caso você repita essa tarefa, os pontos (XP) não serão válidos.
+      </div>
     </div>
   </div>
 
@@ -607,11 +680,21 @@
     let userProgress = { xp: 0, streak: 1, completedTasks: [] };
     let activeChannel = 'geral';
 
+    // DADOS DO MINIGAME DE MATEMÁTICA
+    const mathQuestions = [
+      { question: "Quanto é 7 x 8?", options: ["54", "56", "64", "49"], answer: 1 },
+      { question: "Qual é a raiz quadrada de 81?", options: ["7", "8", "9", "10"], answer: 2 },
+      { question: "Se 2x + 4 = 12, qual o valor de x?", options: ["3", "4", "5", "6"], answer: 1 },
+      { question: "Quanto é 15% de 200?", options: ["20", "25", "30", "35"], answer: 2 }
+    ];
+
+    let currentMathQuestionIndex = 0;
+    let mathCorrectCount = 0;
+    let mathWrongCount = 0;
+    let canvas, ctx;
+    let zombie, playerBox, player;
+
     const subjectActivities = {
-      "Matemática": [
-        { id: "m1", title: "Equação de 1º Grau", question: "Qual o valor de x na equação: 2x + 4 = 10?", options: ["x = 2", "x = 3", "x = 5"], correct: 1 },
-        { id: "m2", title: "Porcentagem", question: "Quanto é 20% de R$ 150,00?", options: ["R$ 20,00", "R$ 30,00", "R$ 40,00"], correct: 1 }
-      ],
       "Português": [
         { id: "p1", title: "Ortografia", question: "Qual a forma correta?", options: ["A gente vai", "Agente vai", "A gente vamos"], correct: 0 }
       ],
@@ -771,44 +854,247 @@
       const badge = document.getElementById('dash-rank-badge');
       badge.innerText = rank.title;
       badge.className = `rank-badge ${rank.class}`;
+
+      // Atualiza descrição do card de matemática se for cópia (treino)
+      const mathDesc = document.getElementById('math-card-desc');
+      if (mathDesc) {
+        if (userProgress.completedTasks.includes("math_game_clear")) {
+          mathDesc.innerText = "Cópia / Modo Treino (Sem XP)";
+        } else {
+          mathDesc.innerText = "Batalha contra o Zumbi estilo Undertale (+500 XP)";
+        }
+      }
     }
 
+    // ABRIR E RENDERIZAR MODAL DE MATÉRIAS OU MINIGAME
     function openSubjectModal(subject) {
       if (!currentUser) return requireAuth('screen-subjects');
       document.getElementById('modal-subject-title').innerText = subject;
       const container = document.getElementById('tasks-container');
       container.innerHTML = '';
 
-      subjectActivities[subject].forEach(task => {
-        const isDone = userProgress.completedTasks.includes(task.id);
-        const card = document.createElement('div');
-        card.className = 'task-card';
-        card.innerHTML = `
-          <div class="task-title">${task.title} ${isDone ? '✔️' : ''}</div>
-          <div class="task-question">${task.question}</div>
-          <div class="options-group">
-            ${task.options.map((opt, idx) => `
-              <button class="option-btn" ${isDone ? 'disabled' : ''} onclick="checkAnswer('${task.id}', ${idx}, ${task.correct})">${opt}</button>
-            `).join('')}
+      if (subject === 'Matemática') {
+        const isRepeated = userProgress.completedTasks.includes("math_game_clear");
+        container.innerHTML = `
+          ${isRepeated ? '<div style="color: var(--yellow-gold); font-size: 0.85rem; text-align: center; margin-bottom: 8px;">🔄 Modo Treino (Cópia da Tarefa — Não concede XP)</div>' : ''}
+          <div class="game-wrapper">
+            <canvas id="gameCanvas" width="550" height="350"></canvas>
+            <div class="quiz-panel-game">
+              <div id="game-question-text" class="game-question-box">Carregando batalha...</div>
+              <div id="game-options-container" class="game-options-grid"></div>
+            </div>
           </div>
         `;
-        container.appendChild(card);
+        document.getElementById('modal-subject').classList.remove('hidden');
+        initMathGame();
+      } else {
+        // ATIVIDADES TRADICIONAIS PARA OUTRAS MATÉRIAS
+        subjectActivities[subject].forEach(task => {
+          const isDone = userProgress.completedTasks.includes(task.id);
+          const card = document.createElement('div');
+          card.className = 'task-card';
+          card.innerHTML = `
+            <div class="task-title">${task.title} ${isDone ? '✔️ (Cópia de Treino)' : ''}</div>
+            <div class="task-question">${task.question}</div>
+            <div class="options-group">
+              ${task.options.map((opt, idx) => `
+                <button class="option-btn" ${isDone ? 'disabled' : ''} onclick="checkAnswer('${task.id}', ${idx}, ${task.correct})">${opt}</button>
+              `).join('')}
+            </div>
+          `;
+          container.appendChild(card);
+        });
+        document.getElementById('modal-subject').classList.remove('hidden');
+      }
+    }
+
+    // --- LÓGICA DO MINIGAME 2D (UNDERTALE STYLE) ---
+    function initMathGame() {
+      canvas = document.getElementById('gameCanvas');
+      ctx = canvas.getContext('2d');
+
+      currentMathQuestionIndex = 0;
+      mathCorrectCount = 0;
+      mathWrongCount = 0;
+
+      zombie = { x: canvas.width / 2, y: 60, maxHp: 100, hp: 100, color: '#4CAF50' };
+      playerBox = { x: canvas.width / 2 - 50, y: 150, width: 100, height: 100 };
+      player = { x: canvas.width / 2, y: 200, size: 14, maxHp: 100, hp: 100, color: '#00FF66' };
+
+      drawGame();
+      loadMathQuestion();
+    }
+
+    function drawGame() {
+      if (!ctx) return;
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Zumbi (Oponente Superior)
+      ctx.save();
+      ctx.translate(zombie.x, zombie.y);
+      ctx.fillStyle = zombie.color;
+      ctx.fillRect(-18, -20, 36, 44); 
+      ctx.fillStyle = '#FF0000';
+      ctx.fillRect(-10, -12, 6, 6);
+      ctx.fillRect(4, -12, 6, 6);
+      ctx.fillStyle = '#388E3C';
+      ctx.fillRect(-26, 0, 8, 6);
+      ctx.fillRect(18, 0, 8, 6);
+      ctx.restore();
+
+      // Limite do Player (Caixa Central)
+      ctx.strokeStyle = '#FFFFFF';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(playerBox.x, playerBox.y, playerBox.width, playerBox.height);
+
+      // Player Triângulo (Centro da Caixa)
+      ctx.save();
+      ctx.fillStyle = player.color;
+      ctx.beginPath();
+      ctx.moveTo(player.x, player.y - player.size);
+      ctx.lineTo(player.x - player.size, player.y + player.size);
+      ctx.lineTo(player.x + player.size, player.y + player.size);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+
+      // HUD de HP
+      ctx.font = '12px "Courier New", monospace';
+      ctx.fillStyle = '#FFF';
+      ctx.fillText(`ZUMBI HP: ${zombie.hp}/${zombie.maxHp}`, 20, 25);
+      ctx.fillStyle = '#FF0000';
+      ctx.fillRect(20, 30, 100, 8);
+      ctx.fillStyle = '#00FF00';
+      ctx.fillRect(20, 30, (zombie.hp / zombie.maxHp) * 100, 8);
+
+      ctx.fillStyle = '#FFF';
+      ctx.fillText(`PLAYER HP: ${player.hp}/${player.maxHp}`, 20, 315);
+      ctx.fillStyle = '#FF0000';
+      ctx.fillRect(20, 320, 100, 8);
+      ctx.fillStyle = '#FFFF00';
+      ctx.fillRect(20, 320, (player.hp / player.maxHp) * 100, 8);
+    }
+
+    function loadMathQuestion() {
+      // TAREFA CONCLUÍDA (CHEGOU AO FIM)
+      if (currentMathQuestionIndex >= mathQuestions.length || player.hp <= 0) {
+        finishMathGame();
+        return;
+      }
+
+      const q = mathQuestions[currentMathQuestionIndex];
+      document.getElementById('game-question-text').innerText = q.question;
+
+      const optsGrid = document.getElementById('game-options-container');
+      optsGrid.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'game-opt-btn';
+        btn.innerText = opt; // Apenas a alternativa
+        btn.onclick = () => handleGameAnswer(idx);
+        optsGrid.appendChild(btn);
       });
-      document.getElementById('modal-subject').classList.remove('hidden');
+    }
+
+    function handleGameAnswer(selectedIdx) {
+      const q = mathQuestions[currentMathQuestionIndex];
+
+      if (selectedIdx === q.answer) {
+        mathCorrectCount++;
+        zombie.hp = Math.max(0, zombie.hp - 25);
+        triggerEffect('hit-zombie');
+      } else {
+        mathWrongCount++;
+        player.hp = Math.max(0, player.hp - 25);
+        triggerEffect('hit-player');
+      }
+
+      drawGame();
+
+      currentMathQuestionIndex++;
+      setTimeout(loadMathQuestion, 400);
+    }
+
+    function finishMathGame() {
+      const optsGrid = document.getElementById('game-options-container');
+      optsGrid.innerHTML = "";
+
+      const isFirstAttempt = !userProgress.completedTasks.includes("math_game_clear");
+      let earnedXP = 0;
+
+      if (isFirstAttempt) {
+        // CÁLCULO DE XP PROPORCIONAL
+        if (mathCorrectCount === 4) earnedXP = 500;
+        else if (mathCorrectCount === 3) earnedXP = 375;
+        else if (mathCorrectCount === 2) earnedXP = 250;
+        else if (mathCorrectCount === 1) earnedXP = 125;
+        else earnedXP = 0;
+
+        // MARCA TAREFA ORIGINAL COMO FEITA
+        userProgress.completedTasks.push("math_game_clear");
+        userProgress.xp += earnedXP;
+        saveUserData();
+        updateDashboard();
+      }
+
+      // EXIBE RESUMO FINAL COM ACERTOS E ERROS
+      let summaryText = `FIM DA TAREFA!\n\n✅ Acertos: ${mathCorrectCount} | ❌ Erros: ${mathWrongCount}\n\n`;
+      
+      if (isFirstAttempt) {
+        if (earnedXP > 0) {
+          summaryText += `🎉 Você ganhou +${earnedXP} XP!`;
+        } else {
+          summaryText += `💀 Você errou tudo e não ganhou XP!`;
+        }
+      } else {
+        summaryText += `🔄 Tarefa Cópia (Modo Treino): 0 XP ganhos.`;
+      }
+
+      document.getElementById('game-question-text').innerText = summaryText;
+
+      // Botão para Tentar Novamente (Rodar a Cópia da Tarefa)
+      const restartBtn = document.createElement('button');
+      restartBtn.className = 'game-opt-btn';
+      restartBtn.style.gridColumn = "span 2";
+      restartBtn.innerText = "🔄 Tentar Novamente (Modo Treino)";
+      restartBtn.onclick = () => initMathGame();
+      optsGrid.appendChild(restartBtn);
+    }
+
+    function triggerEffect(type) {
+      if (type === 'hit-zombie') {
+        zombie.color = '#FFFFFF';
+        setTimeout(() => { zombie.color = '#4CAF50'; drawGame(); }, 150);
+      } else {
+        player.color = '#FF0000';
+        setTimeout(() => { player.color = '#00FF66'; drawGame(); }, 150);
+      }
     }
 
     function checkAnswer(taskId, selected, correct) {
+      const isFirstAttempt = !userProgress.completedTasks.includes(taskId);
+
       if (selected === correct) {
-        if (!userProgress.completedTasks.includes(taskId)) {
+        if (isFirstAttempt) {
           userProgress.completedTasks.push(taskId);
           userProgress.xp += 500;
           saveUserData();
           updateDashboard();
           showToast("🎉 Resposta Correta! +500 XP!");
+        } else {
+          showToast("✔️ Resposta Correta! (Modo Treino - Sem XP)");
         }
       } else {
-        showToast("❌ Resposta Incorreta! Tente novamente.");
+        if (isFirstAttempt) {
+          userProgress.completedTasks.push(taskId); // Marca como feita para virar cópia
+          saveUserData();
+          updateDashboard();
+        }
+        showToast("❌ Resposta Incorreta! A tarefa virou uma cópia de treino.");
       }
+      openSubjectModal(document.getElementById('modal-subject-title').innerText);
     }
 
     function renderRanking() {
@@ -843,7 +1129,6 @@
       });
     }
 
-    /* FUNÇÕES DA COMUNIDADE & CHAT */
     function switchChannel(channelKey, element) {
       activeChannel = channelKey;
       document.querySelectorAll('.chat-channel-btn').forEach(btn => btn.classList.remove('active'));
