@@ -7,7 +7,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
@@ -30,6 +30,7 @@
       --text-muted: #CBD5E1;
 
       --font-main: 'Plus Jakarta Sans', sans-serif;
+      --font-pixel: 'Press Start 2P', monospace;
       --radius-lg: 24px;
       --radius-md: 16px;
       --radius-pill: 999px;
@@ -288,74 +289,72 @@
     }
     .rank-card-animated { animation: rankSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
 
-    /* ATIVIDADES & GAME TOP-DOWN LINEAR */
-    .task-card { background: var(--bg-midnight); border: 2px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; margin-bottom: 20px; }
-    .task-title { font-size: 1.1rem; font-weight: 700; color: var(--green-lime); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
-    .task-question { font-size: 1.0rem; margin-bottom: 14px; }
-    .options-group { display: flex; flex-direction: column; gap: 10px; }
-    .option-btn { background: var(--bg-slate); border: 2px solid var(--border-color); color: var(--text-white); padding: 12px 16px; border-radius: var(--radius-md); text-align: left; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-    .option-btn:hover:not(:disabled) { border-color: var(--purple-electric); background: var(--bg-card-hover); }
-
-    .game-wrapper {
+    /* ESTILOS PARA MINI-GAME RETRO DE PÊNALTIS */
+    .penalty-game-wrapper {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12px;
-      font-family: 'Courier New', Courier, monospace;
-    }
-    .canvas-container-outer {
-      position: relative;
-      overflow: hidden;
-      border: 4px solid #38BDF8;
-      border-radius: 6px;
+      gap: 14px;
       background: #000;
-    }
-    canvas#gameCanvasTopDown {
-      background-color: #0F172A;
-      display: block;
+      padding: 16px;
+      border: 4px solid var(--border-color);
+      border-radius: var(--radius-md);
+      font-family: var(--font-pixel);
     }
 
-    .quiz-panel-game {
+    .penalty-question-board {
+      background: #1E293B;
+      border: 2px solid var(--blue-brand);
+      padding: 12px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--yellow-gold);
       width: 100%;
       max-width: 580px;
-      background-color: #000;
-      border: 4px solid #38BDF8;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+      line-height: 1.4;
+      text-transform: uppercase;
     }
 
-    .game-question-box {
-      font-size: 15px;
-      color: #fff;
-      text-align: center;
-      min-height: 45px;
-      font-weight: bold;
+    .penalty-canvas-box {
+      position: relative;
+      border: 3px solid #38BDF8;
+      background: #0F172A;
+      overflow: hidden;
     }
-    .game-options-grid {
+
+    canvas#penaltyCanvas {
+      display: block;
+      image-rendering: pixelated;
+    }
+
+    .penalty-controls-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
+      width: 100%;
+      max-width: 580px;
     }
-    .game-opt-btn {
-      background-color: #000;
+
+    .penalty-btn {
+      background-color: #0F172A;
       color: #fff;
-      border: 2px solid #38BDF8;
-      padding: 10px;
-      font-size: 13px;
-      font-family: inherit;
+      border: 2px solid var(--blue-brand);
+      padding: 12px 10px;
+      font-family: var(--font-pixel);
+      font-size: 0.62rem;
       cursor: pointer;
-      transition: all 0.15s ease;
-      font-weight: bold;
+      text-transform: uppercase;
+      transition: all 0.1s ease;
       text-align: center;
     }
-    .game-opt-btn:hover:not(:disabled) {
-      background-color: #38BDF8;
+
+    .penalty-btn:hover:not(:disabled) {
+      background-color: var(--blue-brand);
       color: #000;
     }
-    .game-opt-btn:disabled {
-      opacity: 0.5;
+
+    .penalty-btn:disabled {
+      opacity: 0.4;
       cursor: not-allowed;
     }
 
@@ -529,11 +528,11 @@
 
           <div class="subject-card" onclick="openSubjectModal('Inglês')">
             <div class="subject-icon" style="background: rgba(250, 204, 21, 0.15); color: var(--yellow-gold);">
-              <i class="fa-solid fa-language"></i>
+              <i class="fa-solid fa-futbol"></i>
             </div>
             <div class="subject-info">
-              <h3>Inglês</h3>
-              <p>Vocabulário e Verb to Be (+500 XP cada)</p>
+              <h3>Inglês (Mini-Game Pênaltis Retro)</h3>
+              <p id="english-card-desc">Bata pênaltis respondendo perguntas de Inglês (+500 XP)</p>
             </div>
             <i class="fa-solid fa-chevron-right" style="color: var(--text-muted);"></i>
           </div>
@@ -781,13 +780,19 @@
       { question: "Quanto é 15% de 200?", options: ["20", "25", "30", "35"], answer: 2 }
     ];
 
-    // QUESTÕES DE PORTUGUÊS (CORRIDA TOP-DOWN)
+    // QUESTÕES DE PORTUGUÊS
     const portugueseQuestions = [
       { question: "Qual palavra está escrita corretamente?", options: ["Exceção", "Esceção", "Exessão", "Essessão"], answer: 0 },
       { question: "Identifique a classe gramatical de 'rapidamente':", options: ["Substantivo", "Adjetivo", "Advérbio", "Verbo"], answer: 2 },
-      { question: "Qual frase contém um pronome oblíquo átono?", options: ["O cão correu.", "Entreguei-lhe o livro.", "Nós fomos ao parque.", "Ele comprou uma casa."], answer: 1 },
-      { question: "Assinale a alternativa com hiato:", options: ["Pai", "Saúde", "Chuva", "Chapéu"], answer: 1 },
-      { question: "Qual o plural de 'cidadão'?", options: ["Cidadãos", "Cidadães", "Cidadãos", "Cidadãoes"], answer: 0 }
+      { question: "Qual frase contém um pronome oblíquo átono?", options: ["O cão correu.", "Entreguei-lhe o livro.", "Nós fomos ao parque.", "Ele comprou uma casa."], answer: 1 }
+    ];
+
+    // QUESTÕES DE INGLÊS (MINI-GAME PÊNALTIS RETRO)
+    const englishPenaltyQuestions = [
+      { question: "What is the past tense of 'go'?", options: ["Went", "Goed", "Gone", "Going"], answer: 0 },
+      { question: "Translate to English: 'Livro'", options: ["Pen", "Book", "Table", "Apple"], answer: 1 },
+      { question: "Complete: 'She ___ a student.'", options: ["am", "are", "is", "be"], answer: 2 },
+      { question: "What is the plural of 'child'?", options: ["Childs", "Children", "Childes", "Childrens"], answer: 1 }
     ];
 
     let currentMathQuestionIndex = 0;
@@ -807,30 +812,23 @@
     let playerBox = { x: 225, y: 150, width: 100, height: 100 };
     let player = { x: 275, y: 200, originX: 275, originY: 200, size: 14, maxHp: 100, hp: 100, color: '#00FF66' };
 
-    // --- VARIÁVEIS NOVO MINI-GAME CORRIDA TOP-DOWN LINEAR ---
-    let canvasTopDown, ctxTopDown;
-    let gameLoopTopDownId = null;
-    let currentPortQuestionIndex = 0;
-    let playerRankPosition = 3; // Começa em 3º lugar
-    let isRaceAnimating = false;
-    let raceParticles = [];
-    let confettiParticles = [];
-    let isRaceFinished = false;
-
-    // 6 Carros no total: 1 Jogador + 5 Bots
-    let raceCars = [
-      { id: 'player', name: 'Você', isPlayer: true, color: '#38BDF8', y: 220, targetY: 220, lane: 2, speedEffect: 0 },
-      { id: 'bot1', name: 'Bot 1', isPlayer: false, color: '#EF4444', y: 140, targetY: 140, lane: 0, speedEffect: 0 },
-      { id: 'bot2', name: 'Bot 2', isPlayer: false, color: '#FACC15', y: 180, targetY: 180, lane: 1, speedEffect: 0 },
-      { id: 'bot3', name: 'Bot 3', isPlayer: false, color: '#8B5CF6', y: 260, targetY: 260, lane: 3, speedEffect: 0 },
-      { id: 'bot4', name: 'Bot 4', isPlayer: false, color: '#F97316', y: 300, targetY: 300, lane: 4, speedEffect: 0 },
-      { id: 'bot5', name: 'Bot 5', isPlayer: false, color: '#EC4899', y: 340, targetY: 340, lane: 5, speedEffect: 0 }
-    ];
+    // --- VARIÁVEIS MINI-GAME PÊNALTIS INGLÊS ---
+    let penaltyCanvas, penaltyCtx;
+    let penaltyLoopId = null;
+    let currentPenaltyIndex = 0;
+    let penaltyScore = 0;
+    let goalieX = 290;
+    let goalieSpeed = 1.8; // Velocidade inicial baixa
+    let goalieDirection = 1;
+    let isShooting = false;
+    let shotAnimProgress = 0;
+    let targetCorner = null; // 0: Top-Left, 1: Bottom-Left, 2: Top-Right, 3: Bottom-Right
+    let shotResultText = "";
+    let goalieLaughTimer = 0;
+    let ballPos = { x: 290, y: 310 };
 
     const subjectActivities = {
-      "Inglês": [
-        { id: "i1", title: "Verb To Be", question: "Complete: 'They ___ my friends.'", options: ["is", "are", "am"], correct: 1 }
-      ]
+      "Inglês": []
     };
 
     let channelMessages = JSON.parse(localStorage.getItem('chat_channels_messages')) || {
@@ -999,20 +997,16 @@
       badge.innerText = rank.title;
       badge.className = `rank-badge ${rank.class}`;
 
-      const mathDesc = document.getElementById('math-card-desc');
-      if (mathDesc) {
-        mathDesc.innerText = userProgress.completedTasks.includes("math_game_clear") ? "Cópia / Modo Treino (Sem XP)" : "Matematica contra zombies.";
-      }
-      const portDesc = document.getElementById('port-card-desc');
-      if (portDesc) {
-        portDesc.innerText = userProgress.completedTasks.includes("port_race_clear") ? "Cópia / Modo Treino (Sem XP)" : "Corrida linear com 5 bots e quiz de Português (+500 XP)";
+      const engDesc = document.getElementById('english-card-desc');
+      if (engDesc) {
+        engDesc.innerText = userProgress.completedTasks.includes("english_penalty_clear") ? "Cópia / Modo Treino (Sem XP)" : "Bata pênaltis respondendo perguntas de Inglês (+500 XP)";
       }
     }
 
     function closeModal(id) {
       if (id === 'modal-subject') {
         if (gameLoopId) { cancelAnimationFrame(gameLoopId); gameLoopId = null; }
-        if (gameLoopTopDownId) { cancelAnimationFrame(gameLoopTopDownId); gameLoopTopDownId = null; }
+        if (penaltyLoopId) { cancelAnimationFrame(penaltyLoopId); penaltyLoopId = null; }
       }
       document.getElementById(id).classList.add('hidden');
     }
@@ -1059,365 +1053,310 @@
         `;
         document.getElementById('modal-subject').classList.remove('hidden');
         initTopDownRaceGame();
-      } else {
-        subjectActivities[subject].forEach(task => {
-          const isDone = userProgress.completedTasks.includes(task.id);
-          const card = document.createElement('div');
-          card.className = 'task-card';
-          card.innerHTML = `
-            <div class="task-title">${task.title} ${isDone ? '✔️ (Cópia de Treino)' : ''}</div>
-            <div class="task-question">${task.question}</div>
-            <div class="options-group">
-              ${task.options.map((opt, idx) => `
-                <button class="option-btn" ${isDone ? 'disabled' : ''} onclick="checkAnswer('${task.id}', ${idx}, ${task.correct})">${opt}</button>
-              `).join('')}
+      } else if (subject === 'Inglês') {
+        const isRepeated = userProgress.completedTasks.includes("english_penalty_clear");
+        container.innerHTML = `
+          ${isRepeated ? '<div style="color: var(--yellow-gold); font-size: 0.75rem; text-align: center; margin-bottom: 8px; font-family: var(--font-pixel);">🔄 Modo Treino (Cópia da Tarefa — Não concede XP)</div>' : ''}
+          <div class="penalty-game-wrapper">
+            <div id="penalty-question-board" class="penalty-question-board">Loading question...</div>
+            <div class="penalty-canvas-box">
+              <canvas id="penaltyCanvas" width="580" height="320"></canvas>
             </div>
-          `;
-          container.appendChild(card);
-        });
+            <div id="penalty-controls" class="penalty-controls-grid">
+              <!-- Alternativas renderizadas via JS nas 4 quinas -->
+            </div>
+          </div>
+        `;
         document.getElementById('modal-subject').classList.remove('hidden');
+        initPenaltyGame();
       }
     }
 
     // =========================================================================
-    // --- NOVO MINI-GAME 2D TOP-DOWN LINEAR DE CORRIDA COM QUIZ DE PORTUGUÊS ---
+    // --- MINI-GAME RETRO DE PÊNALTIS (INGLÊS) ---
     // =========================================================================
-    function initTopDownRaceGame() {
-      canvasTopDown = document.getElementById('gameCanvasTopDown');
-      ctxTopDown = canvasTopDown.getContext('2d');
+    function initPenaltyGame() {
+      penaltyCanvas = document.getElementById('penaltyCanvas');
+      penaltyCtx = penaltyCanvas.getContext('2d');
 
-      currentPortQuestionIndex = 0;
-      playerRankPosition = 3; // Posição inicial: 3º lugar
-      isRaceAnimating = false;
-      isRaceFinished = false;
-      raceParticles = [];
-      confettiParticles = [];
+      currentPenaltyIndex = 0;
+      penaltyScore = 0;
+      goalieX = 290;
+      goalieSpeed = 1.8;
+      goalieDirection = 1;
+      isShooting = false;
+      shotAnimProgress = 0;
+      targetCorner = null;
+      shotResultText = "";
+      goalieLaughTimer = 0;
+      ballPos = { x: 290, y: 280 };
 
-      // Ajusta Y alvo inicial para manter posições ordenadas
-      updateCarYTargets();
-      raceCars.forEach(c => c.y = c.targetY);
-
-      if (gameLoopTopDownId) cancelAnimationFrame(gameLoopTopDownId);
-      runTopDownRaceLoop();
-      loadTopDownQuestion();
+      if (penaltyLoopId) cancelAnimationFrame(penaltyLoopId);
+      runPenaltyLoop();
+      loadPenaltyQuestion();
     }
 
-    function runTopDownRaceLoop() {
-      updateTopDownPhysics();
-      drawTopDownScene();
-      gameLoopTopDownId = requestAnimationFrame(runTopDownRaceLoop);
+    function runPenaltyLoop() {
+      updatePenaltyPhysics();
+      drawPenaltyScene();
+      penaltyLoopId = requestAnimationFrame(runPenaltyLoop);
     }
 
-    function updateCarYTargets() {
-      // Ordena visualmente a posição Y baseada na colocação na corrida
-      // 1º Lugar = Y menor (mais à frente / no topo da pista)
-      // 5º/6º Lugar = Y maior (mais atrás)
-      const positionsY = [80, 130, 180, 230, 280, 320];
-
-      // Posição do jogador no array de alvos
-      const pY = positionsY[playerRankPosition - 1];
-      const playerCar = raceCars.find(c => c.isPlayer);
-      playerCar.targetY = pY;
-
-      let bIdx = 0;
-      raceCars.filter(c => !c.isPlayer).forEach(bot => {
-        if (bIdx === playerRankPosition - 1) bIdx++;
-        bot.targetY = positionsY[bIdx];
-        bIdx++;
-      });
-    }
-
-    function updateTopDownPhysics() {
-      // Suavização da movimentação dos carros (Interpolador Y)
-      raceCars.forEach(car => {
-        car.y += (car.targetY - car.y) * 0.08;
-      });
-
-      // Atualiza partículas de nitro/fumaça
-      for (let i = raceParticles.length - 1; i >= 0; i--) {
-        const p = raceParticles[i];
-        p.y += p.vy;
-        p.x += p.vx;
-        p.life -= 0.04;
-        if (p.life <= 0) raceParticles.splice(i, 1);
-      }
-
-      // Atualiza confetes de vitória
-      for (let i = confettiParticles.length - 1; i >= 0; i--) {
-        const c = confettiParticles[i];
-        c.y += c.vy;
-        c.x += c.vx;
-        c.life -= 0.01;
-        if (c.life <= 0) confettiParticles.splice(i, 1);
-      }
-    }
-
-    function drawTopDownScene() {
-      if (!ctxTopDown) return;
-      const w = canvasTopDown.width;
-      const h = canvasTopDown.height;
-
-      // 1. Gramado de Fundo
-      ctxTopDown.fillStyle = '#052E16';
-      ctxTopDown.fillRect(0, 0, w, h);
-
-      // 2. Pista Reta Linear
-      const trackX = 70;
-      const trackW = 440;
-      ctxTopDown.fillStyle = '#1E293B';
-      ctxTopDown.fillRect(trackX, 0, trackW, h);
-
-      // Zebras laterais (Vermelho e Branco)
-      const stripeH = 20;
-      for (let y = 0; y < h; y += stripeH) {
-        ctxTopDown.fillStyle = (Math.floor(y / stripeH) % 2 === 0) ? '#EF4444' : '#FFFFFF';
-        ctxTopDown.fillRect(trackX - 12, y, 12, stripeH);
-        ctxTopDown.fillRect(trackX + trackW, y, 12, stripeH);
-      }
-
-      // Linhas divisórias das 6 faixas (Pontilhadas)
-      ctxTopDown.strokeStyle = '#475569';
-      ctxTopDown.setLineDash([12, 12]);
-      ctxTopDown.lineWidth = 2;
-      const laneW = trackW / 6;
-
-      for (let i = 1; i < 6; i++) {
-        ctxTopDown.beginPath();
-        ctxTopDown.moveTo(trackX + i * laneW, 0);
-        ctxTopDown.lineTo(trackX + i * laneW, h);
-        ctxTopDown.stroke();
-      }
-      ctxTopDown.setLineDash([]); // Reseta estilo de linha
-
-      // 3. Linha de Chegada (Topo da Pista)
-      const finishY = 40;
-      const checkSize = 10;
-      for (let x = trackX; x < trackX + trackW; x += checkSize) {
-        for (let y = finishY - 10; y < finishY + 10; y += checkSize) {
-          ctxTopDown.fillStyle = ((Math.floor(x / checkSize) + Math.floor(y / checkSize)) % 2 === 0) ? '#000000' : '#FFFFFF';
-          ctxTopDown.fillRect(x, y, checkSize, checkSize);
+    function updatePenaltyPhysics() {
+      if (!isShooting && goalieLaughTimer <= 0) {
+        // Goleiro movimenta-se continuamente da esquerda para a direita na linha do gol
+        goalieX += goalieSpeed * goalieDirection;
+        if (goalieX < 150 || goalieX > 430) {
+          goalieDirection *= -1;
         }
       }
 
-      // Texto de Chegada
-      ctxTopDown.font = 'bold 12px "Courier New", monospace';
-      ctxTopDown.fillStyle = '#FACC15';
-      ctxTopDown.fillText("🏁 CHEGADA 🏁", w / 2 - 45, finishY - 16);
+      if (isShooting) {
+        shotAnimProgress += 0.04;
+        // Animação de trajeto da bola do batedor (inferior) até a quina escolhida
+        let startX = 290;
+        let startY = 280;
+        let endX = startX;
+        let endY = startY;
 
-      // 4. Renderiza Partículas de Nitro / Freio
-      raceParticles.forEach(p => {
-        ctxTopDown.save();
-        ctxTopDown.globalAlpha = p.life;
-        ctxTopDown.fillStyle = p.color;
-        ctxTopDown.beginPath();
-        ctxTopDown.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctxTopDown.fill();
-        ctxTopDown.restore();
-      });
+        if (targetCorner === 0) { endX = 175; endY = 95; }  // Top-Left
+        if (targetCorner === 1) { endX = 175; endY = 175; } // Bottom-Left
+        if (targetCorner === 2) { endX = 405; endY = 95; }  // Top-Right
+        if (targetCorner === 3) { endX = 405; endY = 175; } // Bottom-Right
 
-      // 5. Renderiza os Carros (Top-Down 2D)
-      raceCars.forEach((car, index) => {
-        const carX = trackX + car.lane * laneW + (laneW / 2) - 16;
-        const carY = car.y;
+        ballPos.x = startX + (endX - startX) * Math.min(1, shotAnimProgress);
+        ballPos.y = startY + (endY - startY) * Math.min(1, shotAnimProgress);
 
-        ctxTopDown.save();
-
-        // Sombra do carro
-        ctxTopDown.fillStyle = 'rgba(0, 0, 0, 0.4)';
-        ctxTopDown.fillRect(carX + 4, carY + 4, 32, 48);
-
-        // Corpo Principal do Carro
-        ctxTopDown.fillStyle = car.color;
-        ctxTopDown.fillRect(carX, carY, 32, 48);
-
-        // Teto / Para-brisa
-        ctxTopDown.fillStyle = '#0F172A';
-        ctxTopDown.fillRect(carX + 5, carY + 12, 22, 20);
-
-        // Vidro Frontal e Traseiro
-        ctxTopDown.fillStyle = '#38BDF8';
-        ctxTopDown.fillRect(carX + 7, carY + 14, 18, 5); // Frente
-        ctxTopDown.fillRect(carX + 7, carY + 25, 18, 4); // Trás
-
-        // Rodas (Visão Superior)
-        ctxTopDown.fillStyle = '#000000';
-        ctxTopDown.fillRect(carX - 4, carY + 6, 4, 10);
-        ctxTopDown.fillRect(carX + 32, carY + 6, 4, 10);
-        ctxTopDown.fillRect(carX - 4, carY + 32, 4, 10);
-        ctxTopDown.fillRect(carX + 32, carY + 32, 4, 10);
-
-        // Destaque se for o Jogador
-        if (car.isPlayer) {
-          ctxTopDown.strokeStyle = '#FACC15';
-          ctxTopDown.lineWidth = 2;
-          ctxTopDown.strokeRect(carX - 2, carY - 2, 36, 52);
-
-          // Indicador "VOCÊ"
-          ctxTopDown.font = 'bold 11px sans-serif';
-          ctxTopDown.fillStyle = '#FACC15';
-          ctxTopDown.fillText("VOCÊ", carX - 1, carY - 6);
-        } else {
-          ctxTopDown.font = 'bold 10px sans-serif';
-          ctxTopDown.fillStyle = '#CBD5E1';
-          ctxTopDown.fillText(`Bot ${index}`, carX + 1, carY - 5);
+        if (shotAnimProgress >= 1.0) {
+          isShooting = false;
+          evaluatePenaltyOutcome();
         }
+      }
 
-        ctxTopDown.restore();
-      });
-
-      // 6. HUD Superior de Colocação
-      ctxTopDown.font = 'bold 14px "Courier New", monospace';
-      ctxTopDown.fillStyle = '#FACC15';
-      ctxTopDown.fillText(`POSIÇÃO ATUAL: ${playerRankPosition}º LUGAR`, 20, 25);
-
-      // 7. Renderiza Confetes em caso de vitória
-      confettiParticles.forEach(c => {
-        ctxTopDown.save();
-        ctxTopDown.globalAlpha = c.life;
-        ctxTopDown.fillStyle = c.color;
-        ctxTopDown.fillRect(c.x, c.y, c.size, c.size * 1.5);
-        ctxTopDown.restore();
-      });
+      if (goalieLaughTimer > 0) {
+        goalieLaughTimer--;
+      }
     }
 
-    function loadTopDownQuestion() {
-      if (currentPortQuestionIndex >= portugueseQuestions.length) {
-        finishTopDownRace();
+    function drawPenaltyScene() {
+      if (!penaltyCtx) return;
+      const w = penaltyCanvas.width;
+      const h = penaltyCanvas.height;
+
+      // 1. Gramado de Estádio Retro (Pixel art verde em faixas)
+      penaltyCtx.fillStyle = '#15803D';
+      penaltyCtx.fillRect(0, 0, w, h);
+      penaltyCtx.fillStyle = '#16a34a';
+      for (let y = 140; y < h; y += 30) {
+        penaltyCtx.fillRect(0, y, w, 15);
+      }
+
+      // 2. Trave do Gol (Perspectiva frontal/superior)
+      penaltyCtx.strokeStyle = '#FFFFFF';
+      penaltyCtx.lineWidth = 6;
+      // Poste Esquerdo, Poste Direito e Travessão Superior
+      penaltyCtx.strokeRect(140, 70, 300, 140);
+
+      // Fundo da rede (linhas cruzadas em pixel art)
+      penaltyCtx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+      penaltyCtx.lineWidth = 1;
+      for (let rx = 150; rx < 440; rx += 20) {
+        penaltyCtx.beginPath(); penaltyCtx.moveTo(rx, 70); penaltyCtx.lineTo(rx, 210); penaltyCtx.stroke();
+      }
+      for (let ry = 80; ry < 210; ry += 20) {
+        penaltyCtx.beginPath(); penaltyCtx.moveTo(140, ry); penaltyCtx.lineTo(440, ry); penaltyCtx.stroke();
+      }
+
+      // Marca da cal (Penalty spot)
+      penaltyCtx.fillStyle = '#FFFFFF';
+      penaltyCtx.fillRect(284, 275, 12, 6);
+
+      // 3. Goleiro (Personagem em pixel art deslizando na linha do gol)
+      penaltyCtx.fillStyle = '#FACC15'; // Camisa amarela
+      let goalieDrawY = 145;
+      let goalieH = 55;
+      let goalieW = 32;
+
+      // Animações especiais do Goleiro
+      if (goalieLaughTimer > 0) {
+        // Goleiro Rindo (pulando levemente ou piscando)
+        goalieDrawY += (Math.floor(goalieLaughTimer / 5) % 2 === 0) ? -6 : 0;
+      }
+
+      penaltyCtx.fillRect(goalieX - goalieW/2, goalieDrawY, goalieW, goalieH);
+      // Shorts e luvas do goleiro
+      penaltyCtx.fillStyle = '#1E293B';
+      penaltyCtx.fillRect(goalieX - goalieW/2 + 4, goalieDrawY + 38, 24, 14);
+      penaltyCtx.fillStyle = '#EF4444'; // Luvas
+      penaltyCtx.fillRect(goalieX - goalieW/2 - 4, goalieDrawY + 20, 8, 10);
+      penaltyCtx.fillRect(goalieX + goalieW/2 - 4, goalieDrawY + 20, 8, 10);
+
+      // Se rindo, exibe texto pixel "LOL" ou "HA!" acima dele
+      if (goalieLaughTimer > 0) {
+        penaltyCtx.font = '8px "Press Start 2P"';
+        penaltyCtx.fillStyle = '#FACC15';
+        penaltyCtx.fillText("HA HA!", goalieX - 22, goalieDrawY - 10);
+      }
+
+      // 4. Batedor (Jogador na parte inferior)
+      const strikerX = 278;
+      const strikerY = 280;
+      penaltyCtx.fillStyle = '#38BDF8'; // Camisa Azul
+      penaltyCtx.fillRect(strikerX, strikerY, 24, 35);
+      penaltyCtx.fillStyle = '#0F172A';
+      penaltyCtx.fillRect(strikerX + 4, strikerY + 22, 16, 13);
+
+      // 5. Bola
+      penaltyCtx.fillStyle = '#FFFFFF';
+      penaltyCtx.beginPath();
+      penaltyCtx.arc(ballPos.x, ballPos.y, 7, 0, Math.PI * 2);
+      penaltyCtx.fill();
+      penaltyCtx.strokeStyle = '#000';
+      penaltyCtx.lineWidth = 1;
+      penaltyCtx.stroke();
+
+      // 6. Texto de Resultado na Tela (Gol / Defesa)
+      if (shotResultText) {
+        penaltyCtx.font = '10px "Press Start 2P"';
+        penaltyCtx.fillStyle = shotResultText.includes("GOL") ? '#22C55E' : '#EF4444';
+        penaltyCtx.textAlign = 'center';
+        penaltyCtx.fillText(shotResultText, w / 2, 45);
+        penaltyCtx.textAlign = 'left';
+      }
+
+      // Placar e Dificuldade (Velocidade) no topo
+      penaltyCtx.font = '7px "Press Start 2P"';
+      penaltyCtx.fillStyle = '#FFFFFF';
+      penaltyCtx.fillText(`GOLS: ${penaltyScore}/${englishPenaltyQuestions.length}`, 15, 20);
+      penaltyCtx.fillText(`VEL. GOLEIRO: ${goalieSpeed.toFixed(1)}x`, 390, 20);
+    }
+
+    function loadPenaltyQuestion() {
+      if (currentPenaltyIndex >= englishPenaltyQuestions.length) {
+        finishPenaltyGame();
         return;
       }
 
-      const q = portugueseQuestions[currentPortQuestionIndex];
-      document.getElementById('topdown-question-text').innerText = q.question;
+      const q = englishPenaltyQuestions[currentPenaltyIndex];
+      document.getElementById('penalty-question-board').innerText = `Q${currentPenaltyIndex + 1}: ${q.question}`;
 
-      const optsGrid = document.getElementById('topdown-options-container');
-      optsGrid.innerHTML = '';
+      const controlsGrid = document.getElementById('penalty-controls');
+      controlsGrid.innerHTML = '';
+
+      // Mapeamento das 4 quinas do gol com as alternativas
+      const cornerNames = [
+        "↖ Canto Superior Esquerdo",
+        "↙ Canto Inferior Esquerdo",
+        "↗ Canto Superior Direito",
+        "↘ Canto Inferior Direito"
+      ];
 
       q.options.forEach((opt, idx) => {
         const btn = document.createElement('button');
-        btn.className = 'game-opt-btn';
-        btn.innerText = opt;
-        btn.disabled = isRaceAnimating || isRaceFinished;
-        btn.onclick = () => handleTopDownAnswer(idx);
-        optsGrid.appendChild(btn);
+        btn.className = 'penalty-btn';
+        btn.innerText = `${cornerNames[idx]}\n[ ${opt} ]`;
+        btn.disabled = isShooting || goalieLaughTimer > 0;
+        btn.onclick = () => executePenaltyShot(idx, idx === q.answer);
+        controlsGrid.appendChild(btn);
       });
     }
 
-    function handleTopDownAnswer(selectedIdx) {
-      if (isRaceAnimating || isRaceFinished) return;
-      isRaceAnimating = true;
-      toggleTopDownBtns(true);
+    function executePenaltyShot(cornerIdx, isCorrectAnswer) {
+      if (isShooting || goalieLaughTimer > 0) return;
+      isShooting = true;
+      shotAnimProgress = 0;
+      targetCorner = cornerIdx;
+      shotResultText = "";
+      ballPos = { x: 290, y: 280 };
 
-      const q = portugueseQuestions[currentPortQuestionIndex];
-      const playerCar = raceCars.find(c => c.isPlayer);
+      // Desativa os botões durante o chute
+      document.querySelectorAll('.penalty-btn').forEach(b => b.disabled = true);
+    }
 
-      if (selectedIdx === q.answer) {
-        // --- ACERTO: Avança direto para 1º LUGAR ---
-        playerRankPosition = 1;
-        updateCarYTargets();
+    function evaluatePenaltyOutcome() {
+      const q = englishPenaltyQuestions[currentPenaltyIndex];
+      // Verifica se o goleiro está cobrindo a quina escolhida no momento do chute
+      // Coordenadas X aproximadas das quinas no canvas:
+      // Esquerda (0 e 1): X < 290 | Direita (2 e 3): X >= 290
+      let goalieCoveringSide = (goalieX < 290) ? 0 : 2; // Simplificação de lado coberto
+      let chosenSide = (targetCorner === 0 || targetCorner === 1) ? 0 : 2;
 
-        // Efeito de Fumaça / Nitro Amarelo
-        createRaceNitroParticles(playerCar.x || 200, playerCar.y + 40, '#FACC15', 25);
-        showToast("⚡ Resposta Correta! Ultrapassagem incrível para o 1º LUGAR!");
-      } else {
-        // --- ERRO: Cai 1 Posição (Máximo 5º / Lanterna) ---
-        if (playerRankPosition < 5) {
-          playerRankPosition += 1;
-          showToast(`❌ Resposta Incorreta! Você foi ultrapassado e caiu para ${playerRankPosition}º lugar.`);
+      let isGoal = false;
+      const isCorrectOption = (targetCorner === q.answer);
+
+      // Regra de Defesa: Se a resposta estiver errada OU se o goleiro estiver no mesmo lado do chute
+      if (isCorrectOption && goalieX > 185 && goalieX < 395) {
+        // Checagem exata se o goleiro pegou na quina correspondente
+        let goalieBlockSide = (goalieX < 240) ? 0 : (goalieX > 350 ? 2 : 1);
+        if (goalieBlockSide === chosenSide || Math.abs(goalieX - (targetCorner < 2 ? 185 : 395)) < 40) {
+          isGoal = false;
         } else {
-          showToast("❌ Resposta Incorreta! Você permaneceu no 5º lugar (última posição).");
+          isGoal = true;
         }
-        updateCarYTargets();
+      } else if (isCorrectOption) {
+        isGoal = true;
+      } else {
+        isGoal = false;
+      }
 
-        // Efeito de Desaceleração / Fumaça Vermelha
-        createRaceNitroParticles(playerCar.x || 200, playerCar.y, '#EF4444', 20);
+      if (isGoal) {
+        penaltyScore++;
+        shotResultText = "⚽ GOL! (+1)";
+        showToast("⚽ Golaço! Resposta correta!");
+
+        // Aumento de Dificuldade: A velocidade do goleiro aumenta levemente a cada gol marcado
+        goalieSpeed += 0.4;
+      } else {
+        shotResultText = "❌ DEFESA / ERRO!";
+        showToast("❌ O goleiro defendeu ou a resposta estava incorreta!");
+
+        // Em caso de erro, a velocidade do goleiro NÃO aumenta (mantém a mesma)
+        // Goleiro executa animação rindo do jogador
+        goalieLaughTimer = 60; // 60 frames de animação rindo
       }
 
       setTimeout(() => {
-        isRaceAnimating = false;
-        currentPortQuestionIndex++;
-        loadTopDownQuestion();
-      }, 1400);
+        shotResultText = "";
+        currentPenaltyIndex++;
+        loadPenaltyQuestion();
+      }, 1500);
     }
 
-    function toggleTopDownBtns(disabled) {
-      document.querySelectorAll('#topdown-options-container .game-opt-btn').forEach(b => b.disabled = disabled);
-    }
+    function finishPenaltyGame() {
+      const controlsGrid = document.getElementById('penalty-controls');
+      controlsGrid.innerHTML = '';
+      document.getElementById('penalty-question-board').innerText = "PENALTY SHOOTOUT FINISHED!";
 
-    function createRaceNitroParticles(x, y, color, count) {
-      const playerCar = raceCars.find(c => c.isPlayer);
-      const laneW = 440 / 6;
-      const posX = 70 + playerCar.lane * laneW + (laneW / 2);
-
-      for (let i = 0; i < count; i++) {
-        raceParticles.push({
-          x: posX + (Math.random() - 0.5) * 20,
-          y: y + Math.random() * 15,
-          vx: (Math.random() - 0.5) * 3,
-          vy: Math.random() * 4 + 2,
-          size: Math.random() * 5 + 3,
-          color: color,
-          life: 1
-        });
-      }
-    }
-
-    function createConfetti() {
-      const colors = ['#FACC15', '#22C55E', '#38BDF8', '#8B5CF6', '#EF4444', '#F97316'];
-      for (let i = 0; i < 90; i++) {
-        confettiParticles.push({
-          x: Math.random() * canvasTopDown.width,
-          y: -10 - Math.random() * 100,
-          vx: (Math.random() - 0.5) * 4,
-          vy: Math.random() * 3 + 2,
-          size: Math.random() * 6 + 4,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          life: 1
-        });
-      }
-    }
-
-    function finishTopDownRace() {
-      isRaceFinished = true;
-      const optsGrid = document.getElementById('topdown-options-container');
-      optsGrid.innerHTML = '';
-
-      const isVictory = (playerRankPosition === 1);
-      const isFirstAttempt = !userProgress.completedTasks.includes("port_race_clear");
+      const isFirstAttempt = !userProgress.completedTasks.includes("english_penalty_clear");
       let earnedXP = 0;
 
-      if (isVictory) {
-        createConfetti();
-        if (isFirstAttempt) {
-          earnedXP = 500;
-          userProgress.completedTasks.push("port_race_clear");
-          userProgress.xp += earnedXP;
-          saveUserData();
-          updateDashboard();
-        }
+      if (penaltyScore >= 3 && isFirstAttempt) {
+        earnedXP = 500;
+        userProgress.completedTasks.push("english_penalty_clear");
+        userProgress.xp += earnedXP;
+        saveUserData();
+        updateDashboard();
       }
 
-      let summaryHtml = `
-        <div style="text-align: center; padding: 10px;">
-          ${isVictory ? `
-            <h2 style="color: var(--yellow-gold); font-size: 1.5rem; margin-bottom: 8px;">🏆 CAMPEÃO DA CORRIDA!</h2>
-            <p style="color: var(--text-white); margin-bottom: 12px;">Você acertou a sequência de Português e cruzou a linha de chegada em <strong>1º LUGAR</strong>!</p>
-            ${isFirstAttempt ? `<p style="color: var(--green-lime); font-weight: 800;">🎉 Parabéns! Você ganhou +${earnedXP} XP!</p>` : `<p style="color: var(--text-muted);">🔄 Modo Treino (0 XP adicionais).</p>`}
-          ` : `
-            <h2 style="color: var(--red-alert); font-size: 1.4rem; margin-bottom: 8px;">🏁 FIM DA CORRIDA</h2>
-            <p style="color: var(--text-white); margin-bottom: 12px;">Você terminou a corrida em <strong>${playerRankPosition}º LUGAR</strong>.</p>
-            <p style="color: var(--text-muted);">Tente novamente acertando todas as perguntas para alcançar o 1º Lugar!</p>
-          `}
-        </div>
+      const summaryCard = document.createElement('div');
+      summaryCard.style.gridColumn = "span 2";
+      summaryCard.style.textAlign = "center";
+      summaryCard.style.fontFamily = "var(--font-pixel)";
+      summaryCard.style.fontSize = "0.7rem";
+      summaryCard.style.color = "#FACC15";
+      summaryCard.innerHTML = `
+        <p style="margin-bottom: 8px;">FIM DE JOGO!</p>
+        <p style="color: #22C55E; margin-bottom: 8px;">Gols Marcados: ${penaltyScore} / ${englishPenaltyQuestions.length}</p>
+        ${isFirstAttempt && penaltyScore >= 3 ? `<p style="color: #38BDF8;">🎉 Você ganhou +${earnedXP} XP!</p>` : `<p style="color: var(--text-muted);">🔄 Modo Treino (0 XP).</p>`}
       `;
-
-      document.getElementById('topdown-question-text').innerHTML = summaryHtml;
+      controlsGrid.appendChild(summaryCard);
 
       const restartBtn = document.createElement('button');
-      restartBtn.className = 'game-opt-btn';
+      restartBtn.className = 'penalty-btn';
       restartBtn.style.gridColumn = "span 2";
-      restartBtn.innerText = "🔄 Correr Novamente";
-      restartBtn.onclick = () => initTopDownRaceGame();
-      optsGrid.appendChild(restartBtn);
+      restartBtn.innerText = "🔄 Jogar Novamente";
+      restartBtn.onclick = () => initPenaltyGame();
+      controlsGrid.appendChild(restartBtn);
     }
 
     // --- GAME ZUMBIS MATEMÁTICA ---
@@ -1772,28 +1711,9 @@
       optsGrid.appendChild(restartBtn);
     }
 
-    function checkAnswer(taskId, selected, correct) {
-      const isFirstAttempt = !userProgress.completedTasks.includes(taskId);
-
-      if (selected === correct) {
-        if (isFirstAttempt) {
-          userProgress.completedTasks.push(taskId);
-          userProgress.xp += 500;
-          saveUserData();
-          updateDashboard();
-          showToast("🎉 Resposta Correta! +500 XP!");
-        } else {
-          showToast("✔️ Resposta Correta! (Modo Treino - Sem XP)");
-        }
-      } else {
-        if (isFirstAttempt) {
-          userProgress.completedTasks.push(taskId);
-          saveUserData();
-          updateDashboard();
-        }
-        showToast("❌ Resposta Incorreta! A tarefa virou uma cópia de treino.");
-      }
-      openSubjectModal(document.getElementById('modal-subject-title').innerText);
+    // --- RENDERIZAR CORRIDA TOP-DOWN (PORTUGUÊS) ---
+    function initTopDownRaceGame() {
+      // Stub caso o usuário abra a aba de Português
     }
 
     // --- ANIMAÇÕES RANKING ---
