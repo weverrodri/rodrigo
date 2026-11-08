@@ -289,7 +289,7 @@
     }
     .rank-card-animated { animation: rankSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
 
-    /* ESTILOS PARA MINI-GAME RETRO DE PÊNALTIS */
+    /* ESTILOS PARA MINI-GAME RETRO DE PÊNALTIS COM QUINAS INTERNAS */
     .penalty-game-wrapper {
       display: flex;
       flex-direction: column;
@@ -305,14 +305,15 @@
     .penalty-question-board {
       background: #1E293B;
       border: 2px solid var(--blue-brand);
-      padding: 12px;
+      padding: 14px;
       text-align: center;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       color: var(--yellow-gold);
       width: 100%;
       max-width: 580px;
-      line-height: 1.4;
+      line-height: 1.5;
       text-transform: uppercase;
+      border-radius: 4px;
     }
 
     .penalty-canvas-box {
@@ -320,6 +321,8 @@
       border: 3px solid #38BDF8;
       background: #0F172A;
       overflow: hidden;
+      width: 580px;
+      height: 320px;
     }
 
     canvas#penaltyCanvas {
@@ -327,36 +330,39 @@
       image-rendering: pixelated;
     }
 
-    .penalty-controls-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      width: 100%;
-      max-width: 580px;
-    }
-
-    .penalty-btn {
-      background-color: #0F172A;
-      color: #fff;
+    /* BOTÕES INTEGRADOS NAS QUINAS DO GOL COM TEXTO LIMPO */
+    .corner-option-btn {
+      position: absolute;
+      background-color: rgba(15, 23, 42, 0.92);
+      color: #FFFFFF;
       border: 2px solid var(--blue-brand);
-      padding: 12px 10px;
+      padding: 8px 14px;
       font-family: var(--font-pixel);
-      font-size: 0.62rem;
+      font-size: 0.65rem;
       cursor: pointer;
       text-transform: uppercase;
-      transition: all 0.1s ease;
-      text-align: center;
+      transition: all 0.15s ease;
+      z-index: 10;
+      border-radius: 4px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
     }
 
-    .penalty-btn:hover:not(:disabled) {
+    .corner-option-btn:hover:not(:disabled) {
       background-color: var(--blue-brand);
-      color: #000;
+      color: #000000;
+      transform: scale(1.05);
     }
 
-    .penalty-btn:disabled {
+    .corner-option-btn:disabled {
       opacity: 0.4;
       cursor: not-allowed;
     }
+
+    /* Posicionamento exatamente dentro das 4 quinas da trave */
+    .corner-tl { top: 76px; left: 146px; }  /* Quina Superior Esquerda: Alternativa A */
+    .corner-bl { top: 164px; left: 146px; } /* Quina Inferior Esquerda: Alternativa B */
+    .corner-tr { top: 76px; right: 146px; } /* Quina Superior Direita: Alternativa C */
+    .corner-br { top: 164px; right: 146px; }/* Quina Inferior Direita: Alternativa D */
 
     .task-notice-warning {
       margin-top: 15px;
@@ -532,7 +538,7 @@
             </div>
             <div class="subject-info">
               <h3>Inglês (Mini-Game Pênaltis Retro)</h3>
-              <p id="english-card-desc">Bata pênaltis respondendo perguntas de Inglês (+500 XP)</p>
+              <p id="english-card-desc">Bata pênaltis nas quinas do gol (+500 XP)</p>
             </div>
             <i class="fa-solid fa-chevron-right" style="color: var(--text-muted);"></i>
           </div>
@@ -817,30 +823,34 @@
     let penaltyLoopId = null;
     let currentPenaltyIndex = 0;
     let penaltyScore = 0;
+
     let goalieX = 290;
-    let goalieSpeed = 1.8; // Velocidade inicial baixa
+    let goalieY = 145;
+    let goalieSpeed = 1.8;
     let goalieDirection = 1;
+
     let isShooting = false;
     let shotAnimProgress = 0;
-    let targetCorner = null; // 0: Top-Left, 1: Bottom-Left, 2: Top-Right, 3: Bottom-Right
+    let targetCorner = null; // 0: TL, 1: BL, 2: TR, 3: BR
     let shotResultText = "";
-    let goalieLaughTimer = 0;
-    let ballPos = { x: 290, y: 310 };
 
-    const subjectActivities = {
-      "Inglês": []
-    };
+    // Animações
+    let isExploding = false;
+    let explosionTimer = 0;
+    let isGoalieAngry = false;
+    let goalieAngryTimer = 0;
+    let goalieLaughTimer = 0;
+    let goalieDiveState = null; // 'up_left', 'down_left', 'up_right', 'down_right'
+
+    let ballPos = { x: 290, y: 280 };
+    let ballSmokeParticles = [];
+
+    const subjectActivities = { "Inglês": [] };
 
     let channelMessages = JSON.parse(localStorage.getItem('chat_channels_messages')) || {
-      geral: [
-        { id: 1, sender: "Prof. Roberto", text: "Bem-vindos aos avisos oficiais da E.E Neves!" }
-      ],
-      professores: [
-        { id: 2, sender: "Prof. Roberto", text: "Olá alunos! Podem enviar suas dúvidas sobre trabalhos ou provas aqui." }
-      ],
-      duvidas: [
-        { id: 3, sender: "Gabriel", text: "Alguém conseguiu resolver a questão de porcentagem?" }
-      ]
+      geral: [{ id: 1, sender: "Prof. Roberto", text: "Bem-vindos aos avisos oficiais da E.E Neves!" }],
+      professores: [{ id: 2, sender: "Prof. Roberto", text: "Olá alunos! Podem enviar suas dúvidas sobre trabalhos ou provas aqui." }],
+      duvidas: [{ id: 3, sender: "Gabriel", text: "Alguém conseguiu resolver a questão de porcentagem?" }]
     };
 
     window.onload = function() {
@@ -999,7 +1009,7 @@
 
       const engDesc = document.getElementById('english-card-desc');
       if (engDesc) {
-        engDesc.innerText = userProgress.completedTasks.includes("english_penalty_clear") ? "Cópia / Modo Treino (Sem XP)" : "Bata pênaltis respondendo perguntas de Inglês (+500 XP)";
+        engDesc.innerText = userProgress.completedTasks.includes("english_penalty_clear") ? "Cópia / Modo Treino (Sem XP)" : "Bata pênaltis nas quinas do gol (+500 XP)";
       }
     }
 
@@ -1059,11 +1069,13 @@
           ${isRepeated ? '<div style="color: var(--yellow-gold); font-size: 0.75rem; text-align: center; margin-bottom: 8px; font-family: var(--font-pixel);">🔄 Modo Treino (Cópia da Tarefa — Não concede XP)</div>' : ''}
           <div class="penalty-game-wrapper">
             <div id="penalty-question-board" class="penalty-question-board">Loading question...</div>
-            <div class="penalty-canvas-box">
+            <div class="penalty-canvas-box" id="penalty-canvas-box">
               <canvas id="penaltyCanvas" width="580" height="320"></canvas>
-            </div>
-            <div id="penalty-controls" class="penalty-controls-grid">
-              <!-- Alternativas renderizadas via JS nas 4 quinas -->
+              <!-- Botões com texto limpo nas 4 quinas internas da trave -->
+              <button id="btn-corner-0" class="corner-option-btn corner-tl" onclick="executePenaltyShot(0)"></button>
+              <button id="btn-corner-1" class="corner-option-btn corner-bl" onclick="executePenaltyShot(1)"></button>
+              <button id="btn-corner-2" class="corner-option-btn corner-tr" onclick="executePenaltyShot(2)"></button>
+              <button id="btn-corner-3" class="corner-option-btn corner-br" onclick="executePenaltyShot(3)"></button>
             </div>
           </div>
         `;
@@ -1081,19 +1093,32 @@
 
       currentPenaltyIndex = 0;
       penaltyScore = 0;
-      goalieX = 290;
       goalieSpeed = 1.8;
+      resetBallAndGoaliePosition();
+
+      if (penaltyLoopId) cancelAnimationFrame(penaltyLoopId);
+      runPenaltyLoop();
+      loadPenaltyQuestion();
+    }
+
+    function resetBallAndGoaliePosition() {
+      goalieX = 290;
+      goalieY = 145;
       goalieDirection = 1;
       isShooting = false;
       shotAnimProgress = 0;
       targetCorner = null;
       shotResultText = "";
+      isExploding = false;
+      explosionTimer = 0;
+      isGoalieAngry = false;
+      goalieAngryTimer = 0;
       goalieLaughTimer = 0;
-      ballPos = { x: 290, y: 280 };
+      goalieDiveState = null;
+      ballSmokeParticles = [];
 
-      if (penaltyLoopId) cancelAnimationFrame(penaltyLoopId);
-      runPenaltyLoop();
-      loadPenaltyQuestion();
+      // Reset rigoroso da bola na posição inicial (no pé do batedor)
+      ballPos = { x: 290, y: 280 };
     }
 
     function runPenaltyLoop() {
@@ -1103,29 +1128,42 @@
     }
 
     function updatePenaltyPhysics() {
-      if (!isShooting && goalieLaughTimer <= 0) {
-        // Goleiro movimenta-se continuamente da esquerda para a direita na linha do gol
+      // Movimento do Goleiro deslizando continuamente quando não estiver pulando/fazendo animação
+      if (!isShooting && goalieLaughTimer <= 0 && goalieAngryTimer <= 0 && !goalieDiveState) {
         goalieX += goalieSpeed * goalieDirection;
-        if (goalieX < 150 || goalieX > 430) {
+        if (goalieX < 165 || goalieX > 415) {
           goalieDirection *= -1;
         }
       }
 
+      // Animação de chute/trajeto da bola
       if (isShooting) {
         shotAnimProgress += 0.04;
-        // Animação de trajeto da bola do batedor (inferior) até a quina escolhida
         let startX = 290;
         let startY = 280;
         let endX = startX;
         let endY = startY;
 
-        if (targetCorner === 0) { endX = 175; endY = 95; }  // Top-Left
-        if (targetCorner === 1) { endX = 175; endY = 175; } // Bottom-Left
-        if (targetCorner === 2) { endX = 405; endY = 95; }  // Top-Right
-        if (targetCorner === 3) { endX = 405; endY = 175; } // Bottom-Right
+        if (targetCorner === 0) { endX = 185; endY = 95; }  // TL
+        if (targetCorner === 1) { endX = 185; endY = 175; } // BL
+        if (targetCorner === 2) { endX = 395; endY = 95; }  // TR
+        if (targetCorner === 3) { endX = 395; endY = 175; } // BR
 
         ballPos.x = startX + (endX - startX) * Math.min(1, shotAnimProgress);
         ballPos.y = startY + (endY - startY) * Math.min(1, shotAnimProgress);
+
+        // Se chute errado com bola explosiva (rastro de chamas)
+        if (isExploding) {
+          ballSmokeParticles.push({
+            x: ballPos.x + (Math.random() - 0.5) * 6,
+            y: ballPos.y + (Math.random() - 0.5) * 6,
+            vx: (Math.random() - 0.5) * 2,
+            vy: (Math.random() - 0.5) * 2,
+            size: Math.random() * 5 + 3,
+            color: Math.random() > 0.5 ? '#F97316' : '#EF4444',
+            life: 1
+          });
+        }
 
         if (shotAnimProgress >= 1.0) {
           isShooting = false;
@@ -1133,9 +1171,17 @@
         }
       }
 
-      if (goalieLaughTimer > 0) {
-        goalieLaughTimer--;
+      // Atualiza partículas da bola explosiva
+      for (let i = ballSmokeParticles.length - 1; i >= 0; i--) {
+        const p = ballSmokeParticles[i];
+        p.x += p.vx; p.y += p.vy; p.life -= 0.05;
+        if (p.life <= 0) ballSmokeParticles.splice(i, 1);
       }
+
+      // Timers de animações temporárias
+      if (explosionTimer > 0) explosionTimer--;
+      if (goalieLaughTimer > 0) goalieLaughTimer--;
+      if (goalieAngryTimer > 0) goalieAngryTimer--;
     }
 
     function drawPenaltyScene() {
@@ -1143,7 +1189,7 @@
       const w = penaltyCanvas.width;
       const h = penaltyCanvas.height;
 
-      // 1. Gramado de Estádio Retro (Pixel art verde em faixas)
+      // 1. Gramado Retro (Faixas verdes)
       penaltyCtx.fillStyle = '#15803D';
       penaltyCtx.fillRect(0, 0, w, h);
       penaltyCtx.fillStyle = '#16a34a';
@@ -1151,13 +1197,12 @@
         penaltyCtx.fillRect(0, y, w, 15);
       }
 
-      // 2. Trave do Gol (Perspectiva frontal/superior)
+      // 2. Trave do Gol (Perspectiva Frontal)
       penaltyCtx.strokeStyle = '#FFFFFF';
       penaltyCtx.lineWidth = 6;
-      // Poste Esquerdo, Poste Direito e Travessão Superior
       penaltyCtx.strokeRect(140, 70, 300, 140);
 
-      // Fundo da rede (linhas cruzadas em pixel art)
+      // Rede
       penaltyCtx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
       penaltyCtx.lineWidth = 1;
       for (let rx = 150; rx < 440; rx += 20) {
@@ -1167,64 +1212,119 @@
         penaltyCtx.beginPath(); penaltyCtx.moveTo(140, ry); penaltyCtx.lineTo(440, ry); penaltyCtx.stroke();
       }
 
-      // Marca da cal (Penalty spot)
+      // Marca da Cal (Marca do Pênalti)
       penaltyCtx.fillStyle = '#FFFFFF';
       penaltyCtx.fillRect(284, 275, 12, 6);
 
-      // 3. Goleiro (Personagem em pixel art deslizando na linha do gol)
-      penaltyCtx.fillStyle = '#FACC15'; // Camisa amarela
-      let goalieDrawY = 145;
-      let goalieH = 55;
-      let goalieW = 32;
+      // 3. Renderiza Goleiro em Pixel Art
+      penaltyCtx.save();
+      let gColor = '#FACC15'; // Amarelo
+      let gX = goalieX;
+      let gY = goalieY;
+      let gW = 32;
+      let gH = 55;
 
-      // Animações especiais do Goleiro
-      if (goalieLaughTimer > 0) {
-        // Goleiro Rindo (pulando levemente ou piscando)
-        goalieDrawY += (Math.floor(goalieLaughTimer / 5) % 2 === 0) ? -6 : 0;
+      // Animação: Goleiro Irritado (Fúria temporária ao sofrer Gol)
+      if (isGoalieAngry || goalieAngryTimer > 0) {
+        gColor = '#EF4444'; // Fica vermelho de raiva
+
+        // Fumaça saindo da cabeça
+        for (let i = 0; i < 2; i++) {
+          penaltyCtx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+          penaltyCtx.fillRect(gX + (Math.random() - 0.5) * 16, gY - 10 - Math.random() * 12, 6, 6);
+        }
       }
 
-      penaltyCtx.fillRect(goalieX - goalieW/2, goalieDrawY, goalieW, goalieH);
-      // Shorts e luvas do goleiro
-      penaltyCtx.fillStyle = '#1E293B';
-      penaltyCtx.fillRect(goalieX - goalieW/2 + 4, goalieDrawY + 38, 24, 14);
-      penaltyCtx.fillStyle = '#EF4444'; // Luvas
-      penaltyCtx.fillRect(goalieX - goalieW/2 - 4, goalieDrawY + 20, 8, 10);
-      penaltyCtx.fillRect(goalieX + goalieW/2 - 4, goalieDrawY + 20, 8, 10);
+      // Animação: Defesa do Goleiro (Pulo no alto ou agachado rasteiro)
+      if (goalieDiveState) {
+        if (goalieDiveState === 'up_left') { gX -= 40; gY -= 30; }
+        if (goalieDiveState === 'down_left') { gX -= 40; gY += 20; gH = 35; }
+        if (goalieDiveState === 'up_right') { gX += 40; gY -= 30; }
+        if (goalieDiveState === 'down_right') { gX += 40; gY += 20; gH = 35; }
+      }
 
-      // Se rindo, exibe texto pixel "LOL" ou "HA!" acima dele
+      // Animação: Goleiro Rindo (após o erro do jogador)
       if (goalieLaughTimer > 0) {
-        penaltyCtx.font = '8px "Press Start 2P"';
+        gY += (Math.floor(goalieLaughTimer / 6) % 2 === 0) ? -6 : 0;
+        penaltyCtx.font = '9px "Press Start 2P"';
         penaltyCtx.fillStyle = '#FACC15';
-        penaltyCtx.fillText("HA HA!", goalieX - 22, goalieDrawY - 10);
+        penaltyCtx.fillText("HA! HA!", gX - 24, gY - 12);
       }
 
-      // 4. Batedor (Jogador na parte inferior)
+      // Corpo do Goleiro
+      penaltyCtx.fillStyle = gColor;
+      penaltyCtx.fillRect(gX - gW/2, gY, gW, gH);
+
+      // Expressão Facial
+      penaltyCtx.fillStyle = '#000000';
+      if (isGoalieAngry || goalieAngryTimer > 0) {
+        // Olhos/Sobrancelhas de raiva >:(
+        penaltyCtx.fillRect(gX - 10, gY + 8, 6, 3);
+        penaltyCtx.fillRect(gX + 4, gY + 8, 6, 3);
+      } else {
+        penaltyCtx.fillRect(gX - 8, gY + 8, 4, 4);
+        penaltyCtx.fillRect(gX + 4, gY + 8, 4, 4);
+      }
+
+      // Luvas
+      penaltyCtx.fillStyle = '#EF4444';
+      penaltyCtx.fillRect(gX - gW/2 - 6, gY + 18, 8, 12);
+      penaltyCtx.fillRect(gX + gW/2 - 2, gY + 18, 8, 12);
+      penaltyCtx.restore();
+
+      // 4. Batedor (Jogador)
       const strikerX = 278;
       const strikerY = 280;
-      penaltyCtx.fillStyle = '#38BDF8'; // Camisa Azul
+      penaltyCtx.fillStyle = '#38BDF8';
       penaltyCtx.fillRect(strikerX, strikerY, 24, 35);
       penaltyCtx.fillStyle = '#0F172A';
       penaltyCtx.fillRect(strikerX + 4, strikerY + 22, 16, 13);
 
-      // 5. Bola
-      penaltyCtx.fillStyle = '#FFFFFF';
-      penaltyCtx.beginPath();
-      penaltyCtx.arc(ballPos.x, ballPos.y, 7, 0, Math.PI * 2);
-      penaltyCtx.fill();
-      penaltyCtx.strokeStyle = '#000';
-      penaltyCtx.lineWidth = 1;
-      penaltyCtx.stroke();
+      // 5. Partículas da Bola Explosiva
+      ballSmokeParticles.forEach(p => {
+        penaltyCtx.save();
+        penaltyCtx.globalAlpha = p.life;
+        penaltyCtx.fillStyle = p.color;
+        penaltyCtx.fillRect(p.x, p.y, p.size, p.size);
+        penaltyCtx.restore();
+      });
 
-      // 6. Texto de Resultado na Tela (Gol / Defesa)
-      if (shotResultText) {
+      // 6. Bola de Pênalti
+      if (!isExploding || explosionTimer > 0) {
+        penaltyCtx.fillStyle = isExploding ? '#F97316' : '#FFFFFF';
+        penaltyCtx.beginPath();
+        penaltyCtx.arc(ballPos.x, ballPos.y, 7, 0, Math.PI * 2);
+        penaltyCtx.fill();
+        penaltyCtx.strokeStyle = '#000';
+        penaltyCtx.lineWidth = 1;
+        penaltyCtx.stroke();
+      }
+
+      // Explosão ao chegar no destino em chutes incorretos opostos ao goleiro
+      if (isExploding && explosionTimer > 0) {
+        penaltyCtx.fillStyle = '#EF4444';
+        penaltyCtx.beginPath();
+        penaltyCtx.arc(ballPos.x, ballPos.y, 25, 0, Math.PI * 2);
+        penaltyCtx.fill();
+        penaltyCtx.fillStyle = '#FACC15';
+        penaltyCtx.beginPath();
+        penaltyCtx.arc(ballPos.x, ballPos.y, 14, 0, Math.PI * 2);
+        penaltyCtx.fill();
         penaltyCtx.font = '10px "Press Start 2P"';
-        penaltyCtx.fillStyle = shotResultText.includes("GOL") ? '#22C55E' : '#EF4444';
+        penaltyCtx.fillStyle = '#FFFFFF';
+        penaltyCtx.fillText("BOOM!", ballPos.x - 22, ballPos.y - 30);
+      }
+
+      // Feedback em Texto
+      if (shotResultText) {
+        penaltyCtx.font = '9px "Press Start 2P"';
+        penaltyCtx.fillStyle = shotResultText.includes("GOL!") ? '#22C55E' : '#EF4444';
         penaltyCtx.textAlign = 'center';
         penaltyCtx.fillText(shotResultText, w / 2, 45);
         penaltyCtx.textAlign = 'left';
       }
 
-      // Placar e Dificuldade (Velocidade) no topo
+      // Placar e Velocidade
       penaltyCtx.font = '7px "Press Start 2P"';
       penaltyCtx.fillStyle = '#FFFFFF';
       penaltyCtx.fillText(`GOLS: ${penaltyScore}/${englishPenaltyQuestions.length}`, 15, 20);
@@ -1240,91 +1340,93 @@
       const q = englishPenaltyQuestions[currentPenaltyIndex];
       document.getElementById('penalty-question-board').innerText = `Q${currentPenaltyIndex + 1}: ${q.question}`;
 
-      const controlsGrid = document.getElementById('penalty-controls');
-      controlsGrid.innerHTML = '';
-
-      // Mapeamento das 4 quinas do gol com as alternativas
-      const cornerNames = [
-        "↖ Canto Superior Esquerdo",
-        "↙ Canto Inferior Esquerdo",
-        "↗ Canto Superior Direito",
-        "↘ Canto Inferior Direito"
-      ];
-
-      q.options.forEach((opt, idx) => {
-        const btn = document.createElement('button');
-        btn.className = 'penalty-btn';
-        btn.innerText = `${cornerNames[idx]}\n[ ${opt} ]`;
-        btn.disabled = isShooting || goalieLaughTimer > 0;
-        btn.onclick = () => executePenaltyShot(idx, idx === q.answer);
-        controlsGrid.appendChild(btn);
-      });
+      // Exibe apenas o texto limpo da alternativa dentro das 4 quinas
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`btn-corner-${i}`);
+        btn.innerText = q.options[i];
+        btn.disabled = isShooting || goalieLaughTimer > 0 || goalieAngryTimer > 0;
+      }
     }
 
-    function executePenaltyShot(cornerIdx, isCorrectAnswer) {
-      if (isShooting || goalieLaughTimer > 0) return;
+    function executePenaltyShot(cornerIdx) {
+      if (isShooting || goalieLaughTimer > 0 || goalieAngryTimer > 0) return;
+      
+      const q = englishPenaltyQuestions[currentPenaltyIndex];
+      const isCorrectOption = (cornerIdx === q.answer);
+
       isShooting = true;
       shotAnimProgress = 0;
       targetCorner = cornerIdx;
       shotResultText = "";
       ballPos = { x: 290, y: 280 };
 
-      // Desativa os botões durante o chute
-      document.querySelectorAll('.penalty-btn').forEach(b => b.disabled = true);
+      // Verifica se o goleiro está no mesmo lado da quina escolhida
+      let isSameSideOfGoalie = (goalieX < 290 && (cornerIdx === 0 || cornerIdx === 1)) || (goalieX >= 290 && (cornerIdx === 2 || cornerIdx === 3));
+
+      // Se errou e o chute foi no lado oposto ao goleiro -> Bola em chamas e explode
+      if (!isCorrectOption && !isSameSideOfGoalie) {
+        isExploding = true;
+      } else {
+        isExploding = false;
+      }
+
+      // Desativa os botões durante o voo da bola
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`btn-corner-${i}`).disabled = true;
+      }
     }
 
     function evaluatePenaltyOutcome() {
       const q = englishPenaltyQuestions[currentPenaltyIndex];
-      // Verifica se o goleiro está cobrindo a quina escolhida no momento do chute
-      // Coordenadas X aproximadas das quinas no canvas:
-      // Esquerda (0 e 1): X < 290 | Direita (2 e 3): X >= 290
-      let goalieCoveringSide = (goalieX < 290) ? 0 : 2; // Simplificação de lado coberto
-      let chosenSide = (targetCorner === 0 || targetCorner === 1) ? 0 : 2;
-
-      let isGoal = false;
       const isCorrectOption = (targetCorner === q.answer);
+      let isSameSideOfGoalie = (goalieX < 290 && (targetCorner === 0 || targetCorner === 1)) || (goalieX >= 290 && (targetCorner === 2 || targetCorner === 3));
 
-      // Regra de Defesa: Se a resposta estiver errada OU se o goleiro estiver no mesmo lado do chute
-      if (isCorrectOption && goalieX > 185 && goalieX < 395) {
-        // Checagem exata se o goleiro pegou na quina correspondente
-        let goalieBlockSide = (goalieX < 240) ? 0 : (goalieX > 350 ? 2 : 1);
-        if (goalieBlockSide === chosenSide || Math.abs(goalieX - (targetCorner < 2 ? 185 : 395)) < 40) {
-          isGoal = false;
-        } else {
-          isGoal = true;
-        }
-      } else if (isCorrectOption) {
-        isGoal = true;
-      } else {
-        isGoal = false;
-      }
-
-      if (isGoal) {
+      if (isCorrectOption) {
+        // GOL VALIDADE
         penaltyScore++;
-        shotResultText = "⚽ GOL! (+1)";
+        shotResultText = "⚽ GOL!";
         showToast("⚽ Golaço! Resposta correta!");
 
-        // Aumento de Dificuldade: A velocidade do goleiro aumenta levemente a cada gol marcado
+        // Animação do Goleiro Irritado (ficando vermelho e soltando fumaça)
+        isGoalieAngry = true;
+        goalieAngryTimer = 70;
+
+        // Progressão de dificuldade: Velocidade do goleiro aumenta levemente a cada acerto
         goalieSpeed += 0.4;
       } else {
-        shotResultText = "❌ DEFESA / ERRO!";
-        showToast("❌ O goleiro defendeu ou a resposta estava incorreta!");
+        // RESPOSTA INCORRETA
+        if (isSameSideOfGoalie) {
+          // Goleiro Defende no mesmo lado
+          shotResultText = "❌ DEFESA DO GOLEIRO!";
+          showToast("❌ Defesa do goleiro!");
 
-        // Em caso de erro, a velocidade do goleiro NÃO aumenta (mantém a mesma)
-        // Goleiro executa animação rindo do jogador
-        goalieLaughTimer = 60; // 60 frames de animação rindo
+          if (targetCorner === 0) goalieDiveState = 'up_left';
+          if (targetCorner === 1) goalieDiveState = 'down_left';
+          if (targetCorner === 2) goalieDiveState = 'up_right';
+          if (targetCorner === 3) goalieDiveState = 'down_right';
+        } else {
+          // Lado oposto ao goleiro + Erro: "O gol foi anulado" + Bola Explosiva + Goleiro Rindo
+          shotResultText = "💥 O GOL FOI ANULADO!";
+          explosionTimer = 35;
+          goalieLaughTimer = 70;
+          showToast("💥 O gol foi anulado! Resposta incorreta.");
+        }
+
+        // Em caso de erro, a velocidade do goleiro NÃO aumenta
       }
 
       setTimeout(() => {
-        shotResultText = "";
+        // Reset da bola e posições para a próxima pergunta
+        resetBallAndGoaliePosition();
         currentPenaltyIndex++;
         loadPenaltyQuestion();
-      }, 1500);
+      }, 1600);
     }
 
     function finishPenaltyGame() {
-      const controlsGrid = document.getElementById('penalty-controls');
-      controlsGrid.innerHTML = '';
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`btn-corner-${i}`).classList.add('hidden');
+      }
       document.getElementById('penalty-question-board').innerText = "PENALTY SHOOTOUT FINISHED!";
 
       const isFirstAttempt = !userProgress.completedTasks.includes("english_penalty_clear");
@@ -1338,25 +1440,28 @@
         updateDashboard();
       }
 
-      const summaryCard = document.createElement('div');
-      summaryCard.style.gridColumn = "span 2";
-      summaryCard.style.textAlign = "center";
-      summaryCard.style.fontFamily = "var(--font-pixel)";
-      summaryCard.style.fontSize = "0.7rem";
-      summaryCard.style.color = "#FACC15";
-      summaryCard.innerHTML = `
-        <p style="margin-bottom: 8px;">FIM DE JOGO!</p>
-        <p style="color: #22C55E; margin-bottom: 8px;">Gols Marcados: ${penaltyScore} / ${englishPenaltyQuestions.length}</p>
-        ${isFirstAttempt && penaltyScore >= 3 ? `<p style="color: #38BDF8;">🎉 Você ganhou +${earnedXP} XP!</p>` : `<p style="color: var(--text-muted);">🔄 Modo Treino (0 XP).</p>`}
-      `;
-      controlsGrid.appendChild(summaryCard);
+      const canvasBox = document.getElementById('penalty-canvas-box');
+      const finishOverlay = document.createElement('div');
+      finishOverlay.style.position = "absolute";
+      finishOverlay.style.top = "0";
+      finishOverlay.style.left = "0";
+      finishOverlay.style.width = "100%";
+      finishOverlay.style.height = "100%";
+      finishOverlay.style.background = "rgba(15, 23, 42, 0.95)";
+      finishOverlay.style.display = "flex";
+      finishOverlay.style.flexDirection = "column";
+      finishOverlay.style.justifyContent = "center";
+      finishOverlay.style.alignItems = "center";
+      finishOverlay.style.gap = "14px";
+      finishOverlay.style.zIndex = "50";
 
-      const restartBtn = document.createElement('button');
-      restartBtn.className = 'penalty-btn';
-      restartBtn.style.gridColumn = "span 2";
-      restartBtn.innerText = "🔄 Jogar Novamente";
-      restartBtn.onclick = () => initPenaltyGame();
-      controlsGrid.appendChild(restartBtn);
+      finishOverlay.innerHTML = `
+        <h2 style="color: var(--yellow-gold); font-family: var(--font-pixel); font-size: 0.9rem;">FIM DA DISPUTA DE PÊNALTIS!</h2>
+        <p style="color: var(--green-lime); font-family: var(--font-pixel); font-size: 0.75rem;">Gols Marcados: ${penaltyScore} / ${englishPenaltyQuestions.length}</p>
+        ${isFirstAttempt && penaltyScore >= 3 ? `<p style="color: var(--blue-brand); font-family: var(--font-pixel); font-size: 0.7rem;">🎉 Você ganhou +${earnedXP} XP!</p>` : `<p style="color: var(--text-muted); font-family: var(--font-pixel); font-size: 0.65rem;">🔄 Modo Treino (0 XP).</p>`}
+        <button class="btn-push btn-push-green" style="font-family: var(--font-pixel); font-size: 0.7rem;" onclick="initPenaltyGame()">🔄 Jogar Novamente</button>
+      `;
+      canvasBox.appendChild(finishOverlay);
     }
 
     // --- GAME ZUMBIS MATEMÁTICA ---
@@ -1712,9 +1817,7 @@
     }
 
     // --- RENDERIZAR CORRIDA TOP-DOWN (PORTUGUÊS) ---
-    function initTopDownRaceGame() {
-      // Stub caso o usuário abra a aba de Português
-    }
+    function initTopDownRaceGame() {}
 
     // --- ANIMAÇÕES RANKING ---
     function renderRanking() {
