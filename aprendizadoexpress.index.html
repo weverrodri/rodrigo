@@ -14,9 +14,7 @@
     :root {
       --bg-midnight: #0F172A;
       --bg-slate: #1E293B;
-      --bg-card-hover: #334155;
       --border-color: #334155;
-
       --green-lime: #22C55E;
       --green-lime-dark: #15803D;
       --purple-electric: #8B5CF6;
@@ -24,10 +22,8 @@
       --orange-brand: #F97316;
       --blue-brand: #38BDF8;
       --red-alert: #EF4444;
-
       --text-white: #FFFFFF;
       --text-muted: #CBD5E1;
-
       --font-main: 'Plus Jakarta Sans', sans-serif;
       --font-pixel: 'Press Start 2P', monospace;
       --radius-lg: 24px;
@@ -53,8 +49,8 @@
       border-radius: 50%; border: 2px solid var(--border-color); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6); position: relative; overflow: hidden;
     }
     .custom-badge-icon { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
-    .crown-bg { position: absolute; font-size: 1.5rem; top: 2px; z-index: 1; filter: drop-shadow(0 0 2px rgba(250, 204, 21, 0.5)); }
-    .rose-fg { position: absolute; font-size: 1.3rem; bottom: 2px; z-index: 2; filter: hue-rotate(180deg) saturate(3) brightness(1.2) drop-shadow(0 2px 4px rgba(0,0,0,0.8)); }
+    .crown-bg { position: absolute; font-size: 1.5rem; top: 2px; z-index: 1; }
+    .rose-fg { position: absolute; font-size: 1.3rem; bottom: 2px; z-index: 2; filter: hue-rotate(180deg) saturate(3) brightness(1.2); }
     .logo-text { font-size: 1.4rem; font-weight: 800; }
     .logo-text span { color: var(--blue-brand); }
     .nav-links { display: flex; gap: 24px; list-style: none; }
@@ -79,10 +75,7 @@
     .hero-content h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
     .hero-content h1 span { color: var(--blue-brand); }
     .hero-content p { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 24px; }
-    .project-proposal-box { background-color: var(--bg-slate); border: 2px dashed var(--blue-brand); border-radius: var(--radius-md); padding: 18px 22px; margin-top: 20px; }
-    .project-proposal-box h4 { color: var(--blue-brand); font-size: 1.1rem; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
-    .project-proposal-box p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 0; }
-    .game-card-preview { background: linear-gradient(145deg, var(--bg-slate), #0F172A); border: 2px solid var(--blue-brand); border-radius: var(--radius-lg); padding: 30px; text-align: center; box-shadow: 0 10px 30px rgba(56, 189, 248, 0.2); }
+    .game-card-preview { background: linear-gradient(145deg, var(--bg-slate), #0F172A); border: 2px solid var(--blue-brand); border-radius: var(--radius-lg); padding: 30px; text-align: center; }
 
     /* LAYOUT MATÉRIAS */
     .app-layout { max-width: 1100px; margin: 30px auto; padding: 0 24px; display: grid; grid-template-columns: 1fr 340px; gap: 32px; width: 100%; }
@@ -98,47 +91,47 @@
     .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .stat-box { background: var(--bg-midnight); border: 2px solid var(--border-color); border-radius: var(--radius-md); padding: 12px 16px; display: flex; align-items: center; gap: 12px; }
 
-    /* BADGES DE CLASSIFICAÇÃO */
-    .rank-badge { display: inline-block; padding: 4px 12px; border-radius: var(--radius-pill); font-size: 0.8rem; font-weight: 800; text-transform: uppercase; transition: all 0.3s ease; }
+    /* BADGES */
+    .rank-badge { display: inline-block; padding: 4px 12px; border-radius: var(--radius-pill); font-size: 0.8rem; font-weight: 800; text-transform: uppercase; }
     .rank-novato { background: rgba(203, 213, 225, 0.2); color: #CBD5E1; border: 1px solid #CBD5E1; }
     .rank-aprendiz { background: rgba(34, 197, 94, 0.2); color: var(--green-lime); border: 1px solid var(--green-lime); }
-    .rank-intermediario { background: rgba(56, 189, 248, 0.2); color: #38BDF8; border: 1px solid #38BDF8; }
-    .rank-avancado { background: rgba(139, 92, 246, 0.2); color: var(--purple-electric); border: 1px solid var(--purple-electric); }
-    .rank-imperador { background: rgba(250, 204, 21, 0.2); color: var(--yellow-gold); border: 1px solid var(--yellow-gold); }
 
-    /* ESTILOS MINI-GAME CORRIDA TOP-DOWN 2D */
-    .arcade-game-wrapper {
-      display: flex; flex-direction: column; align-items: center; gap: 12px; background: #000; padding: 14px;
-      border: 4px solid var(--border-color); border-radius: var(--radius-md); position: relative;
+    /* ESTILOS MINI-GAME PÊNALTIS INGLÊS */
+    .penalty-game-wrapper {
+      display: flex; flex-direction: column; align-items: center; gap: 12px; background: #000; padding: 16px;
+      border: 4px solid var(--border-color); border-radius: var(--radius-md); position: relative; max-width: 620px; margin: 0 auto;
     }
-    .arcade-canvas-container { position: relative; border: 3px solid var(--blue-brand); background: #0F172A; overflow: hidden; width: 640px; height: 400px; }
-    canvas#arcadeCanvas { display: block; image-rendering: pixelated; }
-    .arcade-hud {
-      display: flex; justify-content: space-between; width: 100%; max-width: 640px; font-family: var(--font-pixel);
-      font-size: 0.72rem; color: var(--yellow-gold); background: #1E293B; padding: 10px 14px; border-radius: 6px; border: 2px solid var(--border-color);
+    .penalty-question-board {
+      background: #1E293B; border: 2px solid var(--blue-brand); color: var(--text-white); padding: 12px 20px;
+      border-radius: var(--radius-md); font-size: 0.95rem; font-weight: 700; text-align: center; width: 100%; box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
     }
-    .arcade-controls-hint { font-size: 0.72rem; color: var(--text-muted); text-align: center; font-family: var(--font-pixel); }
-    .arcade-quiz-overlay {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95);
-      backdrop-filter: blur(8px); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 24px; z-index: 50; text-align: center;
+    .penalty-canvas-box {
+      position: relative; border: 3px solid var(--green-lime); background: #0F172A; overflow: hidden; width: 580px; height: 320px;
     }
-    .arcade-quiz-card { background: var(--bg-slate); border: 3px solid var(--purple-electric); border-radius: var(--radius-lg); padding: 24px; width: 100%; max-width: 520px; box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3); }
-    .arcade-quiz-options { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 16px; }
-    .arcade-option-btn {
-      background-color: var(--bg-midnight); color: var(--text-white); border: 2px solid var(--border-color); padding: 12px 16px;
-      border-radius: var(--radius-md); font-weight: 700; font-size: 0.9rem; cursor: pointer; text-align: left; transition: all 0.2s;
-    }
-    .arcade-option-btn:hover { background-color: var(--purple-electric); border-color: var(--purple-electric); color: #fff; }
+    canvas#penaltyCanvas { display: block; image-rendering: pixelated; width: 100%; height: 100%; }
 
-    /* MODAIS & OUTROS */
+    /* BOTÕES NAS QUINAS DO GOL */
+    .corner-option-btn {
+      position: absolute; z-index: 20; background: rgba(15, 23, 42, 0.9); color: var(--yellow-gold);
+      border: 2px solid var(--yellow-gold); padding: 8px 14px; border-radius: 8px; font-weight: 800; font-size: 0.75rem;
+      cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.5); font-family: var(--font-pixel);
+      max-width: 140px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .corner-option-btn:hover { background-color: var(--yellow-gold); color: #000; transform: scale(1.06); }
+    
+    /* Posições exatas nas quinas correspondentes ao gol desenhado no canvas */
+    .corner-tl { top: 25px; left: 25px; }   /* Quina Superior Esquerda */
+    .corner-bl { bottom: 85px; left: 25px; } /* Quina Inferior Esquerda */
+    .corner-tr { top: 25px; right: 25px; }  /* Quina Superior Direita */
+    .corner-br { bottom: 85px; right: 25px;} /* Quina Inferior Direita */
+
+    /* MODAIS */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); z-index: 1000; display: flex; justify-content: center; align-items: center; }
     .modal-card { background: var(--bg-midnight); border: 2px solid var(--border-color); border-radius: var(--radius-lg); width: 100%; max-width: 680px; padding: 36px; max-height: 90vh; overflow-y: auto; }
     .auth-card { background-color: var(--bg-slate); border: 2px solid var(--border-color); border-radius: var(--radius-lg); padding: 36px; width: 100%; max-width: 460px; }
     .form-group { margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; }
     .form-group label { font-weight: 700; font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); }
-    .input-wrapper { position: relative; display: flex; align-items: center; }
-    .input-wrapper i { position: absolute; left: 16px; color: var(--text-muted); }
-    .input-wrapper input, .input-wrapper select { width: 100%; background-color: var(--bg-midnight); border: 2px solid var(--border-color); border-radius: var(--radius-md); padding: 14px 16px 14px 48px; color: var(--text-white); outline: none; font-weight: 600; }
+    .input-wrapper input { width: 100%; background-color: var(--bg-midnight); border: 2px solid var(--border-color); border-radius: var(--radius-md); padding: 14px 16px; color: var(--text-white); outline: none; font-weight: 600; }
     .toast-container { position: fixed; bottom: 30px; right: 30px; z-index: 2000; }
     .toast { background: var(--green-lime); color: #052E16; padding: 16px 24px; border-radius: var(--radius-md); font-weight: 800; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
 
@@ -177,7 +170,6 @@
       <div class="nav-actions">
         <div id="nav-logged-out-actions" class="nav-actions">
           <button class="btn-push btn-push-dark" style="padding: 8px 16px; font-size: 0.85rem;" onclick="openAuthModal('login')">Entrar</button>
-          <button class="btn-push btn-push-orange" style="padding: 8px 16px; font-size: 0.85rem;" onclick="openAuthModal('register')">Cadastrar</button>
         </div>
         <div id="nav-logged-in-actions" class="nav-actions hidden">
           <span id="nav-user-badge" style="font-weight: 700; color: var(--blue-brand); font-size: 0.9rem;"></span>
@@ -214,13 +206,13 @@
         <p style="color: var(--text-muted); margin-bottom: 30px;">Escolha uma disciplina para realizar as atividades e evoluir sua classificação.</p>
 
         <div class="subjects-list">
-          <div class="subject-card" onclick="openSubjectModal('Português')">
-            <div class="subject-icon" style="background: rgba(139, 92, 246, 0.15); color: var(--purple-electric);">
-              <i class="fa-solid fa-flag-checkered"></i>
+          <div class="subject-card" onclick="openSubjectModal('Inglês')">
+            <div class="subject-icon" style="background: rgba(250, 204, 21, 0.15); color: var(--yellow-gold);">
+              <i class="fa-solid fa-futbol"></i>
             </div>
             <div class="subject-info">
-              <h3>Português (Corrida Arcade Top-Down)</h3>
-              <p id="port-card-desc">Corrida retro 2D pixel art com 3 carros, obstáculos no asfalto e Quiz (+500 XP)</p>
+              <h3>Inglês (Mini-Game Pênaltis nas Quinas)</h3>
+              <p id="english-card-desc">Bata pênaltis escolhendo as quinas do gol (+500 XP)</p>
             </div>
             <i class="fa-solid fa-chevron-right" style="color: var(--text-muted);"></i>
           </div>
@@ -263,24 +255,20 @@
         <h3 style="margin-bottom: 16px;">Entrar na Conta</h3>
         <div class="form-group">
           <label>E-mail</label>
-          <div class="input-wrapper">
-            <input type="email" id="login-email" placeholder="seu@email.com" required>
-          </div>
+          <div class="input-wrapper"><input type="email" id="login-email" placeholder="seu@email.com" required></div>
         </div>
         <div class="form-group">
           <label>Senha</label>
-          <div class="input-wrapper">
-            <input type="password" id="login-password" placeholder="••••••••" required>
-          </div>
+          <div class="input-wrapper"><input type="password" id="login-password" placeholder="••••••••" required></div>
         </div>
         <button type="submit" class="btn-push btn-push-green" style="width: 100%;">Acessar Conta</button>
       </form>
     </div>
   </div>
 
-  <!-- MODAL JOGO CORRIDA DE PORTUGUÊS -->
+  <!-- MODAL JOGO PÊNALTIS DE INGLÊS -->
   <div class="modal-overlay hidden" id="modal-subject">
-    <div class="modal-card" style="max-width: 720px;">
+    <div class="modal-card" style="max-width: 680px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
         <h3 id="modal-subject-title">Atividades</h3>
         <button class="btn-push btn-push-dark" style="padding: 6px 12px;" onclick="closeModal('modal-subject')">✕</button>
@@ -306,35 +294,34 @@
     let currentUser = JSON.parse(localStorage.getItem('session_user')) || defaultAccounts[0];
     let userProgress = JSON.parse(localStorage.getItem('progress_' + currentUser.email)) || { xp: 0, completedTasks: [] };
 
-    const portugueseQuizBank = [
-      { question: "Qual palavra está escrita de forma CORRETA?", options: ["Exceção", "Esceção", "Exessão", "Essessão"], answer: 0 },
-      { question: "Qual é a classe gramatical da palavra 'rapidamente'?", options: ["Substantivo", "Adjetivo", "Advérbio", "Verbo"], answer: 2 },
-      { question: "Assinale a alternativa com pronome oblíquo átono:", options: ["O cão correu rápido.", "Entreguei-lhe o livro.", "Nós fomos ao parque.", "Ele comprou uma casa."], answer: 1 },
-      { question: "Qual o plural da palavra 'cidadão'?", options: ["Cidadãos", "Cidadões", "Cidadães", "Cidadãoes"], answer: 0 },
-      { question: "Identifique o sujeito da frase: 'Deram a notícia mais cedo.'", options: ["Simples", "Composto", "Indeterminado", "Oculto"], answer: 2 }
+    const englishPenaltyQuestions = [
+      { question: "What is the past tense of 'go'?", options: ["Went", "Goed", "Gone", "Going"], answer: 0 },
+      { question: "Translate to English: 'Livro'", options: ["Pen", "Book", "Table", "Apple"], answer: 1 },
+      { question: "Complete: 'She ___ a student.'", options: ["am", "are", "is", "be"], answer: 2 },
+      { question: "What is the plural of 'child'?", options: ["Childs", "Children", "Childes", "Childrens"], answer: 1 }
     ];
 
-    // VARIÁVEIS DO MINI-GAME CORRIDA TOP-DOWN ARCADE
-    let arcadeCanvas, arcadeCtx;
-    let arcadeLoopId = null;
-    let arcadeRunning = false;
-    let arcadePaused = true;
-    let gameplayTimer = 10.00;
-    let gameplayInterval = null;
-    let totalCorrectQuizCount = 0;
-    let currentQuizIndex = 0;
-
-    let trackLength = 4000;
-    let cameraY = 0;
-    let playerArcadeCar = { x: 320, y: 340, speed: 0, maxSpeed: 5.5, width: 32, height: 50, color: '#22C55E', slowTimer: 0 };
-    
-    // IA Bots: Fluxo contínuo sem teletransporte
-    let arcadeBots = [
-      { name: "Bot 1", x: 250, y: 2600, speed: 3.2, maxSpeed: 5.2, width: 32, height: 50, color: '#EF4444', slowTimer: 0 },
-      { name: "Bot 2", x: 370, y: 1500, speed: 3.0, maxSpeed: 5.0, width: 32, height: 50, color: '#F97316', slowTimer: 0 }
-    ];
-    let obstacles = [];
-    let activeKeys = {};
+    // VARIÁVEIS MINI-GAME PÊNALTIS INGLÊS
+    let penaltyCanvas, penaltyCtx;
+    let penaltyLoopId = null;
+    let currentPenaltyIndex = 0;
+    let penaltyScore = 0;
+    let goalieX = 290;
+    let goalieY = 145;
+    let goalieSpeed = 1.8;
+    let goalieDirection = 1;
+    let isShooting = false;
+    let shotAnimProgress = 0;
+    let targetCorner = null; 
+    let shotResultText = "";
+    let isExploding = false;
+    let explosionTimer = 0;
+    let isGoalieAngry = false;
+    let goalieAngryTimer = 0;
+    let goalieLaughTimer = 0;
+    let goalieDiveState = null; 
+    let ballPos = { x: 290, y: 280 };
+    let ballSmokeParticles = [];
 
     window.onload = function() {
       updateUserSessionUI();
@@ -379,357 +366,300 @@
     }
 
     function closeModal(id) {
-      if (id === 'modal-subject') stopArcadeGame();
+      if (id === 'modal-subject') {
+        if (penaltyLoopId) { cancelAnimationFrame(penaltyLoopId); penaltyLoopId = null; }
+      }
       document.getElementById(id).classList.add('hidden');
     }
 
     function openSubjectModal(subject) {
       document.getElementById('modal-subject-title').innerText = subject;
       const container = document.getElementById('tasks-container');
-      const isRepeated = userProgress.completedTasks.includes("port_arcade_clear");
+      const isRepeated = userProgress.completedTasks.includes("english_penalty_clear");
 
       container.innerHTML = `
-        ${isRepeated ? '<div style="color: var(--yellow-gold); font-size: 0.85rem; text-align: center; margin-bottom: 8px;">🔄 Modo Treino (Sem concede XP)</div>' : ''}
-        <div class="arcade-game-wrapper">
-          <div class="arcade-hud">
-            <span id="arcade-hud-pos">POSIÇÃO: 3º / 3</span>
-            <span id="arcade-hud-speed">VELOCIDADE: 0 KM/H</span>
-            <span id="arcade-hud-timer">TEMPO LIVRE: 10.00s</span>
+        ${isRepeated ? '<div style="color: var(--yellow-gold); font-size: 0.75rem; text-align: center; margin-bottom: 8px; font-family: var(--font-pixel);">🔄 Modo Treino (Sem XP)</div>' : ''}
+        <div class="penalty-game-wrapper">
+          <div id="penalty-question-board" class="penalty-question-board">Loading question...</div>
+          <div class="penalty-canvas-box" id="penalty-canvas-box">
+            <canvas id="penaltyCanvas" width="580" height="320"></canvas>
+            <!-- Botões posicionados exatamente nas 4 quinas do gol -->
+            <button id="btn-corner-0" class="corner-option-btn corner-tl" onclick="executePenaltyShot(0)"></button>
+            <button id="btn-corner-1" class="corner-option-btn corner-bl" onclick="executePenaltyShot(1)"></button>
+            <button id="btn-corner-2" class="corner-option-btn corner-tr" onclick="executePenaltyShot(2)"></button>
+            <button id="btn-corner-3" class="corner-option-btn corner-br" onclick="executePenaltyShot(3)"></button>
           </div>
-          <div class="arcade-canvas-container">
-            <canvas id="arcadeCanvas" width="640" height="400"></canvas>
-            <div id="arcade-quiz-overlay" class="arcade-quiz-overlay">
-              <div class="arcade-quiz-card">
-                <h3 style="color: var(--purple-electric); margin-bottom: 12px; font-size: 1.1rem;"><i class="fa-solid fa-pause"></i> PAUSA: QUIZ DE PORTUGUÊS</h3>
-                <p id="arcade-quiz-question" style="font-size: 0.95rem; margin-bottom: 16px; color: var(--text-white); line-height: 1.4;">Carregando pergunta...</p>
-                <div id="arcade-quiz-options" class="arcade-quiz-options"></div>
-              </div>
-            </div>
-          </div>
-          <div class="arcade-controls-hint">🎮 WASD: W (Acelerar) | S (Frear) | A (Esquerda) | D (Direita)</div>
         </div>
       `;
       document.getElementById('modal-subject').classList.remove('hidden');
-      initArcadeRacingGame();
+      initPenaltyGame();
     }
 
-    // --- CORRIDA ARCADE ---
-    function initArcadeRacingGame() {
-      arcadeCanvas = document.getElementById('arcadeCanvas');
-      if (!arcadeCanvas) return;
-      arcadeCtx = arcadeCanvas.getContext('2d');
+    // --- MINI-GAME PÊNALTIS ---
+    function initPenaltyGame() {
+      penaltyCanvas = document.getElementById('penaltyCanvas');
+      if (!penaltyCanvas) return;
+      penaltyCtx = penaltyCanvas.getContext('2d');
 
-      arcadeRunning = true;
-      arcadePaused = true;
-      gameplayTimer = 10.00;
-      totalCorrectQuizCount = 0;
-      currentQuizIndex = 0;
+      currentPenaltyIndex = 0;
+      penaltyScore = 0;
+      goalieSpeed = 1.8;
 
-      trackLength = 4000;
-      cameraY = trackLength - 400;
-      playerArcadeCar = { x: 320, y: 340, speed: 0, maxSpeed: 5.5, width: 32, height: 50, color: '#22C55E', slowTimer: 0 };
+      const existingOverlay = document.getElementById('penalty-finish-overlay');
+      if (existingOverlay) existingOverlay.remove();
 
-      arcadeBots = [
-        { name: "Bot 1", x: 250, y: 2600, speed: 3.2, maxSpeed: 5.2, width: 32, height: 50, color: '#EF4444', slowTimer: 0 },
-        { name: "Bot 2", x: 370, y: 1500, speed: 3.0, maxSpeed: 5.0, width: 32, height: 50, color: '#F97316', slowTimer: 0 }
-      ];
-
-      obstacles = [];
-      for (let pos = 800; pos < trackLength - 300; pos += 350) {
-        let typeRand = Math.random();
-        let type = typeRand < 0.35 ? 'pneu' : (typeRand < 0.7 ? 'buraco' : 'pedra');
-        let laneX = 180 + Math.random() * 280;
-        obstacles.push({ x: laneX, y: pos, type: type, width: 36, height: 36 });
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`btn-corner-${i}`);
+        if (btn) btn.classList.remove('hidden');
       }
 
-      activeKeys = {};
-      window.addEventListener('keydown', handleArcadeKeyDown);
-      window.addEventListener('keyup', handleArcadeKeyUp);
+      resetBallAndGoaliePosition();
 
-      if (arcadeLoopId) cancelAnimationFrame(arcadeLoopId);
-      runArcadeGameLoop();
-      showNextArcadeQuiz();
+      if (penaltyLoopId) cancelAnimationFrame(penaltyLoopId);
+      runPenaltyLoop();
+      loadPenaltyQuestion();
     }
 
-    function stopArcadeGame() {
-      arcadeRunning = false;
-      arcadePaused = false;
-      if (arcadeLoopId) cancelAnimationFrame(arcadeLoopId);
-      if (gameplayInterval) clearInterval(gameplayInterval);
-      window.removeEventListener('keydown', handleArcadeKeyDown);
-      window.removeEventListener('keyup', handleArcadeKeyUp);
+    function resetBallAndGoaliePosition() {
+      goalieX = 290;
+      goalieY = 145;
+      goalieDirection = 1;
+      isShooting = false;
+      shotAnimProgress = 0;
+      targetCorner = null;
+      shotResultText = "";
+      isExploding = false;
+      explosionTimer = 0;
+      isGoalieAngry = false;
+      goalieAngryTimer = 0;
+      goalieLaughTimer = 0;
+      goalieDiveState = null;
+      ballSmokeParticles = [];
+      ballPos = { x: 290, y: 280 };
     }
 
-    function handleArcadeKeyDown(e) {
-      const k = e.key.toLowerCase();
-      if (['w', 'a', 's', 'd'].includes(k)) { activeKeys[k] = true; }
-    }
-    function handleArcadeKeyUp(e) {
-      const k = e.key.toLowerCase();
-      activeKeys[k] = false;
+    function runPenaltyLoop() {
+      updatePenaltyPhysics();
+      drawPenaltyScene();
+      penaltyLoopId = requestAnimationFrame(runPenaltyLoop);
     }
 
-    function showNextArcadeQuiz() {
-      arcadePaused = true;
-      if (gameplayInterval) clearInterval(gameplayInterval);
+    function updatePenaltyPhysics() {
+      if (!isShooting && goalieLaughTimer <= 0 && goalieAngryTimer <= 0 && !goalieDiveState) {
+        goalieX += goalieSpeed * goalieDirection;
+        if (goalieX < 165 || goalieX > 415) goalieDirection *= -1;
+      }
 
-      if (currentQuizIndex >= portugueseQuizBank.length) currentQuizIndex = 0;
-      const q = portugueseQuizBank[currentQuizIndex];
-      const overlay = document.getElementById('arcade-quiz-overlay');
-      const qText = document.getElementById('arcade-quiz-question');
-      const qOptions = document.getElementById('arcade-quiz-options');
+      if (isShooting) {
+        shotAnimProgress += 0.04;
+        let startX = 290, startY = 280;
+        let endX = startX, endY = startY;
 
-      if (!overlay) return;
-      qText.innerText = q.question;
-      qOptions.innerHTML = '';
+        if (targetCorner === 0) { endX = 185; endY = 95; }  // TL (Superior Esquerda)
+        if (targetCorner === 1) { endX = 185; endY = 175; } // BL (Inferior Esquerda)
+        if (targetCorner === 2) { endX = 395; endY = 95; }  // TR (Superior Direita)
+        if (targetCorner === 3) { endX = 395; endY = 175; } // BR (Inferior Direita)
 
-      q.options.forEach((opt, idx) => {
-        const btn = document.createElement('button');
-        btn.className = 'arcade-option-btn';
-        btn.innerText = `${String.fromCharCode(65 + idx)}) ${opt}`;
-        btn.onclick = () => submitArcadeQuizAnswer(idx);
-        qOptions.appendChild(btn);
-      });
-      overlay.classList.remove('hidden');
-    }
+        ballPos.x = startX + (endX - startX) * Math.min(1, shotAnimProgress);
+        ballPos.y = startY + (endY - startY) * Math.min(1, shotAnimProgress);
 
-    function submitArcadeQuizAnswer(selectedIdx) {
-      const q = portugueseQuizBank[currentQuizIndex];
-      const isCorrect = (selectedIdx === q.answer);
-      document.getElementById('arcade-quiz-overlay').classList.add('hidden');
-
-      if (isCorrect) {
-        totalCorrectQuizCount++;
-        let currentPos = getPlayerPositionRank();
-        if (currentPos > 1) {
-          cameraY -= 450; // Ultrapassa imediatamente o bot da frente
-          showToast("✨ Acerto! Ultrapassagem realizada com sucesso!");
-        } else {
-          showToast("✨ Acerto! Você manteve a liderança em 1º lugar!");
+        if (isExploding) {
+          ballSmokeParticles.push({
+            x: ballPos.x + (Math.random() - 0.5) * 6,
+            y: ballPos.y + (Math.random() - 0.5) * 6,
+            vx: (Math.random() - 0.5) * 2, vy: (Math.random() - 0.5) * 2,
+            size: Math.random() * 5 + 3, color: Math.random() > 0.5 ? '#F97316' : '#EF4444', life: 1
+          });
         }
+
+        if (shotAnimProgress >= 1.0) {
+          isShooting = false;
+          evaluatePenaltyOutcome();
+        }
+      }
+
+      for (let i = ballSmokeParticles.length - 1; i >= 0; i--) {
+        const p = ballSmokeParticles[i];
+        p.x += p.vx; p.y += p.vy; p.life -= 0.05;
+        if (p.life <= 0) ballSmokeParticles.splice(i, 1);
+      }
+
+      if (explosionTimer > 0) explosionTimer--;
+      if (goalieLaughTimer > 0) goalieLaughTimer--;
+      if (goalieAngryTimer > 0) goalieAngryTimer--;
+    }
+
+    function drawPenaltyScene() {
+      if (!penaltyCtx) return;
+      const w = penaltyCanvas.width;
+      const h = penaltyCanvas.height;
+
+      penaltyCtx.fillStyle = '#15803D';
+      penaltyCtx.fillRect(0, 0, w, h);
+      penaltyCtx.fillStyle = '#16a34a';
+      for (let y = 140; y < h; y += 30) { penaltyCtx.fillRect(0, y, w, 15); }
+
+      // Desenho do Gol (Linhas das Quinas)
+      penaltyCtx.strokeStyle = '#FFFFFF';
+      penaltyCtx.lineWidth = 6;
+      penaltyCtx.strokeRect(140, 70, 300, 140);
+
+      penaltyCtx.fillStyle = '#FFFFFF';
+      penaltyCtx.fillRect(284, 275, 12, 6);
+
+      penaltyCtx.save();
+      let gColor = '#FACC15';
+      let gX = goalieX, gY = goalieY, gW = 32, gH = 55;
+
+      if (isGoalieAngry || goalieAngryTimer > 0) gColor = '#EF4444';
+      if (goalieDiveState) {
+        if (goalieDiveState === 'up_left') { gX -= 40; gY -= 30; }
+        if (goalieDiveState === 'down_left') { gX -= 40; gY += 20; gH = 35; }
+        if (goalieDiveState === 'up_right') { gX += 40; gY -= 30; }
+        if (goalieDiveState === 'down_right') { gX += 40; gY += 20; gH = 35; }
+      }
+
+      penaltyCtx.fillStyle = gColor;
+      penaltyCtx.fillRect(gX - gW/2, gY, gW, gH);
+      penaltyCtx.restore();
+
+      const strikerX = 278, strikerY = 280;
+      penaltyCtx.fillStyle = '#38BDF8';
+      penaltyCtx.fillRect(strikerX, strikerY, 24, 35);
+
+      ballSmokeParticles.forEach(p => {
+        penaltyCtx.save();
+        penaltyCtx.globalAlpha = p.life;
+        penaltyCtx.fillStyle = p.color;
+        penaltyCtx.fillRect(p.x, p.y, p.size, p.size);
+        penaltyCtx.restore();
+      });
+
+      if (!isExploding || explosionTimer > 0) {
+        penaltyCtx.fillStyle = isExploding ? '#F97316' : '#FFFFFF';
+        penaltyCtx.beginPath(); penaltyCtx.arc(ballPos.x, ballPos.y, 7, 0, Math.PI * 2); penaltyCtx.fill();
+      }
+
+      if (shotResultText) {
+        penaltyCtx.font = '9px "Press Start 2P"';
+        penaltyCtx.fillStyle = shotResultText.includes("GOL!") ? '#22C55E' : '#EF4444';
+        penaltyCtx.textAlign = 'center';
+        penaltyCtx.fillText(shotResultText, w / 2, 45);
+        penaltyCtx.textAlign = 'left';
+      }
+
+      penaltyCtx.font = '7px "Press Start 2P"';
+      penaltyCtx.fillStyle = '#FFFFFF';
+      penaltyCtx.fillText(`GOLS: ${penaltyScore}/${englishPenaltyQuestions.length}`, 15, 20);
+    }
+
+    function loadPenaltyQuestion() {
+      if (currentPenaltyIndex >= englishPenaltyQuestions.length) {
+        finishPenaltyGame();
+        return;
+      }
+      const q = englishPenaltyQuestions[currentPenaltyIndex];
+      const board = document.getElementById('penalty-question-board');
+      if (board) board.innerText = `Q${currentPenaltyIndex + 1}: ${q.question}`;
+
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`btn-corner-${i}`);
+        if (btn) {
+          btn.innerText = q.options[i];
+          btn.disabled = isShooting || goalieLaughTimer > 0 || goalieAngryTimer > 0;
+        }
+      }
+    }
+
+    function executePenaltyShot(cornerIdx) {
+      if (isShooting || goalieLaughTimer > 0 || goalieAngryTimer > 0) return;
+      const q = englishPenaltyQuestions[currentPenaltyIndex];
+      const isCorrectOption = (cornerIdx === q.answer);
+
+      isShooting = true;
+      shotAnimProgress = 0;
+      targetCorner = cornerIdx;
+      shotResultText = "";
+      ballPos = { x: 290, y: 280 };
+
+      let isSameSideOfGoalie = (goalieX < 290 && (cornerIdx === 0 || cornerIdx === 1)) || (goalieX >= 290 && (cornerIdx === 2 || cornerIdx === 3));
+      isExploding = (!isCorrectOption && !isSameSideOfGoalie);
+
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`btn-corner-${i}`);
+        if (btn) btn.disabled = true;
+      }
+    }
+
+    function evaluatePenaltyOutcome() {
+      const q = englishPenaltyQuestions[currentPenaltyIndex];
+      const isCorrectOption = (targetCorner === q.answer);
+      let isSameSideOfGoalie = (goalieX < 290 && (targetCorner === 0 || targetCorner === 1)) || (goalieX >= 290 && (targetCorner === 2 || targetCorner === 3));
+
+      if (isCorrectOption) {
+        penaltyScore++;
+        shotResultText = "⚽ GOL!";
+        showToast("⚽ Golaço! Resposta correta!");
+        goalieSpeed += 0.4;
       } else {
-        showToast("❌ Resposta incorreta! Posição mantida.");
-      }
-
-      currentQuizIndex++;
-      resumeArcadeGameplay();
-    }
-
-    function resumeArcadeGameplay() {
-      arcadePaused = false;
-      gameplayTimer = 10.00;
-      updateArcadeTimerDisplay();
-
-      if (gameplayInterval) clearInterval(gameplayInterval);
-      gameplayInterval = setInterval(() => {
-        if (arcadeRunning && !arcadePaused) {
-          gameplayTimer -= 0.1;
-          if (gameplayTimer <= 0.05) {
-            gameplayTimer = 0.00;
-            updateArcadeTimerDisplay();
-            clearInterval(gameplayInterval);
-            showNextArcadeQuiz();
-          } else {
-            updateArcadeTimerDisplay();
-          }
-        }
-      }, 100);
-    }
-
-    function updateArcadeTimerDisplay() {
-      const timerEl = document.getElementById('arcade-hud-timer');
-      if (timerEl) timerEl.innerText = `TEMPO LIVRE: ${gameplayTimer.toFixed(2)}s`;
-    }
-
-    function runArcadeGameLoop() {
-      if (!arcadeRunning) return;
-      if (!arcadePaused) updateArcadePhysics();
-      drawArcadeScene();
-      arcadeLoopId = requestAnimationFrame(runArcadeGameLoop);
-    }
-
-    function updateArcadePhysics() {
-      let effectiveMaxSpeed = playerArcadeCar.maxSpeed;
-      if (playerArcadeCar.slowTimer > 0) {
-        playerArcadeCar.slowTimer--;
-        effectiveMaxSpeed = 2.0; // Desaceleração por colisão
-      }
-
-      if (activeKeys['w']) playerArcadeCar.speed = Math.min(effectiveMaxSpeed, playerArcadeCar.speed + 0.08);
-      else if (activeKeys['s']) playerArcadeCar.speed = Math.max(0, playerArcadeCar.speed - 0.15);
-      else playerArcadeCar.speed = Math.max(0, playerArcadeCar.speed - 0.03);
-
-      if (activeKeys['a']) playerArcadeCar.x -= 4.0;
-      if (activeKeys['d']) playerArcadeCar.x += 4.0;
-      playerArcadeCar.x = Math.max(155, Math.min(485, playerArcadeCar.x));
-
-      cameraY -= playerArcadeCar.speed;
-
-      // Movimentação contínua dos Bots sem teletransporte
-      arcadeBots.forEach(bot => {
-        let botMax = bot.maxSpeed;
-        if (bot.slowTimer > 0) {
-          bot.slowTimer--;
-          botMax = 2.0;
-          bot.speed = Math.max(1.0, bot.speed - 0.1);
+        if (isSameSideOfGoalie) {
+          shotResultText = "❌ DEFESA DO GOLEIRO!";
+          showToast("❌ Defesa do goleiro!");
+          if (targetCorner === 0) goalieDiveState = 'up_left';
+          if (targetCorner === 1) goalieDiveState = 'down_left';
+          if (targetCorner === 2) goalieDiveState = 'up_right';
+          if (targetCorner === 3) goalieDiveState = 'down_right';
         } else {
-          bot.speed = Math.min(botMax, bot.speed + 0.05);
-        }
-        bot.y -= bot.speed;
-
-        // IA do Bot colide com obstáculos
-        obstacles.forEach(obs => {
-          if (bot.slowTimer === 0 && Math.abs(bot.x - obs.x) < 30 && Math.abs(bot.y - obs.y) < 30) {
-            bot.slowTimer = 90;
-          }
-        });
-      });
-
-      // Colisão do jogador com obstáculos
-      let playerWorldY = cameraY + playerArcadeCar.y;
-      obstacles.forEach(obs => {
-        if (playerArcadeCar.slowTimer === 0 && Math.abs(playerArcadeCar.x - obs.x) < 32 && Math.abs(playerWorldY - obs.y) < 32) {
-          playerArcadeCar.slowTimer = 120;
-          showToast("⚠️ Colisão com obstáculo! Pressione W para acelerar.");
-        }
-      });
-
-      if (cameraY <= 100) finishArcadeRacingGame();
-      updateArcadeHUDInfo();
-    }
-
-    function getPlayerPositionRank() {
-      let playerWorldY = cameraY + playerArcadeCar.y;
-      let rank = 3;
-      arcadeBots.forEach(bot => {
-        if (bot.y < playerWorldY) rank++;
-      });
-      return Math.max(1, Math.min(3, rank));
-    }
-
-    function updateArcadeHUDInfo() {
-      let currentPos = getPlayerPositionRank();
-      let speedKmH = Math.floor(playerArcadeCar.speed * 40);
-      document.getElementById('arcade-hud-pos').innerText = `POSIÇÃO: ${currentPos}º / 3`;
-      document.getElementById('arcade-hud-speed').innerText = `VELOCIDADE: ${speedKmH} KM/H`;
-    }
-
-    function drawArcadeScene() {
-      if (!arcadeCtx) return;
-      const w = arcadeCanvas.width;
-      const h = arcadeCanvas.height;
-
-      // 1. Gramado
-      arcadeCtx.fillStyle = '#15803D';
-      arcadeCtx.fillRect(0, 0, w, h);
-
-      // 2. Asfalto
-      let roadLeft = 140;
-      let roadRight = 500;
-      arcadeCtx.fillStyle = '#1E293B';
-      arcadeCtx.fillRect(roadLeft, 0, roadRight - roadLeft, h);
-
-      // 3. Zebras
-      let zebraSize = 20;
-      let zebraOffset = Math.floor(cameraY) % (zebraSize * 2);
-      for (let zy = -zebraSize + zebraOffset; zy < h + zebraSize; zy += zebraSize) {
-        let isRed = (Math.floor((zy + cameraY) / zebraSize) % 2 === 0);
-        arcadeCtx.fillStyle = isRed ? '#EF4444' : '#FFFFFF';
-        arcadeCtx.fillRect(roadLeft - 8, zy, 8, zebraSize);
-        arcadeCtx.fillRect(roadRight, zy, 8, zebraSize);
-      }
-
-      // Linhas centrais
-      arcadeCtx.strokeStyle = '#334155';
-      arcadeCtx.lineWidth = 2;
-      arcadeCtx.setLineDash([20, 20]);
-      arcadeCtx.lineDashOffset = cameraY;
-      arcadeCtx.beginPath();
-      arcadeCtx.moveTo(w / 2, 0); arcadeCtx.lineTo(w / 2, h);
-      arcadeCtx.stroke();
-      arcadeCtx.setLineDash([]);
-
-      // 4. Linha de Chegada Xadrez
-      let finishLineScreenY = 200 - cameraY;
-      if (finishLineScreenY >= -50 && finishLineScreenY <= h + 50) {
-        arcadeCtx.fillStyle = '#FFFFFF';
-        arcadeCtx.fillRect(roadLeft, finishLineScreenY, roadRight - roadLeft, 20);
-        arcadeCtx.fillStyle = '#000000';
-        for (let bx = roadLeft; bx < roadRight; bx += 20) {
-          arcadeCtx.fillRect(bx, finishLineScreenY, 10, 20);
+          shotResultText = "💥 BOLA NA TRAVE/FORA!";
+          explosionTimer = 35;
+          showToast("💥 Resposta incorreta.");
         }
       }
 
-      // 5. Renderizar Obstáculos (Pneus, Buracos e Pedras)
-      obstacles.forEach(obs => {
-        let screenObsY = obs.y - cameraY;
-        if (screenObsY >= -40 && screenObsY <= h + 40) {
-          if (obs.type === 'pneu') {
-            arcadeCtx.fillStyle = '#334155';
-            arcadeCtx.beginPath(); arcadeCtx.arc(obs.x, screenObsY, 16, 0, Math.PI * 2); arcadeCtx.fill();
-            arcadeCtx.fillStyle = '#64748B';
-            arcadeCtx.beginPath(); arcadeCtx.arc(obs.x, screenObsY, 8, 0, Math.PI * 2); arcadeCtx.fill();
-          } else if (obs.type === 'buraco') {
-            arcadeCtx.fillStyle = '#000000';
-            arcadeCtx.beginPath(); arcadeCtx.ellipse(obs.x, screenObsY, 18, 12, 0, 0, Math.PI * 2); arcadeCtx.fill();
-          } else {
-            arcadeCtx.fillStyle = '#64748B';
-            arcadeCtx.beginPath(); arcadeCtx.arc(obs.x, screenObsY, 14, 0, Math.PI * 2); arcadeCtx.fill();
-          }
-        }
-      });
-
-      // 6. Carros Bots
-      arcadeBots.forEach(bot => {
-        let screenBotY = bot.y - cameraY;
-        if (screenBotY >= -60 && screenBotY <= h + 60) {
-          arcadeCtx.fillStyle = bot.color;
-          arcadeCtx.fillRect(bot.x - bot.width / 2, screenBotY - bot.height / 2, bot.width, bot.height);
-          arcadeCtx.fillStyle = '#000';
-          arcadeCtx.fillRect(bot.x - 10, screenBotY - 14, 20, 10);
-        }
-      });
-
-      // 7. Carro Jogador
-      arcadeCtx.fillStyle = playerArcadeCar.color;
-      arcadeCtx.fillRect(playerArcadeCar.x - playerArcadeCar.width / 2, playerArcadeCar.y - playerArcadeCar.height / 2, playerArcadeCar.width, playerArcadeCar.height);
-      arcadeCtx.fillStyle = '#0F172A';
-      arcadeCtx.fillRect(playerArcadeCar.x - 10, playerArcadeCar.y - 14, 20, 10);
+      setTimeout(() => {
+        resetBallAndGoaliePosition();
+        currentPenaltyIndex++;
+        loadPenaltyQuestion();
+      }, 1600);
     }
 
-    function finishArcadeRacingGame() {
-      arcadeRunning = false;
-      arcadePaused = true;
-      if (gameplayInterval) clearInterval(gameplayInterval);
+    function finishPenaltyGame() {
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`btn-corner-${i}`);
+        if (btn) btn.classList.add('hidden');
+      }
 
-      let finalPos = getPlayerPositionRank();
-      
-      // Regra de Penalidade Solicitada: 1º lugar = 500 XP, 2º lugar = -20 XP (480 XP), 3º/4º/5º = desconto proporcional
-      let earnedXP = 500;
-      if (finalPos === 2) earnedXP = 480;
-      else if (finalPos === 3) earnedXP = 440;
-      else if (finalPos === 4) earnedXP = 400;
-      else if (finalPos >= 5) earnedXP = 360;
+      const board = document.getElementById('penalty-question-board');
+      if (board) board.innerText = "PENALTY SHOOTOUT FINISHED!";
 
-      const isFirstAttempt = !userProgress.completedTasks.includes("port_arcade_clear");
-      if (isFirstAttempt) {
-        userProgress.completedTasks.push("port_arcade_clear");
+      const isFirstAttempt = !userProgress.completedTasks.includes("english_penalty_clear");
+      let earnedXP = 0;
+
+      if (penaltyScore >= 3 && isFirstAttempt) {
+        earnedXP = 500;
+        userProgress.completedTasks.push("english_penalty_clear");
         userProgress.xp += earnedXP;
         saveUserData();
         updateDashboard();
       }
 
-      const overlay = document.getElementById('arcade-quiz-overlay');
-      const qText = document.getElementById('arcade-quiz-question');
-      const qOptions = document.getElementById('arcade-quiz-options');
+      const canvasBox = document.getElementById('penalty-canvas-box');
+      if (!canvasBox) return;
 
-      if (!overlay) return;
-      qText.innerHTML = `🏁 CORRIDA FINALIZADA!<br><br>Posição Final: <strong style="color: var(--yellow-gold);">${finalPos}º Lugar</strong><br>Perguntas Corretas: ${totalCorrectQuizCount} / ${portugueseQuizBank.length}`;
-      qOptions.innerHTML = `
-        ${isFirstAttempt ? `<p style="color: var(--blue-brand); font-family: var(--font-pixel); font-size: 0.75rem; margin-bottom: 12px;">🎉 +${earnedXP} XP Resgatados!</p>` : `<p style="color: var(--text-muted); font-family: var(--font-pixel); font-size: 0.65rem; margin-bottom: 12px;">🔄 Modo Treino (Sem XP).</p>`}
-        <button class="arcade-option-btn" style="text-align: center; background-color: var(--green-lime); color: #052E16; font-weight: 800;" onclick="initArcadeRacingGame()">🔄 Jogar Novamente</button>
+      const finishOverlay = document.createElement('div');
+      finishOverlay.id = 'penalty-finish-overlay';
+      finishOverlay.style.position = "absolute";
+      finishOverlay.style.top = "0"; finishOverlay.style.left = "0"; finishOverlay.style.width = "100%"; finishOverlay.style.height = "100%";
+      finishOverlay.style.background = "rgba(15, 23, 42, 0.95)"; finishOverlay.style.display = "flex"; finishOverlay.style.flexDirection = "column";
+      finishOverlay.style.justifyContent = "center"; finishOverlay.style.alignItems = "center"; finishOverlay.style.gap = "14px"; finishOverlay.style.zIndex = "50";
+
+      finishOverlay.innerHTML = `
+        <h2 style="color: var(--yellow-gold); font-family: var(--font-pixel); font-size: 0.9rem;">FIM DA DISPUTA DE PÊNALTIS!</h2>
+        <p style="color: var(--green-lime); font-family: var(--font-pixel); font-size: 0.75rem;">Gols: ${penaltyScore} / ${englishPenaltyQuestions.length}</p>
+        ${isFirstAttempt && penaltyScore >= 3 ? `<p style="color: var(--blue-brand); font-family: var(--font-pixel); font-size: 0.7rem;">🎉 +${earnedXP} XP Resgatados!</p>` : `<p style="color: var(--text-muted); font-family: var(--font-pixel); font-size: 0.65rem;">🔄 Modo Treino (Sem XP).</p>`}
+        <button class="btn-push btn-push-green" style="font-family: var(--font-pixel); font-size: 0.7rem;" onclick="initPenaltyGame()">🔄 Jogar Novamente</button>
       `;
-      overlay.classList.remove('hidden');
+      canvasBox.appendChild(finishOverlay);
     }
 
     function renderRanking() {
@@ -763,3 +693,6 @@
   </script>
 </body>
 </html>
+Quer testar ou ajustar a velocidade do goleiro ou as perguntas de inglês?
+
+Sim
