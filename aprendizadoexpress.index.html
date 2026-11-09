@@ -300,6 +300,7 @@
       border: 4px solid var(--border-color);
       border-radius: var(--radius-md);
       font-family: var(--font-pixel);
+      position: relative;
     }
     .target-question-board {
       background: #1E293B;
@@ -356,6 +357,7 @@
       border: 4px solid var(--border-color);
       border-radius: var(--radius-md);
       font-family: var(--font-pixel);
+      position: relative;
     }
 
     .penalty-question-board {
@@ -537,4 +539,1711 @@
 
         <div class="project-proposal-box">
           <h4>📌 Proposta do Projeto</h4>
-          <p>O <strong>Aprendizado express</strong> nasceu para deixar os estudos mais práticos e divertidos. A gente junta minigames interativos com um sistema de pontos (XP) e 
+          <p>O <strong>Aprendizado express</strong> nasceu para deixar os estudos mais práticos e divertidos. A gente junta minigames interativos com um sistema de pontos (XP) e chats direto com a galera e os professores, aproximando a rotina da escola do jeito que a gente já vive no dia a dia!</p>
+        </div>
+      </div>
+
+      <div class="hero-illustration">
+        <div class="game-card-preview">
+          <div class="logo-icon-box" style="width: 80px; height: 80px; margin: 0 auto 16px;">
+            <div class="custom-badge-icon">
+              <span class="crown-bg" style="font-size: 2.6rem; top: 2px;">👑</span>
+              <span class="rose-fg" style="font-size: 2.2rem; bottom: 2px;">🌹</span>
+            </div>
+          </div>
+          <h2>Aprendizado express</h2>
+          <p style="color: var(--text-muted); margin: 12px 0 24px;">Faça login para desbloquear o sistema de ensino completo!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-subjects" class="hidden">
+    <div class="app-layout">
+      
+      <main class="subjects-grid-main">
+        <h2 style="font-size: 2rem; margin-bottom: 10px;">Matérias Escolares</h2>
+        <p style="color: var(--text-muted); margin-bottom: 30px;">Escolha uma disciplina para realizar as atividades e evoluir sua classificação.</p>
+
+        <div class="subjects-list">
+          <div class="subject-card" onclick="openSubjectModal('Matemática')">
+            <div class="subject-icon" style="background: rgba(34, 197, 94, 0.15); color: var(--green-lime);">
+              <i class="fa-solid fa-gamepad"></i>
+            </div>
+            <div class="subject-info">
+              <h3>Matemática (Minigame 2D)</h3>
+              <p id="math-card-desc">Matematica contra zombies.</p>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="color: var(--text-muted);"></i>
+          </div>
+
+          <div class="subject-card" onclick="openSubjectModal('Português')">
+            <div class="subject-icon" style="background: rgba(139, 92, 246, 0.15); color: var(--purple-electric);">
+              <i class="fa-solid fa-crosshairs"></i>
+            </div>
+            <div class="subject-info">
+              <h3>Português (Tiro ao Alvo)</h3>
+              <p id="port-card-desc">Acerte o alvo nas cores das alternativas com a barra de espaço (+500 XP)</p>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="color: var(--text-muted);"></i>
+          </div>
+
+          <div class="subject-card" onclick="openSubjectModal('Inglês')">
+            <div class="subject-icon" style="background: rgba(250, 204, 21, 0.15); color: var(--yellow-gold);">
+              <i class="fa-solid fa-futbol"></i>
+            </div>
+            <div class="subject-info">
+              <h3>Inglês (Mini-Game Pênaltis Retro)</h3>
+              <p id="english-card-desc">Bata pênaltis nas quinas do gol (+500 XP)</p>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="color: var(--text-muted);"></i>
+          </div>
+        </div>
+      </main>
+
+      <aside class="dashboard-sidebar">
+        <div class="ui-card">
+          <h3 id="dash-username" style="font-size: 1.3rem; margin-bottom: 4px;">Aluno</h3>
+          <p id="dash-room" style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 16px;">Turma Geral</p>
+          
+          <div style="margin-bottom: 16px;">
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px;">Classificação Atual:</p>
+            <div id="dash-rank-badge" class="rank-badge rank-novato">Novato</div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-box">
+              <i class="fa-solid fa-star" style="color: var(--yellow-gold);"></i>
+              <div>
+                <strong id="dash-xp">0 XP</strong>
+                <p style="font-size: 0.75rem; color: var(--text-muted);">Pontuação</p>
+              </div>
+            </div>
+            <div class="stat-box">
+              <i class="fa-solid fa-fire" style="color: var(--orange-brand);"></i>
+              <div>
+                <strong id="dash-streak">1 Dia</strong>
+                <p style="font-size: 0.75rem; color: var(--text-muted);">Sequência</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </section>
+
+  <section id="screen-ranking" class="hidden">
+    <div class="ranking-container">
+      <h2 style="font-size: 2.2rem; margin-bottom: 6px;">🏆 Classificação dos Jogadores</h2>
+      <p style="color: var(--text-muted);">Aumente seus pontos para subir de patamar!</p>
+
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; margin-bottom: 24px;">
+        <span class="rank-badge rank-novato">0–1000 (XP): NOVATO</span>
+        <span class="rank-badge rank-aprendiz">1000–2000 (XP): APRENDIZ</span>
+        <span class="rank-badge rank-intermediario">2000–4000 (XP): INTERMEDIÁRIO</span>
+        <span class="rank-badge rank-avancado">4000–8000 (XP): AVANÇADO</span>
+        <span class="rank-badge rank-imperador">8000+ (XP): IMPERADOR</span>
+      </div>
+
+      <div class="ranking-list" id="ranking-list-container"></div>
+    </div>
+  </section>
+
+  <section id="screen-community" class="hidden">
+    <div class="community-wrapper">
+      <div class="community-container">
+        <div class="chat-sidebar">
+          <div style="padding:16px; font-weight:800; border-bottom:2px solid var(--border-color); font-size:1rem;">Comunidade</div>
+          <div style="padding:12px 16px 6px; font-weight:700; color:var(--text-muted); font-size:0.75rem; text-transform:uppercase;">Canais de Discussão</div>
+          
+          <div class="chat-channel-btn active" onclick="switchChannel('geral', this)">
+            <span>📢</span> Aviso E.E Neves
+          </div>
+          <div class="chat-channel-btn" onclick="switchChannel('professores', this)">
+            <span>👨‍🏫</span> Professores & Alunos
+          </div>
+          <div class="chat-channel-btn" onclick="switchChannel('duvidas', this)">
+            <span>💬</span> Chat dos Alunos
+          </div>
+        </div>
+
+        <div class="chat-main">
+          <div style="padding:16px; border-bottom:2px solid var(--border-color); font-weight:700; display:flex; align-items:center; gap:8px;" id="current-channel-title">
+            <span>📢</span> Aviso E.E Neves
+          </div>
+          <div class="messages-container" id="messages-container"></div>
+          <form class="chat-input-area" onsubmit="sendMessage(event)">
+            <input type="text" id="message-input" placeholder="Digite sua mensagem no canal..." required>
+            <button type="submit" class="btn-push btn-push-orange" style="padding: 12px 20px;">Enviar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL DE AUTENTICAÇÃO -->
+  <div class="modal-overlay hidden" id="modal-auth">
+    <div class="auth-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div class="logo-group">
+          <div class="logo-icon-box" style="width: 38px; height: 38px;">
+            <div class="custom-badge-icon">
+              <span class="crown-bg" style="font-size: 1.1rem; top: 1px;">👑</span>
+              <span class="rose-fg" style="font-size: 1rem; bottom: 1px;">🌹</span>
+            </div>
+          </div>
+          <div class="logo-text" style="font-size:1.2rem;">Aprendizado <span>express</span></div>
+        </div>
+        <button class="btn-push btn-push-dark" style="padding: 4px 10px;" onclick="closeModal('modal-auth')">✕</button>
+      </div>
+
+      <form id="login-form" onsubmit="handleLogin(event)">
+        <h3 style="margin-bottom: 16px;">Entrar na Conta</h3>
+        <div class="form-group">
+          <label>E-mail</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" id="login-email" placeholder="seu@email.com" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Senha</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="login-password" placeholder="••••••••" required>
+          </div>
+        </div>
+        <button type="submit" class="btn-push btn-push-green" style="width: 100%;">Acessar Conta</button>
+      </form>
+
+      <form id="register-form" class="hidden" onsubmit="handleRegister(event)">
+        <h3 style="margin-bottom: 16px;">Criar Conta</h3>
+        
+        <div class="form-group">
+          <label>Tipo de Perfil</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-user-tag"></i>
+            <select id="reg-role" onchange="toggleRoleFields()" required>
+              <option value="Aluno">Aluno</option>
+              <option value="Professor">Professor</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Nome Completo</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" id="reg-name" placeholder="Ex: Lucas Silva" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Nome da Escola</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-school"></i>
+            <select id="reg-school" required>
+              <option value="E.E Neves">E.E Neves</option>
+              <option value="Prado">Prado</option>
+              <option value="Monteiro">Monteiro</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" id="group-reg-room">
+          <label>Turma / Sala</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <select id="reg-room">
+              <option value="3º A">3º A</option>
+              <option value="3º B">3º B</option>
+              <option value="2º A">2º A</option>
+              <option value="2º B">2º B</option>
+              <option value="1º A">1º A</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>E-mail</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" id="reg-email" placeholder="seu@email.com" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Senha</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="reg-password" placeholder="••••••••" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-push btn-push-orange" style="width: 100%;">Finalizar Cadastro</button>
+      </form>
+
+      <div class="credentials-box">
+        <strong>🔑 Contas de Administrador (0 XP Inicial):</strong><br>
+        1. <code>weverso@admin.com</code> | Senha: <code>123</code><br>
+        2. <code>carlos@admin.com</code> | Senha: <code>123</code><br>
+        3. <code>gabriel@admin.com</code> | Senha: <code>123</code>
+      </div>
+
+      <div class="auth-toggle">
+        <span id="toggle-text">Não tem uma conta?</span>
+        <a id="toggle-btn" onclick="toggleAuthMode()">Cadastre-se</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE ATIVIDADES E MINI-GAMES -->
+  <div class="modal-overlay hidden" id="modal-subject">
+    <div class="modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 id="modal-subject-title">Atividades</h3>
+        <button class="btn-push btn-push-dark" style="padding: 6px 12px;" onclick="closeModal('modal-subject')">✕</button>
+      </div>
+      <div id="tasks-container"></div>
+      
+      <div class="task-notice-warning">
+        ⚠️ <strong>Aviso:</strong> Caso você repita essa tarefa, os pontos (XP) não serão válidos.
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script>
+    const defaultAccounts = [
+      { name: "Weversotestadmin1", email: "weverso@admin.com", password: "123", role: "Admin", school: "E.E Neves", room: "Administração", xp: 0 },
+      { name: "Carlostestadmin2", email: "carlos@admin.com", password: "123", role: "Admin", school: "E.E Neves", room: "Administração", xp: 0 },
+      { name: "Gabrieltestadmin3", email: "gabriel@admin.com", password: "123", role: "Admin", school: "E.E Neves", room: "Administração", xp: 0 }
+    ];
+
+    defaultAccounts.forEach(acc => {
+      if (!localStorage.getItem('user_' + acc.email)) {
+        localStorage.setItem('user_' + acc.email, JSON.stringify(acc));
+        localStorage.setItem('progress_' + acc.email, JSON.stringify({ xp: 0, streak: 1, completedTasks: [] }));
+      }
+    });
+
+    let currentUser = JSON.parse(localStorage.getItem('session_user')) || null;
+    let userProgress = { xp: 0, streak: 1, completedTasks: [] };
+    let activeChannel = 'geral';
+    let previousUserRank = null;
+
+    // QUESTÕES DE MATEMÁTICA
+    const mathQuestions = [
+      { question: "Quanto é 7 x 8?", options: ["54", "56", "64", "49"], answer: 1 },
+      { question: "Qual é a raiz quadrada de 81?", options: ["7", "8", "9", "10"], answer: 2 },
+      { question: "Se 2x + 4 = 12, qual o valor de x?", options: ["3", "4", "5", "6"], answer: 1 },
+      { question: "Quanto é 15% de 200?", options: ["20", "25", "30", "35"], answer: 2 }
+    ];
+
+    // QUESTÕES DE PORTUGUÊS (TIRO AO ALVO) - Com 4 perguntas adicionadas
+    const portugueseQuestions = [
+      { question: "Qual palavra está escrita corretamente?", options: ["Exceção", "Esceção", "Exessão", "Essessão"], answer: 0 },
+      { question: "Identifique a classe gramatical de 'rapidamente':", options: ["Substantivo", "Adjetivo", "Advérbio", "Verbo"], answer: 2 },
+      { question: "Qual frase contém um pronome oblíquo átono?", options: ["O cão correu.", "Entreguei-lhe o livro.", "Nós fomos ao parque.", "Ele comprou uma casa."], answer: 1 },
+      { question: "Qual o plural de 'cidadão'?", options: ["Cidadões", "Cidadãos", "Cidadães", "Cidadãoes"], answer: 1 }
+    ];
+
+    // QUESTÕES DE INGLÊS (MINI-GAME PÊNALTIS RETRO)
+    const englishPenaltyQuestions = [
+      { question: "What is the past tense of 'go'?", options: ["Went", "Goed", "Gone", "Going"], answer: 0 },
+      { question: "Translate to English: 'Livro'", options: ["Pen", "Book", "Table", "Apple"], answer: 1 },
+      { question: "Complete: 'She ___ a student.'", options: ["am", "are", "is", "be"], answer: 2 },
+      { question: "What is the plural of 'child'?", options: ["Childs", "Children", "Childes", "Childrens"], answer: 1 }
+    ];
+
+    let currentMathQuestionIndex = 0;
+    let mathCorrectCount = 0;
+    let mathWrongCount = 0;
+    let streakCount = 0;
+    let isAttackReady = false;
+    let isAnimating = false;
+
+    // GAME ZUMBIS
+    let canvas, ctx;
+    let gameLoopId = null;
+    let shakeTimer = 0;
+    let particles = [];
+    let slashEffects = [];
+    let zombie = { x: 275, y: 60, baseOriginX: 275, baseOriginY: 60, maxHp: 100, hp: 100, color: '#4CAF50', opacity: 1, isDying: false };
+    let playerBox = { x: 225, y: 150, width: 100, height: 100 };
+    let player = { x: 275, y: 200, originX: 275, originY: 200, size: 14, maxHp: 100, hp: 100, color: '#00FF66' };
+
+    // --- VARIÁVEIS MINI-GAME TIRO AO ALVO (PORTUGUÊS) ---
+    let targetCanvas, targetCtx;
+    let targetLoopId = null;
+    let currentTargetQIndex = 0;
+    let targetCorrectCount = 0;
+    let targetAimX = 290;
+    let targetAimSpeed = 2.5;
+    let targetAimDir = 1;
+    let isTargetPaused = false;
+    let targetShotResult = "";
+    const altColors = ['#EF4444', '#38BDF8', '#FACC15', '#FFFFFF'];
+
+    // --- VARIÁVEIS MINI-GAME PÊNALTIS INGLÊS ---
+    let penaltyCanvas, penaltyCtx;
+    let penaltyLoopId = null;
+    let currentPenaltyIndex = 0;
+    let penaltyScore = 0;
+
+    let goalieX = 290;
+    let goalieY = 145;
+    let goalieSpeed = 1.8;
+    let goalieDirection = 1;
+
+    let isShooting = false;
+    let shotAnimProgress = 0;
+    let targetCorner = null;
+    let shotResultText = "";
+
+    let isExploding = false;
+    let explosionTimer = 0;
+    let isGoalieAngry = false;
+    let goalieAngryTimer = 0;
+    let goalieLaughTimer = 0;
+    let goalieDiveState = null;
+
+    let ballPos = { x: 290, y: 280 };
+    let ballSmokeParticles = [];
+
+    let channelMessages = JSON.parse(localStorage.getItem('chat_channels_messages')) || {
+      geral: [{ id: 1, sender: "Prof. Roberto", text: "Bem-vindos aos avisos oficiais da E.E Neves!" }],
+      professores: [{ id: 2, sender: "Prof. Roberto", text: "Olá alunos! Podem enviar suas dúvidas sobre trabalhos ou provas aqui." }],
+      duvidas: [{ id: 3, sender: "Gabriel", text: "Alguém conseguiu resolver a questão de porcentagem?" }]
+    };
+
+    window.onload = function() {
+      loadUserData();
+      updateUserSessionUI();
+      updateDashboard();
+    };
+
+    function toggleRoleFields() {
+      const role = document.getElementById('reg-role').value;
+      const roomGroup = document.getElementById('group-reg-room');
+      if (role === 'Professor') {
+        roomGroup.classList.add('hidden');
+      } else {
+        roomGroup.classList.remove('hidden');
+      }
+    }
+
+    function requireAuth(screenId, navElement) {
+      if (!currentUser) {
+        showToast("⚠️ Acesso bloqueado! Faça cadastro ou entre para navegar no site.");
+        openAuthModal('login');
+      } else {
+        showScreen(screenId, navElement);
+      }
+    }
+
+    function showScreen(screenId, navElement) {
+      document.querySelectorAll('section').forEach(sec => sec.classList.add('hidden'));
+      const target = document.getElementById(screenId);
+      if (target) target.classList.remove('hidden');
+
+      if (navElement) {
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        navElement.classList.add('active');
+      }
+
+      if (screenId === 'screen-ranking') renderRanking();
+      if (screenId === 'screen-community') renderMessages();
+    }
+
+    function getRank(xp) {
+      if (xp >= 8000) return { title: "Imperador", class: "rank-imperador", level: 5 };
+      if (xp >= 4000) return { title: "Avançado", class: "rank-avancado", level: 4 };
+      if (xp >= 2000) return { title: "Intermediário", class: "rank-intermediario", level: 3 };
+      if (xp >= 1000) return { title: "Aprendiz", class: "rank-aprendiz", level: 2 };
+      return { title: "Novato", class: "rank-novato", level: 1 };
+    }
+
+    function loadUserData() {
+      if (currentUser && currentUser.email) {
+        const saved = localStorage.getItem('progress_' + currentUser.email);
+        if (saved) userProgress = JSON.parse(saved);
+      }
+    }
+
+    function saveUserData() {
+      if (currentUser && currentUser.email) {
+        localStorage.setItem('progress_' + currentUser.email, JSON.stringify(userProgress));
+      }
+    }
+
+    function openAuthModal(mode) {
+      document.getElementById('login-form').classList.toggle('hidden', mode !== 'login');
+      document.getElementById('register-form').classList.toggle('hidden', mode === 'login');
+      document.getElementById('modal-auth').classList.remove('hidden');
+    }
+
+    function toggleAuthMode() {
+      const isLogin = document.getElementById('login-form').classList.contains('hidden');
+      openAuthModal(isLogin ? 'login' : 'register');
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim().toLowerCase();
+      const password = document.getElementById('login-password').value;
+
+      const stored = localStorage.getItem('user_' + email);
+      if (!stored) return showToast("❌ Usuário não encontrado!");
+
+      const user = JSON.parse(stored);
+      if (user.password !== password) return showToast("❌ Senha incorreta!");
+
+      currentUser = user;
+      localStorage.setItem('session_user', JSON.stringify(user));
+      loadUserData();
+      closeModal('modal-auth');
+      updateUserSessionUI();
+      updateDashboard();
+      showToast(`Bem-vindo, ${user.name}!`);
+      showScreen('screen-subjects');
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+      const role = document.getElementById('reg-role').value;
+      const name = document.getElementById('reg-name').value.trim();
+      const school = document.getElementById('reg-school').value;
+      const room = role === 'Aluno' ? document.getElementById('reg-room').value : "Docente";
+      const email = document.getElementById('reg-email').value.trim().toLowerCase();
+      const password = document.getElementById('reg-password').value;
+
+      if (localStorage.getItem('user_' + email)) return showToast("❌ Email já cadastrado!");
+
+      const newUser = { name, email, password, role, school, room };
+      localStorage.setItem('user_' + email, JSON.stringify(newUser));
+      localStorage.setItem('progress_' + email, JSON.stringify({ xp: 0, streak: 1, completedTasks: [] }));
+
+      currentUser = newUser;
+      localStorage.setItem('session_user', JSON.stringify(newUser));
+      loadUserData();
+      closeModal('modal-auth');
+      updateUserSessionUI();
+      updateDashboard();
+      showToast("Cadastro realizado com sucesso!");
+      showScreen('screen-subjects');
+    }
+
+    function handleLogout() {
+      saveUserData();
+      currentUser = null;
+      localStorage.removeItem('session_user');
+      updateUserSessionUI();
+      showToast("Você saiu da conta.");
+      showScreen('screen-landing');
+    }
+
+    function updateUserSessionUI() {
+      const loggedOutBox = document.getElementById('nav-logged-out-actions');
+      const loggedInBox = document.getElementById('nav-logged-in-actions');
+
+      if (currentUser) {
+        loggedOutBox.classList.add('hidden');
+        loggedInBox.classList.remove('hidden');
+        document.getElementById('nav-user-badge').innerText = `👤 ${currentUser.name} (${currentUser.role || 'Aluno'})`;
+        document.getElementById('dash-username').innerText = currentUser.name;
+        document.getElementById('dash-room').innerText = `${currentUser.school || 'E.E Neves'} • ${currentUser.room || 'Geral'}`;
+      } else {
+        loggedOutBox.classList.remove('hidden');
+        loggedInBox.classList.add('hidden');
+        document.getElementById('dash-username').innerText = "Visitante";
+      }
+    }
+
+    function updateDashboard() {
+      const xp = userProgress.xp || 0;
+      const rank = getRank(xp);
+
+      document.getElementById('dash-xp').innerText = `${xp} XP`;
+      document.getElementById('dash-streak').innerText = `${userProgress.streak || 1} Dia`;
+
+      const badge = document.getElementById('dash-rank-badge');
+      badge.innerText = rank.title;
+      badge.className = `rank-badge ${rank.class}`;
+
+      const engDesc = document.getElementById('english-card-desc');
+      if (engDesc) {
+        engDesc.innerText = userProgress.completedTasks.includes("english_penalty_clear") ? "Cópia / Modo Treino (Sem XP)" : "Bata pênaltis nas quinas do gol (+500 XP)";
+      }
+      const portDesc = document.getElementById('port-card-desc');
+      if (portDesc) {
+        portDesc.innerText = userProgress.completedTasks.includes("port_target_clear") ? "Cópia / Modo Treino (Sem XP)" : "Acerte o alvo nas cores das alternativas com a barra de espaço (+500 XP)";
+      }
+    }
+
+    function closeModal(id) {
+      if (id === 'modal-subject') {
+        if (gameLoopId) { cancelAnimationFrame(gameLoopId); gameLoopId = null; }
+        if (penaltyLoopId) { cancelAnimationFrame(penaltyLoopId); penaltyLoopId = null; }
+        if (targetLoopId) { cancelAnimationFrame(targetLoopId); targetLoopId = null; }
+        window.removeEventListener('keydown', handleTargetKey);
+      }
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    // ABRIR MODAL
+    function openSubjectModal(subject) {
+      if (!currentUser) return requireAuth('screen-subjects');
+      document.getElementById('modal-subject-title').innerText = subject;
+      const container = document.getElementById('tasks-container');
+      container.innerHTML = '';
+
+      if (subject === 'Matemática') {
+        const isRepeated = userProgress.completedTasks.includes("math_game_clear");
+        container.innerHTML = `
+          ${isRepeated ? '<div style="color: var(--yellow-gold); font-size: 0.85rem; text-align: center; margin-bottom: 8px;">🔄 Modo Treino (Cópia da Tarefa — Não concede XP)</div>' : ''}
+          <div class="game-wrapper">
+            <div class="canvas-container-outer">
+              <canvas id="gameCanvas" width="550" height="320"></canvas>
+            </div>
+            <div class="quiz-panel-game">
+              <div id="attack-btn-container" class="attack-btn-wrapper hidden">
+                <button class="btn-attack-game" onclick="triggerPlayerAttackAction()">⚔️ ATACAR ZUMBI</button>
+              </div>
+              <div id="game-question-text" class="game-question-box">Carregando batalha...</div>
+              <div id="game-options-container" class="game-options-grid"></div>
+            </div>
+          </div>
+        `;
+        document.getElementById('modal-subject').classList.remove('hidden');
+        initMathGame();
+      } else if (subject === 'Português') {
+        const isRepeated = userProgress.completedTasks.includes("port_target_clear");
+        container.innerHTML = `
+          ${isRepeated ? '<div style="color: var(--yellow-gold); font-size: 0.75rem; text-align: center; margin-bottom: 8px; font-family: var(--font-pixel);">🔄 Modo Treino (Cópia da Tarefa — Não concede XP)</div>' : ''}
+          <div class="target-game-wrapper">
+            <div id="target-question-board" class="target-question-board">Carregando questão...</div>
+            <div class="target-canvas-box" id="target-canvas-box">
+              <canvas id="targetCanvas" width="580" height="320"></canvas>
+            </div>
+            <div id="target-options-bar" class="target-options-bar"></div>
+            <div style="font-size: 0.65rem; color: var(--text-muted); font-family: var(--font-pixel); text-align: center;">Pressione a tecla [ESPAÇO] para disparar a mira!</div>
+          </div>
+        `;
+        document.getElementById('modal-subject').classList.remove('hidden');
+        initTargetGame();
+      } else if (subject === 'Inglês') {
+        const isRepeated = userProgress.completedTasks.includes("english_penalty_clear");
+        container.innerHTML = `
+          ${isRepeated ? '<div style="color: var(--yellow-gold); font-size: 0.75rem; text-align: center; margin-bottom: 8px; font-family: var(--font-pixel);">🔄 Modo Treino (Cópia da Tarefa — Não concede XP)</div>' : ''}
+          <div class="penalty-game-wrapper">
+            <div id="penalty-question-board" class="penalty-question-board">Loading question...</div>
+            <div class="penalty-canvas-box" id="penalty-canvas-box">
+              <canvas id="penaltyCanvas" width="580" height="320"></canvas>
+              <button id="btn-corner-0" class="corner-option-btn corner-tl" onclick="executePenaltyShot(0)"></button>
+              <button id="btn-corner-1" class="corner-option-btn corner-bl" onclick="executePenaltyShot(1)"></button>
+              <button id="btn-corner-2" class="corner-option-btn corner-tr" onclick="executePenaltyShot(2)"></button>
+              <button id="btn-corner-3" class="corner-option-btn corner-br" onclick="executePenaltyShot(3)"></button>
+            </div>
+          </div>
+        `;
+        document.getElementById('modal-subject').classList.remove('hidden');
+        initPenaltyGame();
+      }
+    }
+
+    // =========================================================================
+    // --- MINI-GAME TIRO AO ALVO (PORTUGUÊS) ---
+    // =========================================================================
+    function initTargetGame() {
+      targetCanvas = document.getElementById('targetCanvas');
+      targetCtx = targetCanvas.getContext('2d');
+
+      currentTargetQIndex = 0;
+      targetCorrectCount = 0;
+      targetAimX = 290;
+      targetAimSpeed = 2.5;
+      targetAimDir = 1;
+      isTargetPaused = false;
+      targetShotResult = "";
+
+      const existingOverlay = document.getElementById('target-finish-overlay');
+      if (existingOverlay) existingOverlay.remove();
+
+      window.removeEventListener('keydown', handleTargetKey);
+      window.addEventListener('keydown', handleTargetKey);
+
+      if (targetLoopId) cancelAnimationFrame(targetLoopId);
+      runTargetLoop();
+      loadTargetQuestion();
+    }
+
+    function handleTargetKey(e) {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        if (!isTargetPaused) {
+          fireTargetAim();
+        }
+      }
+    }
+
+    function runTargetLoop() {
+      updateTargetPhysics();
+      drawTargetScene();
+      targetLoopId = requestAnimationFrame(runTargetLoop);
+    }
+
+    function updateTargetPhysics() {
+      if (!isTargetPaused) {
+        targetAimX += targetAimSpeed * targetAimDir;
+        if (targetAimX < 140 || targetAimX > 440) {
+          targetAimDir *= -1;
+        }
+      }
+    }
+
+    function drawTargetScene() {
+      if (!targetCtx) return;
+      const w = targetCanvas.width;
+      const h = targetCanvas.height;
+
+      // Fundo escuro retro
+      targetCtx.fillStyle = '#0F172A';
+      targetCtx.fillRect(0, 0, w, h);
+
+      const centerX = w / 2;
+      const centerY = h / 2 - 10;
+      
+      // Desenho do Alvo Estilizado (Similar à Referência sem cruz no centro)
+      // Anel Externo (Vermelho)
+      targetCtx.fillStyle = '#EF4444';
+      targetCtx.beginPath(); targetCtx.arc(centerX, centerY, 95, 0, Math.PI * 2); targetCtx.fill();
+
+      // Anel Intermediário (Azul)
+      targetCtx.fillStyle = '#38BDF8';
+      targetCtx.beginPath(); targetCtx.arc(centerX, centerY, 70, 0, Math.PI * 2); targetCtx.fill();
+
+      // Faixa Amarela (Correspondente à alternativa amarela)
+      targetCtx.fillStyle = '#FACC15';
+      targetCtx.beginPath(); targetCtx.arc(centerX, centerY, 42, 0, Math.PI * 2); targetCtx.fill();
+
+      // Centro (Branco)
+      targetCtx.fillStyle = '#FFFFFF';
+      targetCtx.beginPath(); targetCtx.arc(centerX, centerY, 16, 0, Math.PI * 2); targetCtx.fill();
+
+      // Recortes estilo mira (fendas vazadas no formato de mira)
+      targetCtx.fillStyle = '#0F172A';
+      // Fenda Superior
+      targetCtx.fillRect(centerX - 8, centerY - 95, 16, 35);
+      // Fenda Inferior
+      targetCtx.fillRect(centerX - 8, centerY + 60, 16, 35);
+      // Fenda Esquerda
+      targetCtx.fillRect(centerX - 95, centerY - 8, 35, 16);
+      // Fenda Direita
+      targetCtx.fillRect(centerX + 60, centerY - 8, 35, 16);
+
+      // Círculo central interno detalhe da mira
+      targetCtx.fillStyle = '#0F172A';
+      targetCtx.beginPath(); targetCtx.arc(centerX, centerY, 6, 0, Math.PI * 2); targetCtx.fill();
+
+      // Mira móvel horizontal (barra vertical que vai e volta)
+      targetCtx.strokeStyle = '#FACC15';
+      targetCtx.lineWidth = 4;
+      targetCtx.beginPath();
+      targetCtx.moveTo(targetAimX, centerY - 110);
+      targetCtx.lineTo(targetAimX, centerY + 110);
+      targetCtx.stroke();
+
+      // Triângulo indicador superior da mira
+      targetCtx.fillStyle = '#FACC15';
+      targetCtx.beginPath();
+      targetCtx.moveTo(targetAimX, centerY - 110);
+      targetCtx.lineTo(targetAimX - 6, centerY - 122);
+      targetCtx.lineTo(targetAimX + 6, centerY - 122);
+      targetCtx.fill();
+
+      // Feedback textual na tela
+      if (targetShotResult) {
+        targetCtx.font = '10px "Press Start 2P"';
+        targetCtx.fillStyle = targetShotResult.includes("ACERTO") ? '#22C55E' : '#EF4444';
+        targetCtx.textAlign = 'center';
+        targetCtx.fillText(targetShotResult, w / 2, 35);
+        targetCtx.textAlign = 'left';
+      }
+
+      // Placar
+      targetCtx.font = '7px "Press Start 2P"';
+      targetCtx.fillStyle = '#FFFFFF';
+      targetCtx.fillText(`ACERTOS: ${targetCorrectCount}/${portugueseQuestions.length}`, 15, 20);
+    }
+
+    function loadTargetQuestion() {
+      if (currentTargetQIndex >= portugueseQuestions.length) {
+        finishTargetGame();
+        return;
+      }
+
+      const q = portugueseQuestions[currentTargetQIndex];
+      document.getElementById('target-question-board').innerText = `Q${currentTargetQIndex + 1}: ${q.question}`;
+
+      const bar = document.getElementById('target-options-bar');
+      bar.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const box = document.createElement('div');
+        box.className = 'target-opt-box';
+        box.style.borderColor = altColors[idx];
+        box.innerHTML = `<span style="color: ${altColors[idx]};">${String.fromCharCode(65 + idx)})</span> ${opt}`;
+        bar.appendChild(box);
+      });
+
+      isTargetPaused = false;
+      targetShotResult = "";
+    }
+
+    function fireTargetAim() {
+      isTargetPaused = true;
+
+      let selectedOptionIdx = 0;
+      if (targetAimX >= 140 && targetAimX < 215) selectedOptionIdx = 0;
+      else if (targetAimX >= 215 && targetAimX < 290) selectedOptionIdx = 1;
+      else if (targetAimX >= 290 && targetAimX < 365) selectedOptionIdx = 2;
+      else selectedOptionIdx = 3;
+
+      const q = portugueseQuestions[currentTargetQIndex];
+      const isCorrect = (selectedOptionIdx === q.answer);
+
+      if (isCorrect) {
+        targetCorrectCount++;
+        targetShotResult = "🎯 ACERTOU EM CHEIO!";
+        showToast("🎯 Acertou em cheio! Resposta correta!");
+        targetAimSpeed += 0.4;
+      } else {
+        targetShotResult = "❌ TIRO FORA DO ALVO!";
+        showToast("❌ Errou o alvo!");
+      }
+
+      setTimeout(() => {
+        currentTargetQIndex++;
+        loadTargetQuestion();
+      }, 1500);
+    }
+
+    function finishTargetGame() {
+      window.removeEventListener('keydown', handleTargetKey);
+      document.getElementById('target-question-board').innerText = "FIM DO TREINO DE TIRO AO ALVO!";
+      document.getElementById('target-options-bar').innerHTML = "";
+
+      const isFirstAttempt = !userProgress.completedTasks.includes("port_target_clear");
+      let earnedXP = 0;
+
+      if (isFirstAttempt) {
+        // XP Proporcional aos acertos (Ex: 4/4 ou 3/4 = 500 XP; 2/4 ou 2/2 = proporcional)
+        if (targetCorrectCount >= 3) earnedXP = 500;
+        else if (targetCorrectCount === 2) earnedXP = 250;
+        else if (targetCorrectCount === 1) earnedXP = 125;
+        else earnedXP = 0;
+
+        userProgress.completedTasks.push("port_target_clear");
+        userProgress.xp += earnedXP;
+        saveUserData();
+        updateDashboard();
+      }
+
+      const canvasBox = document.getElementById('target-canvas-box');
+      const existingOverlay = document.getElementById('target-finish-overlay');
+      if (existingOverlay) existingOverlay.remove();
+
+      const finishOverlay = document.createElement('div');
+      finishOverlay.id = 'target-finish-overlay';
+      finishOverlay.style.position = "absolute";
+      finishOverlay.style.top = "0";
+      finishOverlay.style.left = "0";
+      finishOverlay.style.width = "100%";
+      finishOverlay.style.height = "100%";
+      finishOverlay.style.background = "rgba(15, 23, 42, 0.95)";
+      finishOverlay.style.display = "flex";
+      finishOverlay.style.flexDirection = "column";
+      finishOverlay.style.justifyContent = "center";
+      finishOverlay.style.alignItems = "center";
+      finishOverlay.style.gap = "14px";
+      finishOverlay.style.zIndex = "50";
+
+      finishOverlay.innerHTML = `
+        <h2 style="color: var(--yellow-gold); font-family: var(--font-pixel); font-size: 0.85rem;">TREINO CONCLUÍDO!</h2>
+        <p style="color: var(--green-lime); font-family: var(--font-pixel); font-size: 0.75rem;">Acertos: ${targetCorrectCount} / ${portugueseQuestions.length}</p>
+        ${isFirstAttempt && earnedXP > 0 ? `<p style="color: var(--blue-brand); font-family: var(--font-pixel); font-size: 0.7rem;">🎉 Você ganhou +${earnedXP} XP!</p>` : `<p style="color: var(--text-muted); font-family: var(--font-pixel); font-size: 0.65rem;">🔄 Modo Treino (0 XP).</p>`}
+        <button class="btn-push btn-push-green" style="font-family: var(--font-pixel); font-size: 0.7rem;" onclick="initTargetGame()">🔄 Jogar Novamente</button>
+      `;
+      canvasBox.appendChild(finishOverlay);
+    }
+
+    // =========================================================================
+    // --- MINI-GAME RETRO DE PÊNALTIS (INGLÊS) ---
+    // =========================================================================
+    function initPenaltyGame() {
+      penaltyCanvas = document.getElementById('penaltyCanvas');
+      penaltyCtx = penaltyCanvas.getContext('2d');
+
+      currentPenaltyIndex = 0;
+      penaltyScore = 0;
+      goalieSpeed = 1.8;
+      
+      const existingOverlay = document.getElementById('penalty-finish-overlay');
+      if (existingOverlay) existingOverlay.remove();
+
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`btn-corner-${i}`);
+        if (btn) btn.classList.remove('hidden');
+      }
+
+      resetBallAndGoaliePosition();
+
+      if (penaltyLoopId) cancelAnimationFrame(penaltyLoopId);
+      runPenaltyLoop();
+      loadPenaltyQuestion();
+    }
+
+    function resetBallAndGoaliePosition() {
+      goalieX = 290;
+      goalieY = 145;
+      goalieDirection = 1;
+      isShooting = false;
+      shotAnimProgress = 0;
+      targetCorner = null;
+      shotResultText = "";
+      isExploding = false;
+      explosionTimer = 0;
+      isGoalieAngry = false;
+      goalieAngryTimer = 0;
+      goalieLaughTimer = 0;
+      goalieDiveState = null;
+      ballSmokeParticles = [];
+
+      ballPos = { x: 290, y: 280 };
+    }
+
+    function runPenaltyLoop() {
+      updatePenaltyPhysics();
+      drawPenaltyScene();
+      penaltyLoopId = requestAnimationFrame(runPenaltyLoop);
+    }
+
+    function updatePenaltyPhysics() {
+      if (!isShooting && goalieLaughTimer <= 0 && goalieAngryTimer <= 0 && !goalieDiveState) {
+        goalieX += goalieSpeed * goalieDirection;
+        if (goalieX < 165 || goalieX > 415) {
+          goalieDirection *= -1;
+        }
+      }
+
+      if (isShooting) {
+        shotAnimProgress += 0.04;
+        let startX = 290;
+        let startY = 280;
+        let endX = startX;
+        let endY = startY;
+
+        if (targetCorner === 0) { endX = 185; endY = 95; }  // TL
+        if (targetCorner === 1) { endX = 185; endY = 175; } // BL
+        if (targetCorner === 2) { endX = 395; endY = 95; }  // TR
+        if (targetCorner === 3) { endX = 395; endY = 175; } // BR
+
+        ballPos.x = startX + (endX - startX) * Math.min(1, shotAnimProgress);
+        ballPos.y = startY + (endY - startY) * Math.min(1, shotAnimProgress);
+
+        if (isExploding) {
+          ballSmokeParticles.push({
+            x: ballPos.x + (Math.random() - 0.5) * 6,
+            y: ballPos.y + (Math.random() - 0.5) * 6,
+            vx: (Math.random() - 0.5) * 2,
+            vy: (Math.random() - 0.5) * 2,
+            size: Math.random() * 5 + 3,
+            color: Math.random() > 0.5 ? '#F97316' : '#EF4444',
+            life: 1
+          });
+        }
+
+        if (shotAnimProgress >= 1.0) {
+          isShooting = false;
+          evaluatePenaltyOutcome();
+        }
+      }
+
+      for (let i = ballSmokeParticles.length - 1; i >= 0; i--) {
+        const p = ballSmokeParticles[i];
+        p.x += p.vx; p.y += p.vy; p.life -= 0.05;
+        if (p.life <= 0) ballSmokeParticles.splice(i, 1);
+      }
+
+      if (explosionTimer > 0) explosionTimer--;
+      if (goalieLaughTimer > 0) goalieLaughTimer--;
+      if (goalieAngryTimer > 0) goalieAngryTimer--;
+    }
+
+    function drawPenaltyScene() {
+      if (!penaltyCtx) return;
+      const w = penaltyCanvas.width;
+      const h = penaltyCanvas.height;
+
+      penaltyCtx.fillStyle = '#15803D';
+      penaltyCtx.fillRect(0, 0, w, h);
+      penaltyCtx.fillStyle = '#16a34a';
+      for (let y = 140; y < h; y += 30) {
+        penaltyCtx.fillRect(0, y, w, 15);
+      }
+
+      penaltyCtx.strokeStyle = '#FFFFFF';
+      penaltyCtx.lineWidth = 6;
+      penaltyCtx.strokeRect(140, 70, 300, 140);
+
+      penaltyCtx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+      penaltyCtx.lineWidth = 1;
+      for (let rx = 150; rx < 440; rx += 20) {
+        penaltyCtx.beginPath(); penaltyCtx.moveTo(rx, 70); penaltyCtx.lineTo(rx, 210); penaltyCtx.stroke();
+      }
+      for (let ry = 80; ry < 210; ry += 20) {
+        penaltyCtx.beginPath(); penaltyCtx.moveTo(140, ry); penaltyCtx.lineTo(440, ry); penaltyCtx.stroke();
+      }
+
+      penaltyCtx.fillStyle = '#FFFFFF';
+      penaltyCtx.fillRect(284, 275, 12, 6);
+
+      penaltyCtx.save();
+      let gColor = '#FACC15';
+      let gX = goalieX;
+      let gY = goalieY;
+      let gW = 32;
+      let gH = 55;
+
+      if (isGoalieAngry || goalieAngryTimer > 0) {
+        gColor = '#EF4444';
+        for (let i = 0; i < 2; i++) {
+          penaltyCtx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+          penaltyCtx.fillRect(gX + (Math.random() - 0.5) * 16, gY - 10 - Math.random() * 12, 6, 6);
+        }
+      }
+
+      if (goalieDiveState) {
+        if (goalieDiveState === 'up_left') { gX -= 40; gY -= 30; }
+        if (goalieDiveState === 'down_left') { gX -= 40; gY += 20; gH = 35; }
+        if (goalieDiveState === 'up_right') { gX += 40; gY -= 30; }
+        if (goalieDiveState === 'down_right') { gX += 40; gY += 20; gH = 35; }
+      }
+
+      if (goalieLaughTimer > 0) {
+        gY += (Math.floor(goalieLaughTimer / 6) % 2 === 0) ? -6 : 0;
+        penaltyCtx.font = '9px "Press Start 2P"';
+        penaltyCtx.fillStyle = '#FACC15';
+        penaltyCtx.fillText("HA! HA!", gX - 24, gY - 12);
+      }
+
+      penaltyCtx.fillStyle = gColor;
+      penaltyCtx.fillRect(gX - gW/2, gY, gW, gH);
+
+      penaltyCtx.fillStyle = '#000000';
+      if (isGoalieAngry || goalieAngryTimer > 0) {
+        penaltyCtx.fillRect(gX - 10, gY + 8, 6, 3);
+        penaltyCtx.fillRect(gX + 4, gY + 8, 6, 3);
+      } else {
+        penaltyCtx.fillRect(gX - 8, gY + 8, 4, 4);
+        penaltyCtx.fillRect(gX + 4, gY + 8, 4, 4);
+      }
+
+      penaltyCtx.fillStyle = '#EF4444';
+      penaltyCtx.fillRect(gX - gW/2 - 6, gY + 18, 8, 12);
+      penaltyCtx.fillRect(gX + gW/2 - 2, gY + 18, 8, 12);
+      penaltyCtx.restore();
+
+      const strikerX = 278;
+      const strikerY = 280;
+      penaltyCtx.fillStyle = '#38BDF8';
+      penaltyCtx.fillRect(strikerX, strikerY, 24, 35);
+      penaltyCtx.fillStyle = '#0F172A';
+      penaltyCtx.fillRect(strikerX + 4, strikerY + 22, 16, 13);
+
+      ballSmokeParticles.forEach(p => {
+        penaltyCtx.save();
+        penaltyCtx.globalAlpha = p.life;
+        penaltyCtx.fillStyle = p.color;
+        penaltyCtx.fillRect(p.x, p.y, p.size, p.size);
+        penaltyCtx.restore();
+      });
+
+      if (!isExploding || explosionTimer > 0) {
+        penaltyCtx.fillStyle = isExploding ? '#F97316' : '#FFFFFF';
+        penaltyCtx.beginPath();
+        penaltyCtx.arc(ballPos.x, ballPos.y, 7, 0, Math.PI * 2);
+        penaltyCtx.fill();
+        penaltyCtx.strokeStyle = '#000';
+        penaltyCtx.lineWidth = 1;
+        penaltyCtx.stroke();
+      }
+
+      if (isExploding && explosionTimer > 0) {
+        penaltyCtx.fillStyle = '#EF4444';
+        penaltyCtx.beginPath();
+        penaltyCtx.arc(ballPos.x, ballPos.y, 25, 0, Math.PI * 2);
+        penaltyCtx.fill();
+        penaltyCtx.fillStyle = '#FACC15';
+        penaltyCtx.beginPath();
+        penaltyCtx.arc(ballPos.x, ballPos.y, 14, 0, Math.PI * 2);
+        penaltyCtx.fill();
+        penaltyCtx.font = '10px "Press Start 2P"';
+        penaltyCtx.fillStyle = '#FFFFFF';
+        penaltyCtx.fillText("BOOM!", ballPos.x - 22, ballPos.y - 30);
+      }
+
+      if (shotResultText) {
+        penaltyCtx.font = '9px "Press Start 2P"';
+        penaltyCtx.fillStyle = shotResultText.includes("GOL!") ? '#22C55E' : '#EF4444';
+        penaltyCtx.textAlign = 'center';
+        penaltyCtx.fillText(shotResultText, w / 2, 45);
+        penaltyCtx.textAlign = 'left';
+      }
+
+      penaltyCtx.font = '7px "Press Start 2P"';
+      penaltyCtx.fillStyle = '#FFFFFF';
+      penaltyCtx.fillText(`GOLS: ${penaltyScore}/${englishPenaltyQuestions.length}`, 15, 20);
+      penaltyCtx.fillText(`VEL. GOLEIRO: ${goalieSpeed.toFixed(1)}x`, 390, 20);
+    }
+
+    function loadPenaltyQuestion() {
+      if (currentPenaltyIndex >= englishPenaltyQuestions.length) {
+        finishPenaltyGame();
+        return;
+      }
+
+      const q = englishPenaltyQuestions[currentPenaltyIndex];
+      document.getElementById('penalty-question-board').innerText = `Q${currentPenaltyIndex + 1}: ${q.question}`;
+
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`btn-corner-${i}`);
+        btn.innerText = q.options[i];
+        btn.disabled = isShooting || goalieLaughTimer > 0 || goalieAngryTimer > 0;
+      }
+    }
+
+    function executePenaltyShot(cornerIdx) {
+      if (isShooting || goalieLaughTimer > 0 || goalieAngryTimer > 0) return;
+      
+      const q = englishPenaltyQuestions[currentPenaltyIndex];
+      const isCorrectOption = (cornerIdx === q.answer);
+
+      isShooting = true;
+      shotAnimProgress = 0;
+      targetCorner = cornerIdx;
+      shotResultText = "";
+      ballPos = { x: 290, y: 280 };
+
+      let isSameSideOfGoalie = (goalieX < 290 && (cornerIdx === 0 || cornerIdx === 1)) || (goalieX >= 290 && (cornerIdx === 2 || cornerIdx === 3));
+
+      if (!isCorrectOption && !isSameSideOfGoalie) {
+        isExploding = true;
+      } else {
+        isExploding = false;
+      }
+
+      for (let i = 0; i < 4; i++) {
+        document.getElementById(`btn-corner-${i}`).disabled = true;
+      }
+    }
+
+    function evaluatePenaltyOutcome() {
+      const q = englishPenaltyQuestions[currentPenaltyIndex];
+      const isCorrectOption = (targetCorner === q.answer);
+      let isSameSideOfGoalie = (goalieX < 290 && (targetCorner === 0 || targetCorner === 1)) || (goalieX >= 290 && (targetCorner === 2 || targetCorner === 3));
+
+      if (isCorrectOption) {
+        penaltyScore++;
+        shotResultText = "⚽ GOL!";
+        showToast("⚽ Golaço! Resposta correta!");
+
+        isGoalieAngry = true;
+        goalieAngryTimer = 70;
+        goalieSpeed += 0.4;
+      } else {
+        if (isSameSideOfGoalie) {
+          shotResultText = "❌ DEFESA DO GOLEIRO!";
+          showToast("❌ Defesa do goleiro!");
+
+          if (targetCorner === 0) goalieDiveState = 'up_left';
+          if (targetCorner === 1) goalieDiveState = 'down_left';
+          if (targetCorner === 2) goalieDiveState = 'up_right';
+          if (targetCorner === 3) goalieDiveState = 'down_right';
+        } else {
+          shotResultText = "💥 O GOL FOI ANULADO!";
+          explosionTimer = 35;
+          goalieLaughTimer = 70;
+          showToast("💥 O gol foi anulado! Resposta incorreta.");
+        }
+      }
+
+      setTimeout(() => {
+        resetBallAndGoaliePosition();
+        currentPenaltyIndex++;
+        loadPenaltyQuestion();
+      }, 1600);
+    }
+
+    function finishPenaltyGame() {
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`btn-corner-${i}`);
+        if (btn) btn.classList.add('hidden');
+      }
+      document.getElementById('penalty-question-board').innerText = "PENALTY SHOOTOUT FINISHED!";
+
+      const isFirstAttempt = !userProgress.completedTasks.includes("english_penalty_clear");
+      let earnedXP = 0;
+
+      if (penaltyScore >= 3 && isFirstAttempt) {
+        earnedXP = 500;
+        userProgress.completedTasks.push("english_penalty_clear");
+        userProgress.xp += earnedXP;
+        saveUserData();
+        updateDashboard();
+      }
+
+      const canvasBox = document.getElementById('penalty-canvas-box');
+      const existingOverlay = document.getElementById('penalty-finish-overlay');
+      if (existingOverlay) existingOverlay.remove();
+
+      const finishOverlay = document.createElement('div');
+      finishOverlay.id = 'penalty-finish-overlay';
+      finishOverlay.style.position = "absolute";
+      finishOverlay.style.top = "0";
+      finishOverlay.style.left = "0";
+      finishOverlay.style.width = "100%";
+      finishOverlay.style.height = "100%";
+      finishOverlay.style.background = "rgba(15, 23, 42, 0.95)";
+      finishOverlay.style.display = "flex";
+      finishOverlay.style.flexDirection = "column";
+      finishOverlay.style.justifyContent = "center";
+      finishOverlay.style.alignItems = "center";
+      finishOverlay.style.gap = "14px";
+      finishOverlay.style.zIndex = "50";
+
+      finishOverlay.innerHTML = `
+        <h2 style="color: var(--yellow-gold); font-family: var(--font-pixel); font-size: 0.9rem;">FIM DA DISPUTA DE PÊNALTIS!</h2>
+        <p style="color: var(--green-lime); font-family: var(--font-pixel); font-size: 0.75rem;">Gols Marcados: ${penaltyScore} / ${englishPenaltyQuestions.length}</p>
+        ${isFirstAttempt && penaltyScore >= 3 ? `<p style="color: var(--blue-brand); font-family: var(--font-pixel); font-size: 0.7rem;">🎉 Você ganhou +${earnedXP} XP!</p>` : `<p style="color: var(--text-muted); font-family: var(--font-pixel); font-size: 0.65rem;">🔄 Modo Treino (0 XP).</p>`}
+        <button class="btn-push btn-push-green" style="font-family: var(--font-pixel); font-size: 0.7rem;" onclick="initPenaltyGame()">🔄 Jogar Novamente</button>
+      `;
+      canvasBox.appendChild(finishOverlay);
+    }
+
+    // --- GAME ZUMBIS MATEMÁTICA ---
+    function initMathGame() {
+      canvas = document.getElementById('gameCanvas');
+      ctx = canvas.getContext('2d');
+
+      currentMathQuestionIndex = 0;
+      mathCorrectCount = 0;
+      mathWrongCount = 0;
+      streakCount = 0;
+      isAttackReady = false;
+      isAnimating = false;
+
+      particles = [];
+      slashEffects = [];
+      shakeTimer = 0;
+
+      zombie = { x: 275, y: 60, baseOriginX: 275, baseOriginY: 60, maxHp: 100, hp: 100, color: '#4CAF50', opacity: 1, isDying: false };
+      playerBox = { x: 225, y: 150, width: 100, height: 100 };
+      player = { x: 275, y: 200, originX: 275, originY: 200, size: 14, maxHp: 100, hp: 100, color: '#00FF66' };
+
+      if (gameLoopId) cancelAnimationFrame(gameLoopId);
+      renderGameLoop();
+      loadMathQuestion();
+    }
+
+    function renderGameLoop() {
+      drawGame();
+      gameLoopId = requestAnimationFrame(renderGameLoop);
+    }
+
+    function drawGame() {
+      if (!ctx) return;
+
+      ctx.save();
+      if (shakeTimer > 0) {
+        shakeTimer--;
+        ctx.translate((Math.random() - 0.5) * 12, (Math.random() - 0.5) * 12);
+      }
+
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      if (zombie.opacity > 0) {
+        ctx.save();
+        ctx.globalAlpha = zombie.opacity;
+        ctx.translate(zombie.x, zombie.y);
+        if (zombie.isDying) {
+          ctx.shadowColor = '#FACC15';
+          ctx.shadowBlur = 20;
+        }
+        ctx.fillStyle = zombie.color;
+        ctx.fillRect(-18, -20, 36, 44); 
+        ctx.fillStyle = '#FF0000';
+        ctx.fillRect(-10, -12, 6, 6); 
+        ctx.fillRect(4, -12, 6, 6);
+        ctx.fillStyle = '#388E3C';
+        ctx.fillRect(-26, 0, 8, 6); 
+        ctx.fillRect(18, 0, 8, 6);
+        ctx.restore();
+      }
+
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx; p.y += p.vy; p.life -= 0.03;
+        if (p.life <= 0) { particles.splice(i, 1); continue; }
+        ctx.save();
+        ctx.globalAlpha = p.life;
+        ctx.fillStyle = p.color;
+        ctx.fillRect(p.x, p.y, p.size, p.size);
+        ctx.restore();
+      }
+
+      for (let i = slashEffects.length - 1; i >= 0; i--) {
+        const s = slashEffects[i];
+        s.life -= 0.08;
+        if (s.life <= 0) { slashEffects.splice(i, 1); continue; }
+        ctx.save();
+        ctx.globalAlpha = s.life;
+        ctx.strokeStyle = s.color;
+        ctx.lineWidth = s.width;
+        ctx.beginPath();
+        ctx.moveTo(s.x1, s.y1); ctx.lineTo(s.x2, s.y2);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      ctx.strokeStyle = '#FFFFFF';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(playerBox.x, playerBox.y, playerBox.width, playerBox.height);
+
+      ctx.save();
+      ctx.fillStyle = player.color;
+      ctx.beginPath();
+      ctx.moveTo(player.x, player.y - player.size);
+      ctx.lineTo(player.x - player.size, player.y + player.size);
+      ctx.lineTo(player.x + player.size, player.y + player.size);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+
+      ctx.font = '12px "Courier New", monospace';
+      ctx.fillStyle = '#FFF';
+      ctx.fillText(`ZUMBI HP: ${zombie.hp}/${zombie.maxHp}`, 20, 22);
+      ctx.fillStyle = '#FF0000';
+      ctx.fillRect(20, 28, 100, 8);
+      ctx.fillStyle = '#00FF00';
+      ctx.fillRect(20, 28, Math.max(0, (zombie.hp / zombie.maxHp) * 100), 8);
+
+      ctx.fillStyle = '#FFF';
+      ctx.fillText(`PLAYER HP: ${player.hp}/${player.maxHp}`, 20, 290);
+      ctx.fillStyle = '#FF0000';
+      ctx.fillRect(20, 296, 100, 8);
+      ctx.fillStyle = '#FFFF00';
+      ctx.fillRect(20, 296, Math.max(0, (player.hp / player.maxHp) * 100), 8);
+
+      if (streakCount > 1) {
+        ctx.font = 'bold 13px "Courier New", monospace';
+        ctx.fillStyle = '#FACC15';
+        ctx.fillText(`🔥 COMBO x${streakCount}!`, 380, 22);
+      }
+
+      ctx.restore();
+    }
+
+    function loadMathQuestion() {
+      document.getElementById('attack-btn-container').classList.add('hidden');
+
+      if (currentMathQuestionIndex >= mathQuestions.length || player.hp <= 0 || zombie.hp <= 0) {
+        finishMathGame();
+        return;
+      }
+
+      const q = mathQuestions[currentMathQuestionIndex];
+      document.getElementById('game-question-text').innerText = q.question;
+
+      const optsGrid = document.getElementById('game-options-container');
+      optsGrid.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'game-opt-btn';
+        btn.innerText = opt;
+        btn.disabled = isAnimating;
+        btn.onclick = () => handleGameAnswer(idx);
+        optsGrid.appendChild(btn);
+      });
+    }
+
+    function handleGameAnswer(selectedIdx) {
+      if (isAnimating || isAttackReady) return;
+
+      const q = mathQuestions[currentMathQuestionIndex];
+
+      if (selectedIdx === q.answer) {
+        mathCorrectCount++;
+        streakCount++;
+        isAttackReady = true;
+
+        toggleOptionsDisabled(true);
+        document.getElementById('attack-btn-container').classList.remove('hidden');
+        document.getElementById('game-question-text').innerText = `✨ Resposta Correta! Clique em ATACAR ZUMBI!`;
+      } else {
+        mathWrongCount++;
+        streakCount = 0;
+        toggleOptionsDisabled(true);
+        triggerZombieAttackOnPlayer();
+      }
+    }
+
+    function toggleOptionsDisabled(disabled) {
+      document.querySelectorAll('.game-opt-btn').forEach(b => b.disabled = disabled);
+    }
+
+    function triggerZombieAttackOnPlayer() {
+      isAnimating = true;
+      const startY = zombie.y;
+      const targetY = player.y - 20;
+
+      animateTween(zombie, { y: targetY }, 250, () => {
+        player.hp = Math.max(0, player.hp - 25);
+        shakeTimer = 15;
+        player.color = '#FF0000';
+
+        createParticles(player.x, player.y, '#FF0000', 12);
+
+        setTimeout(() => {
+          player.color = '#00FF66';
+          animateTween(zombie, { y: startY }, 250, () => {
+            isAnimating = false;
+            currentMathQuestionIndex++;
+            loadMathQuestion();
+          });
+        }, 200);
+      });
+    }
+
+    function triggerPlayerAttackAction() {
+      if (!isAttackReady || isAnimating) return;
+      isAttackReady = false;
+      isAnimating = true;
+      document.getElementById('attack-btn-container').classList.add('hidden');
+
+      const startY = player.y;
+      const targetY = zombie.y + 25;
+
+      animateTween(player, { y: targetY }, 220, () => {
+        zombie.hp = Math.max(0, zombie.hp - 25);
+        zombie.color = '#FFFFFF';
+
+        createAttackVisualEffects(streakCount);
+
+        setTimeout(() => {
+          zombie.color = '#4CAF50';
+          animateTween(player, { y: startY }, 220, () => {
+            isAnimating = false;
+            currentMathQuestionIndex++;
+
+            if (zombie.hp <= 0) {
+              triggerZombieDeathAnimation();
+            } else {
+              loadMathQuestion();
+            }
+          });
+        }, 250);
+      });
+    }
+
+    function createAttackVisualEffects(combo) {
+      const zX = zombie.x;
+      const zY = zombie.y;
+
+      if (combo <= 1) {
+        slashEffects.push({ x1: zX - 25, y1: zY - 25, x2: zX + 25, y2: zY + 25, color: '#FFFFFF', width: 4, life: 1 });
+        createParticles(zX, zY, '#FFFFFF', 10);
+      } else if (combo === 2) {
+        slashEffects.push({ x1: zX - 30, y1: zY - 20, x2: zX + 30, y2: zY + 20, color: '#FACC15', width: 5, life: 1 });
+        slashEffects.push({ x1: zX + 30, y1: zY - 20, x2: zX - 30, y2: zY + 20, color: '#38BDF8', width: 5, life: 1 });
+        createParticles(zX, zY, '#FACC15', 20);
+        createParticles(zX, zY, '#38BDF8', 15);
+      } else {
+        slashEffects.push({ x1: zX - 35, y1: zY - 35, x2: zX + 35, y2: zY + 35, color: '#EF4444', width: 8, life: 1 });
+        slashEffects.push({ x1: zX + 35, y1: zY - 35, x2: zX - 35, y2: zY + 35, color: '#F97316', width: 8, life: 1 });
+        createParticles(zX, zY, '#EF4444', 25);
+        createParticles(zX, zY, '#F97316', 25);
+        createParticles(zX, zY, '#FACC15', 25);
+        shakeTimer = 8;
+      }
+    }
+
+    function triggerZombieDeathAnimation() {
+      zombie.isDying = true;
+      let fadeCount = 0;
+
+      const deathInterval = setInterval(() => {
+        fadeCount++;
+        zombie.opacity = Math.max(0, zombie.opacity - 0.08);
+
+        for (let i = 0; i < 4; i++) {
+          particles.push({
+            x: zombie.x + (Math.random() - 0.5) * 36,
+            y: zombie.y + (Math.random() - 0.5) * 44,
+            vx: (Math.random() - 0.5) * 2,
+            vy: -Math.random() * 3 - 1,
+            size: Math.random() * 4 + 2,
+            color: Math.random() > 0.5 ? '#FACC15' : '#FFFFFF',
+            life: 1
+          });
+        }
+
+        if (zombie.opacity <= 0 || fadeCount > 25) {
+          clearInterval(deathInterval);
+          finishMathGame();
+        }
+      }, 60);
+    }
+
+    function createParticles(x, y, color, count) {
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: x, y: y,
+          vx: (Math.random() - 0.5) * 6,
+          vy: (Math.random() - 0.5) * 6,
+          size: Math.random() * 4 + 2,
+          color: color,
+          life: 1
+        });
+      }
+    }
+
+    function animateTween(obj, props, duration, onComplete) {
+      const starts = {};
+      for (let k in props) starts[k] = obj[k];
+      const startTime = performance.now();
+
+      function step(now) {
+        const elapsed = now - startTime;
+        const p = Math.min(elapsed / duration, 1);
+        for (let k in props) {
+          obj[k] = starts[k] + (props[k] - starts[k]) * p;
+        }
+        if (p < 1) {
+          requestAnimationFrame(step);
+        } else {
+          if (onComplete) onComplete();
+        }
+      }
+      requestAnimationFrame(step);
+    }
+
+    function finishMathGame() {
+      const optsGrid = document.getElementById('game-options-container');
+      optsGrid.innerHTML = "";
+      document.getElementById('attack-btn-container').classList.add('hidden');
+
+      const isFirstAttempt = !userProgress.completedTasks.includes("math_game_clear");
+      let earnedXP = 0;
+
+      if (isFirstAttempt) {
+        if (mathCorrectCount === 4) earnedXP = 500;
+        else if (mathCorrectCount === 3) earnedXP = 375;
+        else if (mathCorrectCount === 2) earnedXP = 250;
+        else if (mathCorrectCount === 1) earnedXP = 125;
+        else earnedXP = 0;
+
+        userProgress.completedTasks.push("math_game_clear");
+        userProgress.xp += earnedXP;
+        saveUserData();
+        updateDashboard();
+      }
+
+      let summaryText = `FIM DA BATALHA!\n\n✅ Acertos: ${mathCorrectCount} | ❌ Erros: ${mathWrongCount}\n\n`;
+      
+      if (isFirstAttempt) {
+        if (earnedXP > 0) {
+          summaryText += `🏆 VITÓRIA! Você ganhou +${earnedXP} XP!`;
+        } else {
+          summaryText += `💀 DERROTA! Tente novamente para ganhar XP!`;
+        }
+      } else {
+        summaryText += `🔄 Tarefa Cópia (Modo Treino): 0 XP ganhos.`;
+      }
+
+      document.getElementById('game-question-text').innerText = summaryText;
+
+      const restartBtn = document.createElement('button');
+      restartBtn.className = 'game-opt-btn';
+      restartBtn.style.gridColumn = "span 2";
+      restartBtn.innerText = "🔄 Tentar Novamente (Modo Treino)";
+      restartBtn.onclick = () => initMathGame();
+      optsGrid.appendChild(restartBtn);
+    }
+
+    // --- ANIMAÇÕES RANKING ---
+    function renderRanking() {
+      const container = document.getElementById('ranking-list-container');
+      container.innerHTML = '';
+
+      let users = [
+        { name: "Weversotestadmin1", xp: 0 },
+        { name: "Carlostestadmin2", xp: 0 },
+        { name: "Gabrieltestadmin3", xp: 0 }
+      ];
+
+      if (currentUser) {
+        users = users.filter(u => u.name !== currentUser.name);
+        users.push({ name: currentUser.name + " (Você)", xp: userProgress.xp, isUser: true });
+      }
+
+      users.sort((a,b) => b.xp - a.xp);
+
+      const currentRankObj = getRank(userProgress.xp);
+      let isRankUp = false;
+      if (previousUserRank && currentRankObj.level > previousUserRank.level) {
+        isRankUp = true;
+      }
+      previousUserRank = currentRankObj;
+
+      users.forEach((u, i) => {
+        const rank = getRank(u.xp);
+        const isCurrentGlow = u.isUser && isRankUp;
+
+        const card = document.createElement('div');
+        card.className = `ranking-card ${u.isUser ? 'current-user rank-card-animated' : ''}`;
+        card.innerHTML = `
+          <div class="ranking-user-info">
+            <strong style="width:30px; font-size:1.2rem;">#${i+1}</strong>
+            <div>
+              <strong>${u.name}</strong><br>
+              <span id="${u.isUser ? 'user-rank-badge-element' : ''}" class="rank-badge ${rank.class} ${isCurrentGlow ? 'rank-glow-active' : ''}" style="margin-top:4px;">${rank.title}</span>
+            </div>
+          </div>
+          <strong id="${u.isUser ? 'animated-user-xp' : ''}" style="color:var(--yellow-gold); font-size:1.1rem;">${u.isUser ? '0' : u.xp} XP</strong>
+        `;
+        container.appendChild(card);
+
+        if (u.isUser) {
+          animateCounter('animated-user-xp', u.xp);
+        }
+      });
+    }
+
+    function animateCounter(elementId, targetValue) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      const duration = 1200;
+      const startTime = performance.now();
+
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const currentValue = Math.floor(progress * targetValue);
+        el.innerText = `${currentValue} XP`;
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          el.innerText = `${targetValue} XP`;
+        }
+      }
+      requestAnimationFrame(update);
+    }
+
+    /* CHAT & COMUNIDADE */
+    function switchChannel(channelKey, element) {
+      activeChannel = channelKey;
+      document.querySelectorAll('.chat-channel-btn').forEach(btn => btn.classList.remove('active'));
+      element.classList.add('active');
+
+      const titles = {
+        geral: '📢 Aviso E.E Neves',
+        professores: '👨‍🏫 Professores & Alunos',
+        duvidas: '💬 Chat dos Alunos'
+      };
+      document.getElementById('current-channel-title').innerHTML = titles[channelKey];
+      renderMessages();
+    }
+
+    function sendMessage(e) {
+      e.preventDefault();
+      if (!currentUser) return requireAuth('screen-community');
+      const input = document.getElementById('message-input');
+      
+      if (!channelMessages[activeChannel]) {
+        channelMessages[activeChannel] = [];
+      }
+
+      const newMsg = {
+        id: Date.now(),
+        sender: currentUser.name,
+        senderEmail: currentUser.email,
+        text: input.value
+      };
+
+      channelMessages[activeChannel].push(newMsg);
+      localStorage.setItem('chat_channels_messages', JSON.stringify(channelMessages));
+      input.value = '';
+      renderMessages();
+    }
+
+    function deleteMessage(msgId) {
+      if (!currentUser) return;
+
+      const isAdmin = currentUser.role === 'Admin' || (currentUser.email && currentUser.email.includes('admin')) || (currentUser.name && currentUser.name.toLowerCase().includes('admin'));
+      
+      channelMessages[activeChannel] = channelMessages[activeChannel].filter(m => {
+        if (m.id === msgId) {
+          const isOwner = (m.sender === currentUser.name) || (m.senderEmail === currentUser.email);
+          if (isAdmin || isOwner) {
+            return false;
+          } else {
+            showToast("❌ Você não tem permissão para apagar mensagens de outros alunos!");
+            return true;
+          }
+        }
+        return true;
+      });
+
+      localStorage.setItem('chat_channels_messages', JSON.stringify(channelMessages));
+      renderMessages();
+    }
+
+    function renderMessages() {
+      const container = document.getElementById('messages-container');
+      const messages = channelMessages[activeChannel] || [];
+      const isAdmin = currentUser && (currentUser.role === 'Admin' || (currentUser.email && currentUser.email.includes('admin')) || (currentUser.name && currentUser.name.toLowerCase().includes('admin')));
+
+      container.innerHTML = messages.map(m => {
+        const isMyMsg = currentUser && (m.sender === currentUser.name || m.senderEmail === currentUser.email);
+        const canDelete = isMyMsg || isAdmin;
+
+        return `
+          <div class="message-card ${isMyMsg ? 'my-message' : ''}">
+            <div class="message-header">
+              <strong style="font-size:0.75rem; color:var(--orange-brand);">${m.sender}</strong>
+              ${canDelete ? `<button class="delete-msg-btn" onclick="deleteMessage(${m.id})">🗑️ Apagar</button>` : ''}
+            </div>
+            <div>${m.text}</div>
+          </div>
+        `;
+      }).join('');
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function showToast(msg) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerText = msg;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+  </script>
+</body>
+</html>
